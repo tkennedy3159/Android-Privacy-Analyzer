@@ -11,7 +11,8 @@ urls = ['http://www.google.com/gen_204', \
 'http://connectivitycheck.gstatic.com/generate_204', \
 'https://connectivitycheck.gstatic.com/generate_204', \
 'https://android.clients.google.com/c2dm/register3', \
-'https://android.googleapis.com/checkin']
+'https://android.googleapis.com/checkin', \
+'https://android.clients.google.com/checkin']
 
 partialURLs = ['www.google.com/tg/fe/request?rqt', \
 'https://www.googleapis.com/androidantiabuse/v1/x/create?', \
@@ -148,7 +149,7 @@ def checkPostURL(flow, results):
 		info = info.strip()
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
 	#Android Check-in
-	elif (flow.url == 'https://android.googleapis.com/checkin'):
+	elif (flow.url == 'https://android.googleapis.com/checkin' or flow.url == 'https://android.clients.google.com/checkin'):
 		flow.source = 'Android Check-in'
 		
 		if (flow.responseContent.find('adwords:enable_primes_memory_monitoring') > -1):

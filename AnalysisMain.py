@@ -7,7 +7,8 @@ import AndroidDataPrivacy.AppFinder as AppFinder
 import AndroidDataPrivacy.Applications.AppDefault as AppDefault
 import AndroidDataPrivacy.Applications.AndroidNative as AndroidNative
 
-filename = "startup.txt"
+testNum = 1
+filename = "capture.txt"
 file = open(filename, "r")
 capture = file.readlines()
 flows = []
@@ -67,7 +68,7 @@ def checkForUseless(flow):
 
 def checkFlow(flow):
 	flow.app = AppFinder.findApp(flow, appList)
-	print('App: ' + flow.app)
+	#print('App: ' + flow.app)
 	
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
 		AndroidNative.checkBehavior(flow, results)
@@ -84,6 +85,12 @@ def testFlow(num):
 	checkFlow(flows[num])
 	sendLogs()
 
+def analyzeAll(flows):
+	for flow in flows:
+		checkFlow(flow)
+	sendLogs()
+
 separateFlows()
 #printFlows()
-testFlow(35)
+#testFlow(testNum)
+analyzeAll(flows)

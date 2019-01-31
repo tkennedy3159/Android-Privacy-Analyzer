@@ -16,7 +16,7 @@ do
 done
 
 #Starts mitmdump and outputs to stream.txt
-./mitmdump --set block_global=false --set flow_detail=3 --verbose -s decode.py > stream.txt  2>/dev/null &
+~/mitm/mitmdump --set block_global=false --set flow_detail=3 --verbose -s mitmdecode.py > stream.txt  2>/dev/null &
 
 #Every 30 seconds, put stream into capture
 #Then empty the contents to stream
@@ -24,6 +24,7 @@ while [ 0 -lt 1 ]
 do
 	sleep 30s
 	cat stream.txt >> capture.txt
+	cat stream.txt >> backup.txt
 	echo "" > stream.txt
 	python3 ~/Android-Privacy-Analyzer/AnalysisMain.py
 	echo "" > capture.txt
