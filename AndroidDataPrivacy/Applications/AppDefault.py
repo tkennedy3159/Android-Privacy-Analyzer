@@ -70,3 +70,14 @@ def cleanEncoding(input):
 		input = input[input.find('\\x')+4:]
 	return output
 
+def fixUrlEncoding(input):
+	output = ''
+	while (len(input) >= 3):
+		output = output + input[:input.find('%')]
+		input = input[input.find('%'):]
+		temp = input[:3]
+		input = input[3:]
+		if (temp == '%3A'):
+			temp = ':'
+		output = output + temp
+	return output

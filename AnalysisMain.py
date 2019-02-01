@@ -7,7 +7,7 @@ import AndroidDataPrivacy.AppFinder as AppFinder
 import AndroidDataPrivacy.Applications.AppDefault as AppDefault
 import AndroidDataPrivacy.Applications.AndroidNative as AndroidNative
 
-testNum = 3
+testNum = 34
 filename = "backup.txt"
 file = open(filename, "r")
 capture = file.readlines()
@@ -20,7 +20,7 @@ def printFlows():
 	counter = 0
 	for flow in flows:
 		print(counter)
-		print(flow.request)
+		print(flow.all)
 		print('')
 		counter = counter + 1
 
@@ -70,7 +70,7 @@ def checkFlow(flow):
 	results = []
 	flow.app = AppFinder.findApp(flow, appList)
 	print('App: ' + flow.app)
-	print(flow.request)
+	
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
 		AndroidNative.checkBehavior(flow, results)
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):
@@ -86,8 +86,6 @@ def sendLogs(results):
 def testFlow(num):
 	print(flows[num].all)
 	checkFlow(flows[num])
-	sendLogs()
-	results = []
 
 def analyzeAll():
 	count = 0

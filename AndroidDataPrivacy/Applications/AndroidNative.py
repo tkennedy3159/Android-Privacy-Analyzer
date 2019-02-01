@@ -16,7 +16,9 @@ urls = ['http://www.google.com/gen_204', \
 partialURLs = ['www.google.com/tg/fe/request?rqt', \
 'https://www.googleapis.com/androidantiabuse/v1/x/create?', \
 'https://www.googleapis.com/geolocation', \
-'preloads?doc=android.autoinstalls.config.']
+'preloads?doc=android.autoinstalls.config.', \
+'https://www.google.com/complete/search', \
+'https://app-measurement.com']
 
 userAgents = ['AndroidDownloadManager', \
 'Android-GCM']
@@ -87,6 +89,22 @@ def checkGetURL(flow, results):
 		info = info[info.find('build_fingerprint:')+19:]
 		info = info[:info.find('\n')]
 		info = info.strip()
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+
+	elif (flow.url.find('https://www.google.com/complete/search') > -1):
+		flow.source = 'Google Search History Sync'
+
+	elif (flow.url.find('https://app-measurement.com') == 0):
+		flow.source = 'App Measurement'
+		type = 'System Info: App ID'
+		info = flow.url[flow.url.find('app/')+4:flow.url.find('?')]
+		info = AppDefault.fixUrlEncoding(info)
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+
+		type = 'System Info: App Instance ID'
+		info = flow.requestContent
+		info = info[info.find('app_instance_id:')+17:]
+		info = info[:info.find('\n')].strip()
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
 		
 
