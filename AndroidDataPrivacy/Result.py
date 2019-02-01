@@ -22,7 +22,7 @@ class Result:
 	def setDescription(self, type):
 		return ''
 
-	def syncSource(self):
+	def syncSourceLog(self):
 		self.log = 'Source: ' + self.source + '\n' + \
 		'Destination: ' + self.destination + '\n' + \
 		'Type: ' + self.type + '\n' + \

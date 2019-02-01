@@ -4,7 +4,6 @@ import AndroidDataPrivacy.Applications.AppDefault as AppDefault
 
 type = ''
 info = ''
-#results = []
 
 urls = ['http://www.google.com/gen_204', \
 'https://www.google.com/generate_204', \
@@ -29,7 +28,6 @@ def checkBehavior(flow, results):
 		analyzeGetRequest(flow, results)
 	if (flow.requestType == 'POST'):
 		analyzePostRequest(flow, results)
-	AppDefault.syncSource(flow, results)
 
 def analyzeGetRequest(flow, results):
 	checkGetURL(flow, results)
@@ -65,7 +63,7 @@ def checkGetURL(flow, results):
 	if (flow.url == 'http://connectivitycheck.gstatic.com/generate_204' or flow.url == 'https://connectivitycheck.gstatic.com/generate_204'):
 		flow.source = 'WiFi Connection'
 		type = 'System Status'
-		info = 'Phone connected to a WiFi network. IP address: ' + flow.address
+		info = 'WiFi connection active'
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
 	#Google Ping
 	elif (flow.url == 'https://www.google.com/generate_204'):

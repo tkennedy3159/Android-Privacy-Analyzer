@@ -5,7 +5,6 @@ source = ''
 destination = ''
 type = ''
 info = ''
-#results = []
 
 def checkBehavior(flow, results):
 	if (flow.requestType == 'GET'):
@@ -16,7 +15,6 @@ def checkBehavior(flow, results):
 		analyzeHeadRequestDefault(flow, results)
 	checkRequestHeadersDefault(flow, flow.requestHeaders, results)
 	checkResponseHeadersDefault(flow, flow.responseHeaders, results)
-	syncSource(flow, results)
 
 def analyzeGetRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
@@ -61,9 +59,9 @@ def checkFlowResults(resultType, results):
 	return False
 
 def syncSource(flow, results):
-	for result in results:
-		result.source = flow.source
-		result.syncSource()
+	for item in results:
+		item.source = flow.source
+		item.syncSourceLog()
 
 def cleanEncoding(input):
 	output = ''

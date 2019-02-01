@@ -7,8 +7,8 @@ import AndroidDataPrivacy.AppFinder as AppFinder
 import AndroidDataPrivacy.Applications.AppDefault as AppDefault
 import AndroidDataPrivacy.Applications.AndroidNative as AndroidNative
 
-testNum = 1
-filename = "capture.txt"
+testNum = 3
+filename = "backup.txt"
 file = open(filename, "r")
 capture = file.readlines()
 flows = []
@@ -20,7 +20,7 @@ def printFlows():
 	counter = 0
 	for flow in flows:
 		print(counter)
-		print(flow.all)
+		print(flow.request)
 		print('')
 		counter = counter + 1
 
@@ -67,15 +67,18 @@ def checkForUseless(flow):
 		return False
 
 def checkFlow(flow):
+	results = []
 	flow.app = AppFinder.findApp(flow, appList)
-	#print('App: ' + flow.app)
-	
+	print('App: ' + flow.app)
+	print(flow.request)
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
 		AndroidNative.checkBehavior(flow, results)
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):
 		AppDefault.checkBehavior(flow, results)
+	AppDefault.syncSource(flow, results)
+	sendLogs(results)
 
-def sendLogs():
+def sendLogs(results):
 	print('\n')
 	for result in results:
 		print(result.log, end='\n\n')
@@ -84,13 +87,16 @@ def testFlow(num):
 	print(flows[num].all)
 	checkFlow(flows[num])
 	sendLogs()
+	results = []
 
-def analyzeAll(flows):
+def analyzeAll():
+	count = 0
 	for flow in flows:
+		print(count)
 		checkFlow(flow)
-	sendLogs()
+		count = count + 1
 
 separateFlows()
 #printFlows()
 #testFlow(testNum)
-analyzeAll(flows)
+analyzeAll()
