@@ -7,7 +7,7 @@ import AndroidDataPrivacy.AppFinder as AppFinder
 import AndroidDataPrivacy.Applications.AppDefault as AppDefault
 import AndroidDataPrivacy.Applications.AndroidNative as AndroidNative
 
-testNum = 34
+testNum = 50
 filename = "backup.txt"
 file = open(filename, "r")
 capture = file.readlines()
@@ -59,6 +59,7 @@ def checkForUseless(flow):
 		flow[flow.find('\n'):].find('-> Request') > -1 or \
 		flow[flow.find('\n'):].find('-> Response') > -1 or \
 		flow[0:flow.find('\n')].find('Set new server address:') > -1 or \
+		flow[0:flow.find('\n')].find(': HTTP/2 connection terminated by server: error code:') > -1 or \
 		flow[0:flow.find('\n')].find('Establish TLS') > -1 or \
 		flow[0:flow.find('\n')].find('Connection killed') > -1 or \
 		flow[0:flow.find('\n')].find('NotImplementedError') > -1):
@@ -95,6 +96,6 @@ def analyzeAll():
 		count = count + 1
 
 separateFlows()
-#printFlows()
+printFlows()
 #testFlow(testNum)
-analyzeAll()
+#analyzeAll()

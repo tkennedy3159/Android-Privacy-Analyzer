@@ -11,19 +11,24 @@ urls = ['http://www.google.com/gen_204', \
 'https://connectivitycheck.gstatic.com/generate_204', \
 'https://android.clients.google.com/c2dm/register3', \
 'https://android.googleapis.com/checkin', \
-'https://android.clients.google.com/checkin']
+'https://android.clients.google.com/checkin', \
+'https://android.googleapis.com/auth']
 
 partialURLs = ['www.google.com/tg/fe/request?rqt', \
 'https://www.googleapis.com/androidantiabuse/v1/x/create?', \
 'https://www.googleapis.com/geolocation', \
 'preloads?doc=android.autoinstalls.config.', \
 'https://www.google.com/complete/search', \
-'https://app-measurement.com']
+'https://app-measurement.com', \
+'https://www.googleapis.com/userlocation', \
+'https://www.googleapis.com/calendar', \
+'https://inbox.google.com/sync']
 
 userAgents = ['AndroidDownloadManager', \
 'Android-GCM']
 
-partialUserAgents = ['Android-GData']
+partialUserAgents = ['Android-GData', \
+'Android-Gmail']
 
 def checkBehavior(flow, results):
 	if (flow.requestType == 'GET'):
@@ -56,6 +61,15 @@ def checkRequestHeaders(flow, headers, results):
 			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
 		if (headers['User-Agent'][:10] == 'DroidGuard'):
 			flow.source = 'DroidGuard'
+		if (headers['User-Agent'][:13] == 'Android-Gmail'):
+			if (flow.source == ''):
+				flow.source = 'GMail'
+			print(AppDefault.cleanEncoding(flow.responseContent))
+	
+	if ('authorization' in headers.keys()):
+		type = 'User Info: Authorization Token'
+		info = flow.requestHeaders['authorization']
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
 
 def checkResponseHeaders(flow, headers, results):
 	return None
@@ -67,11 +81,13 @@ def checkGetURL(flow, results):
 		type = 'System Status'
 		info = 'WiFi connection active'
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+	
 	#Google Ping
 	elif (flow.url == 'https://www.google.com/generate_204'):
 		flow.source = 'Google service ping'
 	elif (flow.url == 'http://www.google.com/gen_204'):
 		flow.source = 'Google service ping'
+	
 	elif (flow.url.find('https://android.clients.google.com/gsync') > -1):
 		flow.source = 'Google Account Data Sync'
 		type = 'System Info: GCM ID'
@@ -106,7 +122,24 @@ def checkGetURL(flow, results):
 		info = info[info.find('app_instance_id:')+17:]
 		info = info[:info.find('\n')].strip()
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+	
+	elif (flow.url.find('https://www.googleapis.com/userlocation/v1/settings') == 0):
+		flow.source = 'Android Location Settings Sync'
+		type = 'System Info: Model'
+		info = AppDefault.findFormEntry(flow.requestContent, 'brand') + ' ' + AppDefault.findFormEntry(flow.requestContent, 'model')
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
 		
+		type = 'System Info: Build'
+		info = AppDefault.findFormEntry(flow.requestContent, 'platform')
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+	
+	elif (flow.url.find('https://www.googleapis.com/calendar') == 0):
+		flow.source = 'Google Calendar'
+		
+		if (flow.responseContent.find('notificationSettings') > -1):
+			type = 'User Info: Notification Settings'
+			info = AppDefault.findJSONSection(flow.responseContent, 'notificationSettings')
+			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
 
 def checkPostURL(flow, results):
 	#Weather lookup
@@ -115,6 +148,7 @@ def checkPostURL(flow, results):
 		type = 'Location'
 		info = 'Your location was collected'
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+	
 	#Messages login
 	elif (flow.url == 'https://android.clients.google.com/c2dm/register3'):
 		flow.source = 'Messages Login'
@@ -164,6 +198,7 @@ def checkPostURL(flow, results):
 		info = info[6:]
 		info = info.strip()
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+	
 	#Android Check-in
 	elif (flow.url == 'https://android.googleapis.com/checkin' or flow.url == 'https://android.clients.google.com/checkin'):
 		flow.source = 'Android Check-in'
@@ -219,6 +254,51 @@ def checkPostURL(flow, results):
 		type = 'Location: Request Key'
 		info = flow.url[flow.url.find('key=')+4:]
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+	
+	elif (flow.url.find('https://app-measurement.com') == 0):
+		flow.source = 'App Measurement'
+	
+	elif (flow.url == 'https://android.googleapis.com/auth'):
+		flow.source = 'Google Login'
+		if (AppDefault.findFormEntry(flow.requestContent, 'app') == 'com.google.android.gms'):
+			flow.source = 'Google Mobile Services Login'
+			temp = AppDefault.findFormEntry(flow.requestContent, 'service')
+			if (temp.find('auth/plus') > -1):
+				flow.source = 'Google Plus Login'
+		if (AppDefault.findFormEntry(flow.requestContent, 'app') == 'com.google.android.gm'):
+			flow.source = 'GMail Login'
+		elif (AppDefault.findFormEntry(flow.requestContent, 'app') == 'com.google.android.googlequicksearchbox'):
+			flow.source = 'Google Quick Search Login'
+		elif (AppDefault.findFormEntry(flow.requestContent, 'app') == 'com.google.android.calendar'):
+			flow.source = 'Google Calendar Login'
+		
+		type = 'System Info: Android ID'
+		info = AppDefault.findFormEntry(flow.requestContent, 'androidId')
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		
+		type = 'System Info: Country'
+		info = AppDefault.findFormEntry(flow.requestContent, 'device_country')
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		
+		type = 'System Info: Language'
+		info = AppDefault.findFormEntry(flow.requestContent, 'lang')
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		
+		type = 'User Info: Email Address'
+		info = AppDefault.findFormEntry(flow.requestContent, 'Email')
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		
+		type = 'System Info: Android Client Signature'
+		info = AppDefault.findFormEntry(flow.requestContent, 'client_sig')
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		
+		type = 'System Info: Google Mobile Services Token'
+		info = AppDefault.findFormEntry(flow.requestContent, 'Token')
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+	
+	elif (flow.url[:29] == 'https://inbox.google.com/sync'):
+		flow.source = 'GMail Inbox Sync'
+		
 
 def getURLs():
 	return urls

@@ -33,7 +33,12 @@ def identifyURL(url, appList):
 	return ''
 
 def translate(app):
-	if (app == 'com.google.android.apps.messaging'):
+	if (app == 'com.google.android.apps.messaging' \
+	or app == 'com.google.android.googlequicksearchbox' \
+	or app == 'com.google.android.calendar' \
+	or app == 'com.google.android.gms' \
+	or app == 'com.google.android.gm' \
+	or app == 'com.android.vending'):
 		app = 'AndroidNative'
 	if (app == ''):
 		app = 'AppDefault'

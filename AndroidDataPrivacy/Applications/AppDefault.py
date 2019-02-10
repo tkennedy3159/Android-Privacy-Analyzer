@@ -68,6 +68,8 @@ def cleanEncoding(input):
 	while (len(input) >= 4):
 		output = output + input[:input.find('\\x')]
 		input = input[input.find('\\x')+4:]
+		if (input[:1] == '_'):
+			input = input[2:]
 	return output
 
 def fixUrlEncoding(input):
@@ -81,3 +83,25 @@ def fixUrlEncoding(input):
 			temp = ':'
 		output = output + temp
 	return output
+
+def findFormEntry(content, entry):
+	line = content[content.find(entry+':'):]
+	line = line[:line.find('\n')]
+	answer = line[len(entry)+1:].strip()
+	return answer
+
+def findJSONSection(content, section):
+	part = content[content.find('"'+section+'": {'):]
+	temp = part
+	part = part[:part.find('\n')+1]
+	count = 1
+	while count > 0:
+		temp = temp[temp.find('\n')+1:]
+		line = temp[:temp.find('\n')+1]
+		part = part + line
+		line = line.strip()
+		if (line[:1] == '{'):
+			count = count + 1
+		elif (line[:1] == '}'):
+			count = count - 1
+	return part
