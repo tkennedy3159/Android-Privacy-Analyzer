@@ -43,10 +43,26 @@ def checkRequestHeadersDefault(flow, headers, results):
 		info = headers['Cookie']
 		type = 'System Info: Cookie'
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+	if ('x-dfe-device-id' in headers.keys() and checkFlowResults('System Info: Device ID', results) == False):
+		info = headers['x-dfe-device-id']
+		type = 'System Info: Device ID'
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+	if ('x-dfe-device-config-token' in headers.keys() and checkFlowResults('System Info: Config Token', results) == False):
+		info = headers['x-dfe-device-config-token']
+		type = 'System Info: Config Token'
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
 
 def checkResponseHeadersDefault(flow, headers, results):
 	if ('Set-Cookie' in headers.keys() and checkFlowResults('System Info: Cookie', results) == False):
 		info = headers['Set-Cookie']
+		type = 'System Info: Cookie'
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+	if ('Set-Cookie-1' in headers.keys()):
+		info = headers['Set-Cookie-1']
+		type = 'System Info: Cookie'
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+	if ('Set-Cookie-2' in headers.keys()):
+		info = headers['Set-Cookie-2']
 		type = 'System Info: Cookie'
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
 	if ('content-type' in headers.keys() and headers['content-type'][:5] == 'image'):
@@ -105,3 +121,37 @@ def findJSONSection(content, section):
 		elif (line[:1] == '}'):
 			count = count - 1
 	return part
+
+def findJSONList(content, listName):
+	part = content[content.find('"'+listName+'": ['):]
+	temp = part
+	part = part[:part.find('\n')+1]
+	count = 1
+	while count > 0:
+		temp = temp[temp.find('\n')+1:]
+		line = temp[:temp.find('\n')+1]
+		part = part + line
+		line = line.strip()
+		if (line[:1] == '['):
+			count = count + 1
+		elif (line[:1] == ']'):
+			count = count - 1
+	part = part[part.find('\n')+1:]
+	items = []
+	temp = ''
+	count = 0
+	for line in part.split('\n'):
+		if (line.strip()[:1] == '{' or line.strip()[len(line)-2:] == '{'):
+			if (count == 0 and len(temp) > 0):
+				items.append(temp)
+				temp = line
+			else:
+				temp = temp + line + '\n'
+				count = count + 1
+		elif (line.strip()[:1] == '}'):
+			temp = temp + line + '\n'
+			count = count - 1
+		else:
+			temp = temp + line + '\n'
+	items.append(temp)
+	return items

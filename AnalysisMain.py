@@ -6,14 +6,16 @@ import AndroidDataPrivacy.AppFinder as AppFinder
 
 import AndroidDataPrivacy.Applications.AppDefault as AppDefault
 import AndroidDataPrivacy.Applications.AndroidNative as AndroidNative
+import AndroidDataPrivacy.Applications.Youtube as Youtube
 
-testNum = 50
-filename = "backup.txt"
+testNum = 13
+filename = "newflows.txt"
 file = open(filename, "r")
+newFlowFileName = 'newflows.txt'
 capture = file.readlines()
 flows = []
 results = []
-appList = ['AppDefault','AndroidNative']
+appList = ['AppDefault','AndroidNative','Youtube']
 
 
 def printFlows():
@@ -48,6 +50,8 @@ def checkForUseless(flow):
 		flow[0:15] == 'During handling' or \
 		flow[0:18] == 'UnicodeDecodeError' or \
 		flow[0:17] == 'Initiating HTTP/2' or \
+		flow[0:19] == 'EOFError: requested' or \
+		flow[0:54] == 'TypeError: don\'t know how to handle UnicodeDecodeError' or \
 		flow[0:flow.find('\n')].find('HEADERS frame suppressed') > -1 or \
 		flow[0:flow.find('\n')].find('HTTP/2 PRIORITY frame suppressed') > -1 or \
 		flow[0:flow.find('\n')].find('ALPN') > -1 or \
@@ -67,11 +71,24 @@ def checkForUseless(flow):
 	else:
 		return False
 
+def findNewFlows():
+	newFlowFile = open(newFlowFileName, "w")
+	newFlows = []
+	analyzeAll()
+	for flow in flows:
+		if (flow.source == ''):
+			newFlows.append(flow)
+			newFlowFile.write(flow.all)
+
+
+
 def checkFlow(flow):
 	results = []
 	flow.app = AppFinder.findApp(flow, appList)
 	print('App: ' + flow.app)
 	
+	if (flow.app == 'Youtube' and 'Youtube' in appList):
+		Youtube.checkBehavior(flow, results)
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
 		AndroidNative.checkBehavior(flow, results)
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):
@@ -86,6 +103,7 @@ def sendLogs(results):
 
 def testFlow(num):
 	print(flows[num].all)
+	#print(AppDefault.cleanEncoding(flows[num].responseContent))
 	checkFlow(flows[num])
 
 def analyzeAll():
@@ -96,6 +114,7 @@ def analyzeAll():
 		count = count + 1
 
 separateFlows()
-printFlows()
-#testFlow(testNum)
+#printFlows()
+testFlow(testNum)
 #analyzeAll()
+#findNewFlows()

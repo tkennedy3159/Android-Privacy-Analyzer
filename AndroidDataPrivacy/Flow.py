@@ -116,6 +116,10 @@ class Flow:
 				line = line[line.find(':')+1:]
 			type = line[:line.find(':')].strip()
 			value = line[line.find(':')+1:].strip()
+			num = 1
+			while (type in headers):
+				type = type + '-' + str(num)
+				num = num + 1
 			headers[type] = value
 			if (headerBlock.find('\n') > -1):
 				headerBlock = headerBlock[headerBlock.find('\n')+1:]
@@ -131,6 +135,18 @@ class Flow:
 		if ('cookie' in headers):
 			headers['Cookie'] = headers['cookie']
 			del headers['cookie']
+		if ('x-dfe-cookie' in headers):
+			headers['Cookie'] = headers['x-dfe-cookie']
+			del headers['x-dfe-cookie']
+		if ('set-cookie' in headers):
+			headers['Set-Cookie'] = headers['set-cookie']
+			del headers['set-cookie']
+		if ('set-cookie-1' in headers):
+			headers['Set-Cookie-1'] = headers['set-cookie-1']
+			del headers['set-cookie-1']
+		if ('set-cookie-2' in headers):
+			headers['Set-Cookie-2'] = headers['set-cookie-2']
+			del headers['set-cookie-2']
 		return headers
 
 	def getContent(self, part):
@@ -148,6 +164,4 @@ class Flow:
 				line = ''
 		content = part.strip()
 		return content
-
-
 

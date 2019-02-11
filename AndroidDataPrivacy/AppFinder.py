@@ -20,6 +20,15 @@ def identifyUserAgent(agent, appList):
 		for item in AndroidNative.partialUserAgents:
 			if (agent.find(item) > -1):
 				return 'AndroidNative'
+
+	if 'Youtube' in appList:
+		import AndroidDataPrivacy.Applications.Youtube as Youtube
+		if agent in Youtube.userAgents:
+			return 'Youtube'
+		for item in Youtube.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'Youtube'
+
 	return ''
 
 def identifyURL(url, appList):
@@ -30,6 +39,15 @@ def identifyURL(url, appList):
 		for item in AndroidNative.partialURLs:
 			if (url.find(item) > -1):
 				return 'AndroidNative'
+
+	if 'Youtube' in appList:
+		import AndroidDataPrivacy.Applications.Youtube as Youtube
+		if url in Youtube.urls:
+			return 'Youtube'
+		for item in Youtube.partialURLs:
+			if (url.find(item) > -1):
+				return 'Youtube'
+
 	return ''
 
 def translate(app):

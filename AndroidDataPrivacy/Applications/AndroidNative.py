@@ -12,9 +12,10 @@ urls = ['http://www.google.com/gen_204', \
 'https://android.clients.google.com/c2dm/register3', \
 'https://android.googleapis.com/checkin', \
 'https://android.clients.google.com/checkin', \
-'https://android.googleapis.com/auth']
+'https://android.googleapis.com/auth', \
+'https://www.googleapis.com/experimentsandconfigs/v1/getExperimentsAndConfigs']
 
-partialURLs = ['www.google.com/tg/fe/request?rqt', \
+partialURLs = ['www.google.com/tg/fe/request?rqt=58', \
 'https://www.googleapis.com/androidantiabuse/v1/x/create?', \
 'https://www.googleapis.com/geolocation', \
 'preloads?doc=android.autoinstalls.config.', \
@@ -22,13 +23,17 @@ partialURLs = ['www.google.com/tg/fe/request?rqt', \
 'https://app-measurement.com', \
 'https://www.googleapis.com/userlocation', \
 'https://www.googleapis.com/calendar', \
-'https://inbox.google.com/sync']
+'https://inbox.google.com/sync', \
+'https://android.clients.google.com/fdfe/selfUpdate', \
+'https://android.clients.google.com/fdfe/accountSync', \
+'https://play.googleapis.com']
 
-userAgents = ['AndroidDownloadManager', \
-'Android-GCM']
+userAgents = ['Android-GCM']
 
 partialUserAgents = ['Android-GData', \
-'Android-Gmail']
+'Android-Gmail', \
+'Android-Finsky', \
+'AndroidDownloadManager']
 
 def checkBehavior(flow, results):
 	if (flow.requestType == 'GET'):
@@ -55,16 +60,20 @@ def analyzePostRequest(flow, results):
 def checkRequestHeaders(flow, headers, results):
 	if ('User-Agent' in headers.keys()):
 		if (headers['User-Agent'][:22] == 'AndroidDownloadManager'):
-			flow.source = 'File Download'
+			if (flow.url[:36] == 'https://play.googleapis.com/download' \
+			or flow.url.find('play-apps-download') > -1):
+				flow.source = 'Play Store Application Download'
+			else:
+				flow.source = 'File Download'
 			type = 'IP Address'
 			info = flow.address
 			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
 		if (headers['User-Agent'][:10] == 'DroidGuard'):
 			flow.source = 'DroidGuard'
-		if (headers['User-Agent'][:13] == 'Android-Gmail'):
-			if (flow.source == ''):
-				flow.source = 'GMail'
-			print(AppDefault.cleanEncoding(flow.responseContent))
+		if (headers['User-Agent'][:13] == 'Android-Gmail' and flow.source == ''):
+			flow.source = 'GMail'
+		if (headers['User-Agent'][:14] == 'Android-Finsky' and flow.source == ''):
+			flow.source = 'Google Play Store'
 	
 	if ('authorization' in headers.keys()):
 		type = 'User Info: Authorization Token'
@@ -141,13 +150,22 @@ def checkGetURL(flow, results):
 			info = AppDefault.findJSONSection(flow.responseContent, 'notificationSettings')
 			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
 
+		elif (flow.responseContent.find('"kind": "calendar#events"') > -1):
+			type = 'User Info: Calendar Event'
+			events = AppDefault.findJSONList(flow.responseContent, 'items')
+			for info in events:
+				results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+
+	elif (flow.url[:27] == 'https://play.googleapis.com'):
+		flow.source = 'Google Play Store'
+
 def checkPostURL(flow, results):
 	#Weather lookup
-	if (flow.url.find('www.google.com/tg/fe/request?rqt') > -1):
+	if (flow.url.find('www.google.com/tg/fe/request?rqt=58') > -1):
 		flow.source = 'Weather Lookup'
-		type = 'Location'
-		info = 'Your location was collected'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		#type = 'Location'
+		#info = ''
+		#results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
 	
 	#Messages login
 	elif (flow.url == 'https://android.clients.google.com/c2dm/register3'):
@@ -198,6 +216,9 @@ def checkPostURL(flow, results):
 		info = info[6:]
 		info = info.strip()
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+
+	elif (flow.url[:27] == 'https://play.googleapis.com'):
+		flow.source = 'Google Play Store'
 	
 	#Android Check-in
 	elif (flow.url == 'https://android.googleapis.com/checkin' or flow.url == 'https://android.clients.google.com/checkin'):
@@ -271,6 +292,8 @@ def checkPostURL(flow, results):
 			flow.source = 'Google Quick Search Login'
 		elif (AppDefault.findFormEntry(flow.requestContent, 'app') == 'com.google.android.calendar'):
 			flow.source = 'Google Calendar Login'
+		elif (AppDefault.findFormEntry(flow.requestContent, 'app') == 'com.android.vending'):
+			flow.source = 'Google Play Store Login'
 		
 		type = 'System Info: Android ID'
 		info = AppDefault.findFormEntry(flow.requestContent, 'androidId')
@@ -298,6 +321,9 @@ def checkPostURL(flow, results):
 	
 	elif (flow.url[:29] == 'https://inbox.google.com/sync'):
 		flow.source = 'GMail Inbox Sync'
+
+	elif (flow.url == 'https://www.googleapis.com/experimentsandconfigs/v1/getExperimentsAndConfigs'):
+		flow.source = 'Experimental Features Config Sync'
 		
 
 def getURLs():
