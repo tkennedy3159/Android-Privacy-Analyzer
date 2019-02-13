@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+import logging
+import logging.handlers
+
 import AndroidDataPrivacy.Flow as Flow
 import AndroidDataPrivacy.Result as Result
 import AndroidDataPrivacy.AppFinder as AppFinder
@@ -8,14 +11,19 @@ import AndroidDataPrivacy.Applications.AppDefault as AppDefault
 import AndroidDataPrivacy.Applications.AndroidNative as AndroidNative
 import AndroidDataPrivacy.Applications.Youtube as Youtube
 
-testNum = 13
-filename = "newflows.txt"
+testNum = 2
+filename = "backup.txt"
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
 flows = []
 results = []
 appList = ['AppDefault','AndroidNative','Youtube']
+
+logger = logging.getLogger('MyLogger')
+logger.setLevel(logging.INFO)
+handler = logging.handlers.SysLogHandler(address = ('172.31.1.20',1514))
+logger.addHandler(handler)
 
 
 def printFlows():
@@ -94,9 +102,14 @@ def checkFlow(flow):
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):
 		AppDefault.checkBehavior(flow, results)
 	AppDefault.syncSource(flow, results)
-	sendLogs(results)
+	printLogs(results)
+	#sendLogs(results)
 
 def sendLogs(results):
+	for result in results:
+		logger.info(result.log)
+
+def printLogs(results):
 	print('\n')
 	for result in results:
 		print(result.log, end='\n\n')
