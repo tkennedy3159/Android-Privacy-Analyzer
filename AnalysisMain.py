@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
-import logging
-import logging.handlers
+import AndroidDataPrivacy.syslog_client as syslog_client
 
 import AndroidDataPrivacy.Flow as Flow
 import AndroidDataPrivacy.Result as Result
@@ -19,12 +18,7 @@ capture = file.readlines()
 flows = []
 results = []
 appList = ['AppDefault','AndroidNative','Youtube']
-
-logger = logging.getLogger('MyLogger')
-logger.setLevel(logging.INFO)
-handler = logging.handlers.SysLogHandler(address = ('172.31.1.20',1514))
-logger.addHandler(handler)
-
+log = syslog_client.Syslog()
 
 def printFlows():
 	counter = 0
@@ -93,7 +87,7 @@ def findNewFlows():
 def checkFlow(flow):
 	results = []
 	flow.app = AppFinder.findApp(flow, appList)
-	print('App: ' + flow.app)
+	#print('App: ' + flow.app)
 	
 	if (flow.app == 'Youtube' and 'Youtube' in appList):
 		Youtube.checkBehavior(flow, results)
@@ -107,7 +101,7 @@ def checkFlow(flow):
 
 def sendLogs(results):
 	for result in results:
-		logger.info(result.log)
+		log.send(result.log, syslog_client.Level.INFO)
 
 def printLogs(results):
 	print('\n')
@@ -122,12 +116,12 @@ def testFlow(num):
 def analyzeAll():
 	count = 0
 	for flow in flows:
-		print(count)
+		#print(count)
 		checkFlow(flow)
 		count = count + 1
 
 separateFlows()
 #printFlows()
-testFlow(testNum)
-#analyzeAll()
+#testFlow(testNum)
+analyzeAll()
 #findNewFlows()
