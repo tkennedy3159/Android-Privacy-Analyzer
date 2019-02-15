@@ -29,6 +29,14 @@ def identifyUserAgent(agent, appList):
 			if (agent.find(item) > -1):
 				return 'Youtube'
 
+	if 'CertInstaller' in appList:
+		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
+		if agent in CertInstaller.userAgents:
+			return 'CertInstaller'
+		for item in CertInstaller.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'CertInstaller'
+
 	return ''
 
 def identifyURL(url, appList):
@@ -48,12 +56,21 @@ def identifyURL(url, appList):
 			if (url.find(item) > -1):
 				return 'Youtube'
 
+	if 'CertInstaller' in appList:
+		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
+		if url in CertInstaller.urls:
+			return 'CertInstaller'
+		for item in CertInstaller.partialURLs:
+			if (url.find(item) > -1):
+				return 'CertInstaller'
+
 	return ''
 
 def translate(app):
 	if (app == 'com.google.android.apps.messaging' \
 	or app == 'com.google.android.googlequicksearchbox' \
 	or app == 'com.google.android.calendar' \
+	or app == 'com.google.android.contacts' \
 	or app == 'com.google.android.gms' \
 	or app == 'com.google.android.gm' \
 	or app == 'com.android.vending'):

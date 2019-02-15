@@ -1,3 +1,9 @@
+'''
+This code was written by Christian Stigen Larsen
+And posted online on November 14, 2018
+https://csl.name/post/python-syslog-client/
+'''
+
 import socket
 
 class Facility:

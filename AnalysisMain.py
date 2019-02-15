@@ -9,15 +9,16 @@ import AndroidDataPrivacy.AppFinder as AppFinder
 import AndroidDataPrivacy.Applications.AppDefault as AppDefault
 import AndroidDataPrivacy.Applications.AndroidNative as AndroidNative
 import AndroidDataPrivacy.Applications.Youtube as Youtube
+import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 2
-filename = "backup.txt"
+testNum = 32
+filename = "stream.txt"
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
 flows = []
 results = []
-appList = ['AppDefault','AndroidNative','Youtube']
+appList = ['AppDefault','AndroidNative','Youtube', 'CertInstaller']
 log = syslog_client.Syslog()
 
 def printFlows():
@@ -78,7 +79,9 @@ def findNewFlows():
 	newFlows = []
 	analyzeAll()
 	for flow in flows:
-		if (flow.source == ''):
+		if (flow.source == '' \
+		or flow.source == 'App Measurement' \
+		or flow.source == 'Google Play Store'):
 			newFlows.append(flow)
 			newFlowFile.write(flow.all)
 
@@ -87,8 +90,10 @@ def findNewFlows():
 def checkFlow(flow):
 	results = []
 	flow.app = AppFinder.findApp(flow, appList)
-	#print('App: ' + flow.app)
+	print('App: ' + flow.app)
 	
+	if (flow.app == 'CertInstaller' and 'CertInstaller' in appList):
+		CertInstaller.checkBehavior(flow, results)
 	if (flow.app == 'Youtube' and 'Youtube' in appList):
 		Youtube.checkBehavior(flow, results)
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
@@ -101,12 +106,18 @@ def checkFlow(flow):
 
 def sendLogs(results):
 	for result in results:
-		log.send(result.log, syslog_client.Level.INFO)
+		log.send(result.logFull, syslog_client.Level.INFO)
 
 def printLogs(results):
 	print('\n')
 	for result in results:
-		print(result.log, end='\n\n')
+		lines = result.log.split(';;;;;')
+		print('Source: ' + lines[0])
+		print('Destination: ' + lines[1])
+		print('Type: ' + lines[2])
+		print('Info: ' + lines[3])
+		#print(lines[4])
+		print()
 
 def testFlow(num):
 	print(flows[num].all)

@@ -1,11 +1,6 @@
 import AndroidDataPrivacy.Flow as Flow
 import AndroidDataPrivacy.Result as Result
 
-source = ''
-destination = ''
-type = ''
-info = ''
-
 def checkBehavior(flow, results):
 	if (flow.requestType == 'GET'):
 		analyzeGetRequestDefault(flow, results)
@@ -20,13 +15,13 @@ def analyzeGetRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
 		info = flow.address
 		type = 'IP Address'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
 def analyzePostRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
 		info = flow.address
 		type = 'IP Address'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
 def analyzeHeadRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
@@ -38,33 +33,37 @@ def checkRequestHeadersDefault(flow, headers, results):
 	if ('User-Agent' in headers.keys() and checkFlowResults('System Info: User-Agent', results) == False):
 		info = headers['User-Agent']
 		type = 'System Info: User-Agent'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 	if ('Cookie' in headers.keys() and checkFlowResults('System Info: Cookie', results) == False):
 		info = headers['Cookie']
 		type = 'System Info: Cookie'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 	if ('x-dfe-device-id' in headers.keys() and checkFlowResults('System Info: Device ID', results) == False):
 		info = headers['x-dfe-device-id']
 		type = 'System Info: Device ID'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 	if ('x-dfe-device-config-token' in headers.keys() and checkFlowResults('System Info: Config Token', results) == False):
 		info = headers['x-dfe-device-config-token']
 		type = 'System Info: Config Token'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+	if ('x-ad-id' in headers.keys()):
+		info = headers['x-ad-id']
+		type = 'User Info: Ad Tracking ID'
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
 def checkResponseHeadersDefault(flow, headers, results):
-	if ('Set-Cookie' in headers.keys() and checkFlowResults('System Info: Cookie', results) == False):
+	if ('Set-Cookie' in headers.keys()):
 		info = headers['Set-Cookie']
 		type = 'System Info: Cookie'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 	if ('Set-Cookie-1' in headers.keys()):
 		info = headers['Set-Cookie-1']
 		type = 'System Info: Cookie'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 	if ('Set-Cookie-2' in headers.keys()):
 		info = headers['Set-Cookie-2']
 		type = 'System Info: Cookie'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info))
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 	if ('content-type' in headers.keys() and headers['content-type'][:5] == 'image'):
 		flow.source = 'Picture Download'
 
