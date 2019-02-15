@@ -1,0 +1,2 @@
+- Fix c2dm/register3 POST URL in AndroidNative to check for app
+Move GMail to GSuite and change name to Gmail

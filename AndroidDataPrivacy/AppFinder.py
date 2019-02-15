@@ -9,6 +9,8 @@ def findApp(flow, appList):
 		app = identifyUserAgent(flow.requestHeaders['User-Agent'], appList)
 	if (app == ''):
 		app = identifyURL(flow.url, appList)
+	if (app == '' and 'referer' in flow.requestHeaders):
+		app = identifyReferer(flow.requestHeaders['referer'], appList)
 	app = translate(app)
 	return app
 
@@ -20,6 +22,14 @@ def identifyUserAgent(agent, appList):
 		for item in AndroidNative.partialUserAgents:
 			if (agent.find(item) > -1):
 				return 'AndroidNative'
+
+	if 'GSuite' in appList:
+		import AndroidDataPrivacy.Applications.GSuite as GSuite
+		if agent in GSuite.userAgents:
+			return 'GSuite'
+		for item in GSuite.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'GSuite'
 
 	if 'Youtube' in appList:
 		import AndroidDataPrivacy.Applications.Youtube as Youtube
@@ -48,6 +58,14 @@ def identifyURL(url, appList):
 			if (url.find(item) > -1):
 				return 'AndroidNative'
 
+	if 'GSuite' in appList:
+		import AndroidDataPrivacy.Applications.GSuite as GSuite
+		if url in GSuite.urls:
+			return 'GSuite'
+		for item in GSuite.partialURLs:
+			if (url.find(item) > -1):
+				return 'GSuite'
+
 	if 'Youtube' in appList:
 		import AndroidDataPrivacy.Applications.Youtube as Youtube
 		if url in Youtube.urls:
@@ -66,6 +84,11 @@ def identifyURL(url, appList):
 
 	return ''
 
+def identifyReferer(referer, appList):
+	if (referer == 'android-app://com.google.android.gm'):
+		return 'com.google.android.gm'
+	return ''
+
 def translate(app):
 	if (app == 'com.google.android.apps.messaging' \
 	or app == 'com.google.android.googlequicksearchbox' \
@@ -75,7 +98,10 @@ def translate(app):
 	or app == 'com.google.android.gm' \
 	or app == 'com.android.vending'):
 		app = 'AndroidNative'
+
+	elif (app == 'com.google.android.apps.tachyon' \
+	or app == 'com.google.android.apps.maps'):
+		app = 'GSuite'
 	if (app == ''):
 		app = 'AppDefault'
 	return app
-

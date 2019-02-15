@@ -10,7 +10,8 @@ urls = ['http://www.google.com/gen_204', \
 'https://android.googleapis.com/checkin', \
 'https://android.clients.google.com/checkin', \
 'https://android.googleapis.com/auth', \
-'https://android.googleapis.com/auth/devicekey']
+'https://android.googleapis.com/auth/devicekey', \
+'https://accounts.google.com/oauth/multilogin']
 
 partialURLs = ['www.google.com/tg/fe/request?rqt=58', \
 'https://www.googleapis.com/androidantiabuse/v1/x/create?', \
@@ -33,6 +34,10 @@ partialUserAgents = ['Android-GData', \
 'Android-Gmail', \
 'Android-Finsky', \
 'AndroidDownloadManager']
+
+appIds = {'1:1086610230652:android:131e4c3db28fca84':'com.google.android.googlequicksearchbox', \
+'1:493454522602:android:4877c2b5f408a8b2':'com.google.android.apps.maps', \
+'1:206908507205:android:167bd0ff59cd7d44':'com.google.android.apps.tachyon'}
 
 def checkBehavior(flow, results):
 	if (flow.requestType == 'GET'):
@@ -61,7 +66,7 @@ def checkRequestHeaders(flow, headers, results):
 		if (headers['User-Agent'][:22] == 'AndroidDownloadManager'):
 			if (flow.url[:36] == 'https://play.googleapis.com/download' \
 			or flow.url.find('play-apps-download') > -1):
-				flow.source = 'Play Store Application Download'
+				flow.source = 'Play Store Download'
 			else:
 				flow.source = 'File Download'
 			type = 'IP Address'
@@ -120,9 +125,11 @@ def checkGetURL(flow, results):
 
 	elif (flow.url.find('https://app-measurement.com') == 0):
 		flow.source = 'App Measurement'
-		type = 'System Info: App ID'
+		type = 'System Info: Application'
 		info = flow.url[flow.url.find('app/')+4:flow.url.find('?')]
 		info = AppDefault.fixUrlEncoding(info)
+		if (info in appIds.keys()):
+			info = appIds[info]
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
 		type = 'System Info: App Instance ID'
@@ -277,6 +284,17 @@ def checkPostURL(flow, results):
 	
 	elif (flow.url.find('https://app-measurement.com') == 0):
 		flow.source = 'App Measurement'
+
+		if (flow.url == 'https://app-measurement.com/a'):
+			cleaned = AppDefault.cleanEncoding(flow.requestContent)
+			print(cleaned)
+			if (cleaned.find('app_launched') > -1):
+				type = 'User Action: App Launched'
+				info = cleaned[cleaned.find('(1:')+1:]
+				info = info[:40]
+				if (info in appIds.keys()):
+					info = appIds[info]
+				results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 	
 	elif (flow.url == 'https://android.googleapis.com/auth'):
 		flow.source = 'Google Login'
@@ -337,6 +355,29 @@ def checkPostURL(flow, results):
 		type = 'System Info: Device Key'
 		info = flow.requestContent
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+
+	elif (flow.url == 'https://accounts.google.com/oauth/multilogin'):
+		flow.source == 'Google Account Login'
+		temp = flow.responseContent[flow.responseContent.find('"accounts":[')+11:]
+		temp = temp[:temp.find('}]+2')]
+		print(temp)
+		for account in temp.split('},{'):
+			print(account)
+			type = 'User Info: Name'
+			info = account[account.find('"display_name":')+16:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+
+			type = 'User Info: Email Address'
+			info = account[account.find('"display_email":')+17:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+
+			type = 'User Info: Account ID'
+			info = account[account.find('"obfuscated_id":')+17:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+
 
 def getURLs():
 	return urls

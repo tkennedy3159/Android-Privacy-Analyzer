@@ -27,7 +27,7 @@ def analyzeHeadRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
 		info = flow.address
 		type = 'IP Address'
-		results.append(Result.Result(flow.source, flow.destination, flow.source, type, info))
+		results.append(Result.Result(flow.source, flow.destination, flow.source, type, info, flow.all))
 
 def checkRequestHeadersDefault(flow, headers, results):
 	if ('User-Agent' in headers.keys() and checkFlowResults('System Info: User-Agent', results) == False):
