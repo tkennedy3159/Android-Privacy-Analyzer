@@ -13,7 +13,7 @@ import AndroidDataPrivacy.Applications.Youtube as Youtube
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
 testNum = 1
-filename = "stream.txt"
+filename = "capture.txt"
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
@@ -114,7 +114,7 @@ def checkFlow(flow):
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):
 		AppDefault.checkBehavior(flow, results)
 	AppDefault.syncSource(flow, results)
-	#printLogs(results)
+	printLogs(results)
 	sendLogs(results)
 
 def sendLogs(results):

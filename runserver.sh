@@ -15,6 +15,8 @@ do
     fi
 done
 
+rm stream.txt capture.txt
+
 #Starts mitmdump and outputs to stream.txt
 ~/mitm/mitmdump --set block_global=false --set flow_detail=3 --verbose -s mitmdecode.py > stream.txt  2>/dev/null &
 
@@ -22,7 +24,7 @@ done
 #Then empty the contents to stream
 while [ 0 -lt 1 ]
 do
-	sleep 30s
+	sleep 5s
 	cat stream.txt >> capture.txt
 	cat stream.txt >> backup.txt
 	echo "" > stream.txt
