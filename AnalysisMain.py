@@ -12,8 +12,8 @@ import AndroidDataPrivacy.Applications.GSuite as GSuite
 import AndroidDataPrivacy.Applications.Youtube as Youtube
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 1
-filename = "capture.txt"
+testNum = 43
+filename = "newflows.txt"
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
@@ -92,7 +92,10 @@ def findNewFlows():
 		if (flow.source == '' \
 		or flow.source == 'App Measurement'):
 			if (flow.all.find('[Errno -3] Temporary failure in name resolution') == -1 \
-			and flow.all.find('[Errno -2] Name or service not known') == -1):
+			and flow.all.find('[Errno -2] Name or service not known') == -1 \
+			and flow.url.find('https://www.google.com/tg/fe/request?rqt=3&bq=1') == -1 \
+			and flow.url.find('https://android.googleapis.com/auth/lookup/account_state?rt=b') == -1 \
+			and flow.url.find('https://www.googleapis.com/androidcheck/v1/attestations/adAttest?key=') == -1):
 				newFlows.append(flow)
 				newFlowFile.write(flow.all)
 
@@ -101,7 +104,7 @@ def findNewFlows():
 def checkFlow(flow):
 	results = []
 	flow.app = AppFinder.findApp(flow, appList)
-	#print('App: ' + flow.app)
+	print('App: ' + flow.app)
 	
 	if (flow.app == 'CertInstaller' and 'CertInstaller' in appList):
 		CertInstaller.checkBehavior(flow, results)
@@ -146,6 +149,6 @@ def analyzeAll():
 
 separateFlows()
 #printFlows()
-#testFlow(testNum)
-analyzeAll()
+testFlow(testNum)
+#analyzeAll()
 #findNewFlows()
