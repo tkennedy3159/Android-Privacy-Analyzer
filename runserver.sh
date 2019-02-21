@@ -20,7 +20,7 @@ rm stream.txt capture.txt
 #Starts mitmdump and outputs to stream.txt
 ~/mitm/mitmdump --set block_global=false --set flow_detail=3 --verbose -s mitmdecode.py > stream.txt  2>/dev/null &
 
-#Every 30 seconds, put stream into capture
+#Every 5 seconds, put stream into capture
 #Then empty the contents to stream
 while [ 0 -lt 1 ]
 do

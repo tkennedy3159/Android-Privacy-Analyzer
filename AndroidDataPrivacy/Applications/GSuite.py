@@ -4,7 +4,7 @@ import AndroidDataPrivacy.Applications.AppDefault as AppDefault
 
 urls = []
 
-partialURLs = []
+partialURLs = ['https://www.googleapis.com/drive/v2internal/files?']
 
 userAgents = []
 
@@ -56,7 +56,8 @@ def checkResponseHeaders(flow, headers, results):
 	return None
 
 def checkGetURL(flow, results):
-	return None
+	if (flow.url.find('https://www.googleapis.com/drive/v2internal/files?') == 0):
+		flow.source = 'Google Drive File Lookup'
 
 def checkPostURL(flow, results):
 	if (flow.url == 'https://android.clients.google.com/c2dm/register3'):

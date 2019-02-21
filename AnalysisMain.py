@@ -12,8 +12,8 @@ import AndroidDataPrivacy.Applications.GSuite as GSuite
 import AndroidDataPrivacy.Applications.Youtube as Youtube
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 43
-filename = "newflows.txt"
+testNum = 1
+filename = "capture.txt"
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
@@ -104,7 +104,7 @@ def findNewFlows():
 def checkFlow(flow):
 	results = []
 	flow.app = AppFinder.findApp(flow, appList)
-	print('App: ' + flow.app)
+	#print('App: ' + flow.app)
 	
 	if (flow.app == 'CertInstaller' and 'CertInstaller' in appList):
 		CertInstaller.checkBehavior(flow, results)
@@ -118,7 +118,7 @@ def checkFlow(flow):
 		AppDefault.checkBehavior(flow, results)
 	AppDefault.syncSource(flow, results)
 	printLogs(results)
-	sendLogs(results)
+	#sendLogs(results)
 
 def sendLogs(results):
 	for result in results:
@@ -149,6 +149,6 @@ def analyzeAll():
 
 separateFlows()
 #printFlows()
-testFlow(testNum)
-#analyzeAll()
+#testFlow(testNum)
+analyzeAll()
 #findNewFlows()

@@ -28,7 +28,8 @@ partialURLs = ['www.google.com/tg/fe/request?rqt=58', \
 'https://play.googleapis.com', \
 'https://www.googleapis.com/experimentsandconfigs/v1/getExperimentsAndConfigs', \
 'https://ssl.google-analytics.com', \
-'https://g.tenor.com/v1/categories?key=']
+'https://g.tenor.com/v1/categories?key=', \
+'https://www.google.com/m/voice-search/down?pair=']
 
 userAgents = ['Android-GCM']
 
@@ -393,6 +394,9 @@ def checkPostURL(flow, results):
 
 	elif (flow.url == 'https://www.googleapis.com/cryptauth/v1/deviceSync/getmydevices'):
 		flow.source = 'Google Account Device Lookup'
+
+	elif (flow.url.find('https://www.google.com/m/voice-search/down?pair=') == 0):
+		flow.source = 'Google Assistant'
 
 def getURLs():
 	return urls
