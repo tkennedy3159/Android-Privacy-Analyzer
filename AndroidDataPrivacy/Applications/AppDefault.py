@@ -8,6 +8,8 @@ def checkBehavior(flow, results):
 		analyzePostRequestDefault(flow, results)
 	if (flow.requestType == 'HEAD'):
 		analyzeHeadRequestDefault(flow, results)
+	if (flow.requestType == 'PUT'):
+		analyzePutRequestDefault(flow, results)
 	checkRequestHeadersDefault(flow, flow.requestHeaders, results)
 	checkResponseHeadersDefault(flow, flow.responseHeaders, results)
 
@@ -23,11 +25,33 @@ def analyzePostRequestDefault(flow, results):
 		type = 'IP Address'
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
+	if (flow.url == 'https://android.clients.google.com/c2dm/register3'):
+		flow.source = flow.requestHeaders['app'] + ' Login'
+		type = 'System Info: Device ID'
+		info = flow.requestContent
+		info = info[info.find('device:')+7:]
+		info = info[:info.find('\n')]
+		info = info.strip()
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		
+		type = 'Token'
+		info = flow.responseContent
+		info = info[info.find('token=')+6:]
+		info = info.strip()
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+	
+
 def analyzeHeadRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
 		info = flow.address
 		type = 'IP Address'
 		results.append(Result.Result(flow.source, flow.destination, flow.source, type, info, flow.all))
+
+def analyzePutRequestDefault(flow, results):
+	if (checkFlowResults('IP Address', results) == False):
+		info = flow.address
+		type = 'IP Address'
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
 def checkRequestHeadersDefault(flow, headers, results):
 	if ('User-Agent' in headers.keys() and checkFlowResults('System Info: User-Agent', results) == False):
@@ -64,8 +88,16 @@ def checkResponseHeadersDefault(flow, headers, results):
 		info = headers['Set-Cookie-2']
 		type = 'System Info: Cookie'
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
-	if ('content-type' in headers.keys() and headers['content-type'][:5] == 'image'):
-		flow.source = 'Picture Download'
+	if ('Content-Type' in headers.keys() and headers['Content-Type'][:5] == 'image'):
+		if (len(flow.source) > 0):
+			flow.source = flow.source + ' Image Download'
+		else:
+			flow.source = 'Image Download'
+	elif ('Content-Type' in headers.keys() and headers['Content-Type'][:4] == 'font'):
+		if (len(flow.source) > 0):
+			flow.source = flow.source + ' Font Download'
+		else:
+			flow.source = 'Font Download'
 
 def checkFlowResults(resultType, results):
 	for result in results:
@@ -154,3 +186,17 @@ def findJSONList(content, listName):
 			temp = temp + line + '\n'
 	items.append(temp)
 	return items
+
+def findJSONListNonSpaced(content, listName):
+	part = content[content.find('"'+listName+'":'):]
+	part = part[part.find('['):]
+	count = 1
+	index = 1
+	while count > 0:
+		if (part[index:index+1] == '['):
+			count = count + 1
+		elif (part[index:index+1] == ']'):
+			count = count - 1
+		index = index + 1
+	part = part[:index]
+	return part

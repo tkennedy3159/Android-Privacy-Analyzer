@@ -92,17 +92,16 @@ def identifyReferer(referer, appList):
 def translate(app):
 	if (app == 'com.google.android.apps.messaging' \
 	or app == 'com.google.android.googlequicksearchbox' \
-	or app == 'com.google.android.calendar' \
-	or app == 'com.google.android.contacts' \
-	or app == 'com.google.android.apps.tachyon' \
-	or app == 'com.google.android.apps.docs' \
 	or app == 'com.google.android.gms' \
 	or app == 'com.google.android.gm' \
 	or app == 'com.android.vending'):
 		app = 'AndroidNative'
 
 	elif (app == 'com.google.android.apps.tachyon' \
-	or app == 'com.google.android.apps.maps'):
+	or app == 'com.google.android.calendar' \
+	or app == 'com.google.android.contacts' \
+	or app == 'com.google.android.apps.maps' \
+	or app == 'com.google.android.apps.docs'):
 		app = 'GSuite'
 	if (app == ''):
 		app = 'AppDefault'

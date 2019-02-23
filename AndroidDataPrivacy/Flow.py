@@ -43,7 +43,7 @@ class Flow:
 			print('', end='')
 		if (self.type[0:23] == 'HTTP2 Event from server'):
 			print('', end='')
-		if (self.type[0:3] == 'GET' or self.type[0:4] == 'POST' or self.type[0:4] == 'HEAD'):
+		if (self.type[0:3] == 'GET' or self.type[0:4] == 'POST' or self.type[0:4] == 'HEAD' or self.type[0:3] == 'PUT'):
 			self.request = self.separateRequest(all)
 			self.response = self.separateResponse(all)
 			self.requestHeaders = self.getHeaders(self.request)
@@ -94,14 +94,14 @@ class Flow:
 		return type
 	
 	def separateRequest(self, all):
-		if (self.type[0:3] == 'GET' or self.type[0:4] == 'POST' or self.type[0:4] == 'HEAD'):
+		if (self.type[0:3] == 'GET' or self.type[0:4] == 'POST' or self.type[0:4] == 'HEAD' or self.type[0:3] == 'PUT'):
 			request = self.all[:self.all.find('<<')].strip()
 		else:
 			request = ''
 		return request
 
 	def separateResponse(self, all):
-		if (self.type[0:3] == 'GET' or self.type[0:4] == 'POST' or self.type[0:4] == 'HEAD'):
+		if (self.type[0:3] == 'GET' or self.type[0:4] == 'POST' or self.type[0:4] == 'HEAD' or self.type[0:3] == 'PUT'):
 			response = self.all[self.all.find('<<'):].strip()
 		else:
 			response = ''
@@ -117,9 +117,11 @@ class Flow:
 			type = line[:line.find(':')].strip()
 			value = line[line.find(':')+1:].strip()
 			num = 1
+			if type in headers:
+				type = type + '-1'
 			while (type in headers):
-				type = type + '-' + str(num)
 				num = num + 1
+				type = type[:len(type)-1] + str(num)
 			headers[type] = value
 			if (headerBlock.find('\n') > -1):
 				headerBlock = headerBlock[headerBlock.find('\n')+1:]
@@ -147,6 +149,9 @@ class Flow:
 		if ('set-cookie-2' in headers):
 			headers['Set-Cookie-2'] = headers['set-cookie-2']
 			del headers['set-cookie-2']
+		if ('content-type' in headers):
+			headers['Content-Type'] = headers['content-type']
+			del headers['content-type']
 		return headers
 
 	def getContent(self, part):

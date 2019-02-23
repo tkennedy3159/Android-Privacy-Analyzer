@@ -6,13 +6,13 @@ urls = ['http://www.google.com/gen_204', \
 'https://www.google.com/generate_204', \
 'http://connectivitycheck.gstatic.com/generate_204', \
 'https://connectivitycheck.gstatic.com/generate_204', \
-'https://android.clients.google.com/c2dm/register3', \
 'https://android.googleapis.com/checkin', \
 'https://android.clients.google.com/checkin', \
 'https://android.googleapis.com/auth', \
 'https://android.googleapis.com/auth/devicekey', \
 'https://accounts.google.com/oauth/multilogin', \
-'https://www.googleapis.com/cryptauth/v1/deviceSync/getmydevices']
+'https://www.googleapis.com/cryptauth/v1/deviceSync/getmydevices', \
+'https://www.google.com/tg/fe/request?rqt=98&bq=0']
 
 partialURLs = ['www.google.com/tg/fe/request?rqt=58', \
 'https://www.googleapis.com/androidantiabuse/v1/x/create?', \
@@ -22,22 +22,22 @@ partialURLs = ['www.google.com/tg/fe/request?rqt=58', \
 'https://app-measurement.com', \
 'https://www.googleapis.com/userlocation', \
 'https://www.googleapis.com/calendar', \
-'https://inbox.google.com/sync', \
 'https://android.clients.google.com/fdfe/selfUpdate', \
 'https://android.clients.google.com/fdfe/accountSync', \
 'https://play.googleapis.com', \
 'https://www.googleapis.com/experimentsandconfigs/v1/getExperimentsAndConfigs', \
 'https://ssl.google-analytics.com', \
 'https://g.tenor.com/v1/categories?key=', \
-'https://www.google.com/m/voice-search/down?pair=']
+'https://www.google.com/m/voice-search/down?pair=', \
+'https://www.google.com/m/voice-search/up?pair=', \
+'https://playatoms-pa.googleapis.com/v1/archiveDownload']
 
 userAgents = ['Android-GCM']
 
 partialUserAgents = ['Android-GData', \
-'Android-Gmail', \
 'Android-Finsky', \
 'AndroidDownloadManager', \
-'Cakemix']
+'Chrome']
 
 appIds = {'1:1086610230652:android:131e4c3db28fca84':'com.google.android.googlequicksearchbox', \
 '1:493454522602:android:4877c2b5f408a8b2':'com.google.android.apps.maps', \
@@ -76,17 +76,15 @@ def checkRequestHeaders(flow, headers, results):
 			type = 'IP Address'
 			info = flow.address
 			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
-		if (headers['User-Agent'][:10] == 'DroidGuard'):
+		elif (headers['User-Agent'][:10] == 'DroidGuard'):
 			flow.source = 'DroidGuard'
-		if (headers['User-Agent'][:13] == 'Android-Gmail' and flow.source == ''):
-			flow.source = 'GMail'
-		if (headers['User-Agent'][:14] == 'Android-Finsky' and flow.source == ''):
+		elif (headers['User-Agent'][:14] == 'Android-Finsky' and flow.source == ''):
 			flow.source = 'Google Play Store'
-		if (headers['User-Agent'][:7] == 'Cakemix' and flow.source == ''):
-			if (headers['x-google-drive-feature-label'][:5] == 'cello' and flow.source == ''):
-				flow.source = 'Google Drive Sync'
+		elif (headers['User-Agent'].find('Chrome') > -1):
+			if ('referer' in headers.keys() and headers['referer'].find('android-app://com.google.android.googlequicksearchbox') == 0):
+				flow.source = 'News Feed Article'
 			else:
-				flow.source = 'Google Drive'
+				flow.source = 'Google Chrome'
 	
 	if ('authorization' in headers.keys()):
 		type = 'User Info: Authorization Token'
@@ -177,6 +175,9 @@ def checkGetURL(flow, results):
 	elif (flow.url[:38] == 'https://g.tenor.com/v1/categories?key='):
 		flow.source = 'Tenor GIF Keyboard'
 
+	elif (flow.url.find('https://playatoms-pa.googleapis.com/v1/archiveDownload') == 0):
+		flow.source = 'Google Play Store Download'
+
 def checkPostURL(flow, results):
 	#Weather lookup
 	if (flow.url.find('www.google.com/tg/fe/request?rqt=58') > -1):
@@ -184,22 +185,6 @@ def checkPostURL(flow, results):
 		#type = 'Location'
 		#info = ''
 		#results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
-	
-	#Messages login
-	elif (flow.url == 'https://android.clients.google.com/c2dm/register3'):
-		flow.source = 'Messages Login'
-		type = 'System Info: Device ID'
-		info = flow.requestContent
-		info = info[info.find('device:')+7:]
-		info = info[:info.find('\n')]
-		info = info.strip()
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
-		
-		type = 'Token'
-		info = flow.responseContent
-		info = info[info.find('token=')+6:]
-		info = info.strip()
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 	
 	elif (flow.url.find('https://www.googleapis.com/androidantiabuse/v1/x/create?') > -1):
 		flow.source = 'DroidGuard'
@@ -348,9 +333,6 @@ def checkPostURL(flow, results):
 		type = 'System Info: Google Mobile Services Token'
 		info = AppDefault.findFormEntry(flow.requestContent, 'Token')
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
-	
-	elif (flow.url[:29] == 'https://inbox.google.com/sync'):
-		flow.source = 'GMail Inbox Sync'
 
 	elif (flow.url.find('https://www.googleapis.com/experimentsandconfigs/v1/getExperimentsAndConfigs') == 0):
 		flow.source = 'Experimental Features Config Sync'
@@ -395,8 +377,20 @@ def checkPostURL(flow, results):
 	elif (flow.url == 'https://www.googleapis.com/cryptauth/v1/deviceSync/getmydevices'):
 		flow.source = 'Google Account Device Lookup'
 
-	elif (flow.url.find('https://www.google.com/m/voice-search/down?pair=') == 0):
+	elif (flow.url.find('https://www.google.com/m/voice-search/down?pair=') == 0 \
+		or flow.url.find('https://www.google.com/m/voice-search/up?pair=') == 0):
 		flow.source = 'Google Assistant'
+		type = 'System Info: Assistant Pair ID'
+		info = AppDefault.findFormEntry(flow.requestContent, 'pair')
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+
+	elif (flow.url == 'https://www.google.com/tg/fe/request?rqt=98&bq=0'):
+		flow.source = 'Assistant Weather Card'
+		type = 'Location'
+		info = AppDefault.cleanEncoding(flow.responseContent)
+		info = info[info.find(' in ')+4:]
+		info = info[:info.find('\\')-1]
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
 def getURLs():
 	return urls

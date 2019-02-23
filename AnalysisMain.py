@@ -12,8 +12,8 @@ import AndroidDataPrivacy.Applications.GSuite as GSuite
 import AndroidDataPrivacy.Applications.Youtube as Youtube
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 1
-filename = "capture.txt"
+testNum = 16
+filename = "backup.txt"
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
@@ -78,6 +78,7 @@ def checkForUseless(flow):
 		flow[0:flow.find('\n')].find(': HTTP/2 connection terminated by server: error code:') > -1 or \
 		flow[0:flow.find('\n')].find('Establish TLS') > -1 or \
 		flow[0:].find('Cannot establish TLS with client') > -1 or \
+		flow[0:flow.find('\n')].find('server communication error:') > -1 or \
 		flow[0:flow.find('\n')].find('Connection killed') > -1 or \
 		flow[0:flow.find('\n')].find('NotImplementedError') > -1):
 		return True
@@ -90,7 +91,8 @@ def findNewFlows():
 	analyzeAll()
 	for flow in flows:
 		if (flow.source == '' \
-		or flow.source == 'App Measurement'):
+		or flow.source == 'App Measurement' \
+		or flow.url == 'https://play.googleapis.com/log/batch'):
 			if (flow.all.find('[Errno -3] Temporary failure in name resolution') == -1 \
 			and flow.all.find('[Errno -2] Name or service not known') == -1 \
 			and flow.url.find('https://www.google.com/tg/fe/request?rqt=3&bq=1') == -1 \
@@ -104,7 +106,7 @@ def findNewFlows():
 def checkFlow(flow):
 	results = []
 	flow.app = AppFinder.findApp(flow, appList)
-	#print('App: ' + flow.app)
+	print('App: ' + flow.app)
 	
 	if (flow.app == 'CertInstaller' and 'CertInstaller' in appList):
 		CertInstaller.checkBehavior(flow, results)
@@ -117,6 +119,7 @@ def checkFlow(flow):
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):
 		AppDefault.checkBehavior(flow, results)
 	AppDefault.syncSource(flow, results)
+	print(flow.all)
 	printLogs(results)
 	#sendLogs(results)
 
@@ -136,19 +139,19 @@ def printLogs(results):
 		print()
 
 def testFlow(num):
-	print(flows[num].all)
+	#print(flows[num].all)
 	#print(AppDefault.cleanEncoding(flows[num].requestContent))
 	checkFlow(flows[num])
 
 def analyzeAll():
 	count = 0
 	for flow in flows:
-		#print(count)
+		print(count)
 		checkFlow(flow)
 		count = count + 1
 
 separateFlows()
 #printFlows()
-#testFlow(testNum)
 analyzeAll()
+#testFlow(testNum)
 #findNewFlows()
