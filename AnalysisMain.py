@@ -12,7 +12,7 @@ import AndroidDataPrivacy.Applications.GSuite as GSuite
 import AndroidDataPrivacy.Applications.Youtube as Youtube
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 16
+testNum = 33
 filename = "backup.txt"
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'

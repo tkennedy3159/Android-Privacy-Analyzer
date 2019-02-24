@@ -30,7 +30,8 @@ partialURLs = ['www.google.com/tg/fe/request?rqt=58', \
 'https://g.tenor.com/v1/categories?key=', \
 'https://www.google.com/m/voice-search/down?pair=', \
 'https://www.google.com/m/voice-search/up?pair=', \
-'https://playatoms-pa.googleapis.com/v1/archiveDownload']
+'https://playatoms-pa.googleapis.com/v1/archiveDownload', \
+'https://www.google.com/complete/search']
 
 userAgents = ['Android-GCM']
 
@@ -41,7 +42,8 @@ partialUserAgents = ['Android-GData', \
 
 appIds = {'1:1086610230652:android:131e4c3db28fca84':'com.google.android.googlequicksearchbox', \
 '1:493454522602:android:4877c2b5f408a8b2':'com.google.android.apps.maps', \
-'1:206908507205:android:167bd0ff59cd7d44':'com.google.android.apps.tachyon'}
+'1:206908507205:android:167bd0ff59cd7d44':'com.google.android.apps.tachyon', \
+'1:531457836147:android:0fb36a1600ce546b':'com.google.android.apps.photos'}
 
 def checkBehavior(flow, results):
 	if (flow.requestType == 'GET'):
@@ -178,6 +180,9 @@ def checkGetURL(flow, results):
 	elif (flow.url.find('https://playatoms-pa.googleapis.com/v1/archiveDownload') == 0):
 		flow.source = 'Google Play Store Download'
 
+	elif (flow.url.find('https://www.google.com/complete/search') == 0):
+		flow.source = 'Google Search History Sync'
+
 def checkPostURL(flow, results):
 	#Weather lookup
 	if (flow.url.find('www.google.com/tg/fe/request?rqt=58') > -1):
@@ -284,7 +289,6 @@ def checkPostURL(flow, results):
 
 		if (flow.url == 'https://app-measurement.com/a'):
 			cleaned = AppDefault.cleanEncoding(flow.requestContent)
-			print(cleaned)
 			if (cleaned.find('app_launched') > -1):
 				type = 'User Action: App Launched'
 				info = cleaned[cleaned.find('(1:')+1:]
@@ -292,7 +296,14 @@ def checkPostURL(flow, results):
 				if (info in appIds.keys()):
 					info = appIds[info]
 				results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
-	
+			if (cleaned.find('app_open') > -1):
+				type = 'System Info: App Open'
+				info = cleaned[cleaned.find(':android:')-14:]
+				info = info[:39]
+				if (info in appIds.keys()):
+					info = appIds[info]
+				results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+
 	elif (flow.url == 'https://android.googleapis.com/auth'):
 		flow.source = 'Google Login'
 		if (AppDefault.findFormEntry(flow.requestContent, 'app') == 'com.google.android.gms'):

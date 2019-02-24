@@ -152,6 +152,9 @@ class Flow:
 		if ('content-type' in headers):
 			headers['Content-Type'] = headers['content-type']
 			del headers['content-type']
+		if ('authorization' in headers):
+			headers['Authorization'] = headers['authorization']
+			del headers['authorization']
 		return headers
 
 	def getContent(self, part):

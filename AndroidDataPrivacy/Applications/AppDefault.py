@@ -74,6 +74,10 @@ def checkRequestHeadersDefault(flow, headers, results):
 		info = headers['x-ad-id']
 		type = 'User Info: Ad Tracking ID'
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+	if ('Authorization' in headers.keys()):
+		info = headers['Authorization']
+		type = 'Authorization Token'
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
 def checkResponseHeadersDefault(flow, headers, results):
 	if ('Set-Cookie' in headers.keys()):
@@ -88,7 +92,7 @@ def checkResponseHeadersDefault(flow, headers, results):
 		info = headers['Set-Cookie-2']
 		type = 'System Info: Cookie'
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
-	if ('Content-Type' in headers.keys() and headers['Content-Type'][:5] == 'image'):
+	if ('Content-Type' in headers.keys() and headers['Content-Type'][:5] == 'image' and flow.url.find('app-measurement.com') < 0):
 		if (len(flow.source) > 0):
 			flow.source = flow.source + ' Image Download'
 		else:
@@ -133,7 +137,8 @@ def fixUrlEncoding(input):
 
 def findFormEntry(content, entry):
 	line = content[content.find(entry+':'):]
-	line = line[:line.find('\n')]
+	if (line.find('\n') > -1):
+		line = line[:line.find('\n')]
 	answer = line[len(entry)+1:].strip()
 	return answer
 

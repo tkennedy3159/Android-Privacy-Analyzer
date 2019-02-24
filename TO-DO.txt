@@ -2,3 +2,5 @@
 - Edit result creation to take in flow instead of multiple pieces of flow
 - Decypher Google Docs commands
 - Figure out why Google Sheets and Slides appear offline
+- Check to see if app-measurement sends app_open when in background
+- Photos sharing and assistant
