@@ -53,6 +53,9 @@ def analyzePutRequestDefault(flow, results):
 		type = 'IP Address'
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
+def analyzeDeleteRequestDefault(flow, results):
+	return None
+
 def checkRequestHeadersDefault(flow, headers, results):
 	if ('User-Agent' in headers.keys() and checkFlowResults('System Info: User-Agent', results) == False):
 		info = headers['User-Agent']
@@ -78,6 +81,10 @@ def checkRequestHeadersDefault(flow, headers, results):
 		info = headers['Authorization']
 		type = 'Authorization Token'
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+	if ('x-device-boot-count' in headers.keys()):
+		info = headers['x-device-boot-count']
+		type = 'System Info: Boot Count'
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
 def checkResponseHeadersDefault(flow, headers, results):
 	if ('Set-Cookie' in headers.keys()):
@@ -93,10 +100,11 @@ def checkResponseHeadersDefault(flow, headers, results):
 		type = 'System Info: Cookie'
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 	if ('Content-Type' in headers.keys() and headers['Content-Type'][:5] == 'image' and flow.url.find('app-measurement.com') < 0):
-		if (len(flow.source) > 0):
-			flow.source = flow.source + ' Image Download'
-		else:
-			flow.source = 'Image Download'
+		if (flow.source != 'Google Analytics'):
+			if (len(flow.source) > 0):
+				flow.source = flow.source + ' Image Download'
+			else:
+				flow.source = 'Image Download'
 	elif ('Content-Type' in headers.keys() and headers['Content-Type'][:4] == 'font'):
 		if (len(flow.source) > 0):
 			flow.source = flow.source + ' Font Download'
@@ -198,10 +206,13 @@ def findJSONListNonSpaced(content, listName):
 	count = 1
 	index = 1
 	while count > 0:
-		if (part[index:index+1] == '['):
-			count = count + 1
-		elif (part[index:index+1] == ']'):
-			count = count - 1
-		index = index + 1
+		if (part[index:index+9] == '(cut off)'):
+			count = 0
+		else:
+			if (part[index:index+1] == '['):
+				count = count + 1
+			elif (part[index:index+1] == ']'):
+				count = count - 1
+			index = index + 1
 	part = part[:index]
 	return part

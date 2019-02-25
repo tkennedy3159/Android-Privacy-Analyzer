@@ -3,4 +3,6 @@
 - Decypher Google Docs commands
 - Figure out why Google Sheets and Slides appear offline
 - Check to see if app-measurement sends app_open when in background
-- Photos sharing and assistant
+- Photos check if POST with lots of encoding comes when viewing photos
+- Drive check to see if openDrive is true on "Google Drive File Lookup" sources
+- Figure out why Google Maps is offline

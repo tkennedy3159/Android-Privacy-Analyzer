@@ -8,6 +8,7 @@ partialURLs = ['https://www.googleapis.com/drive/v2internal/files', \
 'https://inbox.google.com/sync', \
 'https://mail.google.com/mail', \
 'https://www.googleapis.com/discussions/v1', \
+'https://www.googleapis.com/calendar', \
 'https://docs.google.com/document', \
 'https://docs.google.com/spreadsheets', \
 'https://photosdata-pa.googleapis.com', \
@@ -17,7 +18,8 @@ userAgents = []
 
 partialUserAgents = ['Android-Gmail', \
 'Cakemix', \
-'com.google.android.apps.photos']
+'com.google.android.apps.photos', \
+'com.google.android.apps.maps']
 
 appIds = {'1:493454522602:android:4877c2b5f408a8b2':'com.google.android.apps.maps', \
 '1:206908507205:android:167bd0ff59cd7d44':'com.google.android.apps.tachyon'}
@@ -31,6 +33,8 @@ def checkBehavior(flow, results):
 		analyzeHeadRequest(flow, results)
 	if (flow.requestType == 'PUT'):
 		analyzePutRequest(flow, results)
+	if (flow.requestType == 'DELETE'):
+		analyzeDeleteRequest(flow, results)
 
 def analyzeGetRequest(flow, results):
 	checkGetURL(flow, results)
@@ -64,6 +68,14 @@ def analyzePutRequest(flow, results):
 	AppDefault.checkResponseHeadersDefault(flow, flow.responseHeaders, results)
 	AppDefault.analyzePutRequestDefault(flow, results)
 
+def analyzeDeleteRequest(flow, results):
+	checkDeleteURL(flow, results)
+	checkRequestHeaders(flow, flow.requestHeaders, results)
+	AppDefault.checkRequestHeadersDefault(flow, flow.requestHeaders, results)
+	checkResponseHeaders(flow, flow.responseHeaders, results)
+	AppDefault.checkResponseHeadersDefault(flow, flow.responseHeaders, results)
+	AppDefault.analyzeDeleteRequestDefault(flow, results)
+
 def checkRequestHeaders(flow, headers, results):
 	if ('referer' in headers.keys()):
 		if (headers['referer'] == 'android-app://com.google.android.gm'):
@@ -86,15 +98,25 @@ def checkRequestHeaders(flow, headers, results):
 		elif (headers['User-Agent'][:30] == 'com.google.android.apps.photos' and flow.source == ''):
 			flow.source = 'Google Photos'
 
+		elif (headers['User-Agent'].find('com.google.android.calendar') > -1 and flow.source == ''):
+			flow.source = 'Google Calendar'
+
+		elif (headers['User-Agent'].find('com.google.android.apps.maps') > -1 and flow.source == ''):
+			flow.source = 'Google Maps'
+
 def checkResponseHeaders(flow, headers, results):
 	if ('Content-Type' in headers.keys() and headers['Content-Type'][:5] == 'image'):
 		if ('User-Agent' in flow.requestHeaders.keys() and flow.requestHeaders['User-Agent'][:30] == 'com.google.android.apps.photos'):
 			flow.source = 'Google Photos'
-			if (flow.url.find('https://ap2.googleusercontent.com') == 0):
+			if (flow.url.find('https://ap2.googleusercontent.com') == 0 or \
+				flow.url.find('https://lh3.googleusercontent.com/a') == 0):
 				if (AppDefault.findFormEntry(flow.responseContent, 'Size').strip() == '246 x 328 px' or \
-					AppDefault.findFormEntry(flow.responseContent, 'Size').strip() == '38 x 50 px'):
+					AppDefault.findFormEntry(flow.responseContent, 'Size').strip() == '38 x 50 px' or \
+					AppDefault.findFormEntry(flow.responseContent, 'Size').strip() == '50 x 38 px' or \
+					AppDefault.findFormEntry(flow.responseContent, 'Size').strip() == '28 x 50 px' or \
+					AppDefault.findFormEntry(flow.responseContent, 'Size').strip() == '328 x 328 px'):
 					flow.source = 'Google Photos Thumbnail'
-				type = 'Possible User Action'
+				type = 'User Action'
 				picName = flow.responseHeaders['content-disposition'][flow.responseHeaders['content-disposition'].find('filename=')+10:]
 				picName = picName[:picName.find('"')]
 				info = 'Image Viewed: ' + picName
@@ -146,6 +168,25 @@ def checkGetURL(flow, results):
 				name = flow.responseContent[flow.responseContent.find('"t":"')+5:]
 				name = name[:name.find('"')]
 				info = info + ' (' + name + ')'
+			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+
+	elif (flow.url.find('https://www.googleapis.com/calendar') == 0):
+		flow.source = 'Google Calendar'
+		
+		if (flow.responseContent.find('notificationSettings') > -1):
+			type = 'User Info: Notification Settings'
+			info = AppDefault.findJSONSection(flow.responseContent, 'notificationSettings')
+			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+
+		elif (flow.responseContent.find('"kind": "calendar#events"') > -1 or flow.url.find('/events') > -1):
+			type = 'User Info: Calendar Events'
+			info = AppDefault.findJSONListNonSpaced(flow.responseContent, 'items')
+			if (len(info) > 2):
+				results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+
+		elif (flow.url.find('/habits') > -1):
+			type = 'User Info: Habits'
+			info = flow.responseContent
 			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
 def checkPostURL(flow, results):
@@ -227,12 +268,36 @@ def checkPostURL(flow, results):
 
 	elif (flow.url.find('https://photosdata-pa.googleapis.com') == 0):
 		flow.source = 'Google Photos'
+		if (len(flow.requestContent.split('\n')) == 4):
+			lines = flow.requestContent.split('\n')
+			if (lines[0].strip() == '1 {' and lines[1].strip()[:2] == '1:' and lines[2].strip() == '}' and lines[3].strip()[:2] == '2:'):
+				type = 'User Action'
+				info = 'Create New Share: ' + lines[3].strip()[3:]
+				results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
 	elif (flow.url.find('https://photos.googleapis.com/data/upload') == 0):
 		flow.source = 'Google Photos Upload'
 		type = 'User Action'
 		info = 'Photo Uploaded: ' + flow.requestHeaders['x-goog-upload-file-name']
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+
+	elif (flow.url == 'https://www.googleapis.com/datamixer/v1/batchfetch'):
+		if (len(flow.requestContent.split('\n')) == 22 and len(flow.requestContent.split('\n')[12].strip()[3:]) > 0):
+			type = 'User Action'
+			info = 'Contact Search: ' + flow.requestContent.split('\n')[12].strip()[3:]
+			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+
+	elif (flow.url.find('https://www.googleapis.com/calendar') == 0):
+		flow.source = 'Google Calendar'
+		if (flow.url.find('/events') > -1):
+			type = 'User Action: Event Creation/Update'
+			info = flow.requestContent
+			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		elif (flow.url.find('/habits') > -1):
+			type = 'User Action: Habit Creation/Update'
+			info = flow.requestContent
+			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+
 
 def checkHeadURL(flow, results):
 	return None
@@ -263,3 +328,12 @@ def checkPutURL(flow, results):
 
 	elif (flow.url.find('https://photos.googleapis.com/data/upload') == 0):
 		flow.source = 'Google Photos Upload'
+
+def checkDeleteURL(flow, results):
+	if (flow.url.find('https://www.googleapis.com/calendar/v3internal/calendars') == 0):
+		flow.source = 'Google Calendar'
+		type = 'User Action'
+		info = flow.url[flow.url.find('/events/')+8:]
+		info = info[:info.find('?')]
+		info = 'Event Deletion: ' + info
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))

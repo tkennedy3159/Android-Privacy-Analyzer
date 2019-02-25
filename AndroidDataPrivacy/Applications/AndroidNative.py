@@ -21,7 +21,6 @@ partialURLs = ['www.google.com/tg/fe/request?rqt=58', \
 'https://www.google.com/complete/search', \
 'https://app-measurement.com', \
 'https://www.googleapis.com/userlocation', \
-'https://www.googleapis.com/calendar', \
 'https://android.clients.google.com/fdfe/selfUpdate', \
 'https://android.clients.google.com/fdfe/accountSync', \
 'https://play.googleapis.com', \
@@ -38,7 +37,8 @@ userAgents = ['Android-GCM']
 partialUserAgents = ['Android-GData', \
 'Android-Finsky', \
 'AndroidDownloadManager', \
-'Chrome']
+'Chrome', \
+'GoogleMobile']
 
 appIds = {'1:1086610230652:android:131e4c3db28fca84':'com.google.android.googlequicksearchbox', \
 '1:493454522602:android:4877c2b5f408a8b2':'com.google.android.apps.maps', \
@@ -156,20 +156,6 @@ def checkGetURL(flow, results):
 		type = 'System Info: Build'
 		info = AppDefault.findFormEntry(flow.requestContent, 'platform')
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
-	
-	elif (flow.url.find('https://www.googleapis.com/calendar') == 0):
-		flow.source = 'Google Calendar'
-		
-		if (flow.responseContent.find('notificationSettings') > -1):
-			type = 'User Info: Notification Settings'
-			info = AppDefault.findJSONSection(flow.responseContent, 'notificationSettings')
-			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
-
-		elif (flow.responseContent.find('"kind": "calendar#events"') > -1):
-			type = 'User Info: Calendar Event'
-			events = AppDefault.findJSONList(flow.responseContent, 'items')
-			for info in events:
-				results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
 	elif (flow.url[:27] == 'https://play.googleapis.com'):
 		flow.source = 'Google Play Store'
@@ -351,10 +337,15 @@ def checkPostURL(flow, results):
 	elif (flow.url.find('https://ssl.google-analytics.com') == 0):
 		flow.source = 'Google Analytics'
 
-		if (AppDefault.findFormEntry(flow.requestContent, 'cd') == 'com.google.android.apps.contacts.activities.PeopleActivity' \
+		if (AppDefault.findFormEntry(flow.requestContent, 'cd').find('com.google.android.apps.contacts') > -1 \
 			and AppDefault.findFormEntry(flow.requestContent, 't') == 'screenview'):
-			type = 'User Action: View Contact'
-			info = AppDefault.findFormEntry(flow.requestContent, 'cid')
+			type = 'User Action'
+			info = 'Viewing Contacts'
+			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+
+		elif (AppDefault.findFormEntry(flow.requestContent, 'utc') == 'Create reminder'):
+			type = 'User Action'
+			info = 'Google Calendar Reminder Created'
 			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
 	elif (flow.url == 'https://android.googleapis.com/auth/devicekey'):
@@ -401,6 +392,12 @@ def checkPostURL(flow, results):
 		info = AppDefault.cleanEncoding(flow.responseContent)
 		info = info[info.find(' in ')+4:]
 		info = info[:info.find('\\')-1]
+		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+
+	elif (flow.url == 'https://www.google.com/loc/m/api'):
+		flow.source = 'Google Location API'
+		type = 'Location'
+		info = 'Location'
 		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
 
 def getURLs():

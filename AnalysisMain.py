@@ -12,7 +12,7 @@ import AndroidDataPrivacy.Applications.GSuite as GSuite
 import AndroidDataPrivacy.Applications.Youtube as Youtube
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 33
+testNum = 1
 filename = "backup.txt"
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
@@ -40,7 +40,7 @@ def separateFlows():
 		if (count > 0):
 			flow = flow + line
 			count = count - 1
-		elif (line[0:1] == ' ' or line[1:2] == ''):
+		elif (line[0:1] == ' ' or line[1:2] == '' or line[:21] == 'cd=com.google.android'):
 			flow = flow + line
 		elif (line[0:15] == 'generic profile'):
 			flow = flow + line
@@ -51,6 +51,8 @@ def separateFlows():
 			else:
 				flows.append(Flow.Flow(flow))
 				flow = line
+	if (len(flow.strip()) > 1 and checkForUseless(flow) == False):
+		flows.append(Flow.Flow(flow))
 
 def checkForUseless(flow):
 	if (flow[0:14] == 'Loading script' or \
@@ -102,7 +104,6 @@ def findNewFlows():
 				newFlowFile.write(flow.all)
 
 
-
 def checkFlow(flow):
 	results = []
 	flow.app = AppFinder.findApp(flow, appList)
@@ -140,7 +141,7 @@ def printLogs(results):
 
 def testFlow(num):
 	#print(flows[num].all)
-	#print(AppDefault.cleanEncoding(flows[num].requestContent))
+	#print(AppDefault.cleanEncoding(flows[num].responseContent))
 	checkFlow(flows[num])
 
 def analyzeAll():

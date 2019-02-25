@@ -43,7 +43,7 @@ class Flow:
 			print('', end='')
 		if (self.type[0:23] == 'HTTP2 Event from server'):
 			print('', end='')
-		if (self.type[0:3] == 'GET' or self.type[0:4] == 'POST' or self.type[0:4] == 'HEAD' or self.type[0:3] == 'PUT'):
+		if (self.type[0:3] == 'GET' or self.type[0:4] == 'POST' or self.type[0:4] == 'HEAD' or self.type[0:3] == 'PUT' or self.type[0:6] == 'DELETE'):
 			self.request = self.separateRequest(all)
 			self.response = self.separateResponse(all)
 			self.requestHeaders = self.getHeaders(self.request)
@@ -94,14 +94,14 @@ class Flow:
 		return type
 	
 	def separateRequest(self, all):
-		if (self.type[0:3] == 'GET' or self.type[0:4] == 'POST' or self.type[0:4] == 'HEAD' or self.type[0:3] == 'PUT'):
+		if (self.type[0:3] == 'GET' or self.type[0:4] == 'POST' or self.type[0:4] == 'HEAD' or self.type[0:3] == 'PUT' or self.type[0:6] == 'DELETE'):
 			request = self.all[:self.all.find('<<')].strip()
 		else:
 			request = ''
 		return request
 
 	def separateResponse(self, all):
-		if (self.type[0:3] == 'GET' or self.type[0:4] == 'POST' or self.type[0:4] == 'HEAD' or self.type[0:3] == 'PUT'):
+		if (self.type[0:3] == 'GET' or self.type[0:4] == 'POST' or self.type[0:4] == 'HEAD' or self.type[0:3] == 'PUT' or self.type[0:6] == 'DELETE'):
 			response = self.all[self.all.find('<<'):].strip()
 		else:
 			response = ''
