@@ -17,13 +17,13 @@ def analyzeGetRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
 		info = flow.address
 		type = 'IP Address'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 
 def analyzePostRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
 		info = flow.address
 		type = 'IP Address'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 
 	if (flow.url == 'https://android.clients.google.com/c2dm/register3'):
 		flow.source = flow.requestHeaders['app'] + ' Login'
@@ -32,13 +32,13 @@ def analyzePostRequestDefault(flow, results):
 		info = info[info.find('device:')+7:]
 		info = info[:info.find('\n')]
 		info = info.strip()
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 		
 		type = 'Token'
 		info = flow.responseContent
 		info = info[info.find('token=')+6:]
 		info = info.strip()
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 	
 
 def analyzeHeadRequestDefault(flow, results):
@@ -51,7 +51,7 @@ def analyzePutRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
 		info = flow.address
 		type = 'IP Address'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 
 def analyzeDeleteRequestDefault(flow, results):
 	return None
@@ -60,45 +60,50 @@ def checkRequestHeadersDefault(flow, headers, results):
 	if ('User-Agent' in headers.keys() and checkFlowResults('System Info: User-Agent', results) == False):
 		info = headers['User-Agent']
 		type = 'System Info: User-Agent'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 	if ('Cookie' in headers.keys() and checkFlowResults('System Info: Cookie', results) == False):
 		info = headers['Cookie']
 		type = 'System Info: Cookie'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 	if ('x-dfe-device-id' in headers.keys() and checkFlowResults('System Info: Device ID', results) == False):
 		info = headers['x-dfe-device-id']
 		type = 'System Info: Device ID'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 	if ('x-dfe-device-config-token' in headers.keys() and checkFlowResults('System Info: Config Token', results) == False):
 		info = headers['x-dfe-device-config-token']
 		type = 'System Info: Config Token'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 	if ('x-ad-id' in headers.keys()):
 		info = headers['x-ad-id']
 		type = 'User Info: Ad Tracking ID'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 	if ('Authorization' in headers.keys()):
 		info = headers['Authorization']
-		type = 'Authorization Token'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		type = 'Authorization'
+		results.append(Result.Result(flow, type, info))
 	if ('x-device-boot-count' in headers.keys()):
 		info = headers['x-device-boot-count']
 		type = 'System Info: Boot Count'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
+	if ('x-device-id' in headers.keys()):
+		info = headers['x-device-id']
+		type = 'System Info: Device ID'
+		results.append(Result.Result(flow, type, info))
+
 
 def checkResponseHeadersDefault(flow, headers, results):
 	if ('Set-Cookie' in headers.keys()):
 		info = headers['Set-Cookie']
 		type = 'System Info: Cookie'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 	if ('Set-Cookie-1' in headers.keys()):
 		info = headers['Set-Cookie-1']
 		type = 'System Info: Cookie'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 	if ('Set-Cookie-2' in headers.keys()):
 		info = headers['Set-Cookie-2']
 		type = 'System Info: Cookie'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 	if ('Content-Type' in headers.keys() and headers['Content-Type'][:5] == 'image' and flow.url.find('app-measurement.com') < 0):
 		if (flow.source != 'Google Analytics'):
 			if (len(flow.source) > 0):

@@ -12,7 +12,8 @@ urls = ['http://www.google.com/gen_204', \
 'https://android.googleapis.com/auth/devicekey', \
 'https://accounts.google.com/oauth/multilogin', \
 'https://www.googleapis.com/cryptauth/v1/deviceSync/getmydevices', \
-'https://www.google.com/tg/fe/request?rqt=98&bq=0']
+'https://www.google.com/tg/fe/request?rqt=98&bq=0', \
+'https://clients3.google.com/generate_204']
 
 partialURLs = ['www.google.com/tg/fe/request?rqt=58', \
 'https://www.googleapis.com/androidantiabuse/v1/x/create?', \
@@ -30,7 +31,9 @@ partialURLs = ['www.google.com/tg/fe/request?rqt=58', \
 'https://www.google.com/m/voice-search/down?pair=', \
 'https://www.google.com/m/voice-search/up?pair=', \
 'https://playatoms-pa.googleapis.com/v1/archiveDownload', \
-'https://www.google.com/complete/search']
+'https://www.google.com/complete/search', \
+'https://mobilenetworkscoring-pa.googleapis.com/v1/GetWifiQuality', \
+'https://www.googleapis.com/plus/v2whitelisted/people/me']
 
 userAgents = ['Android-GCM']
 
@@ -38,7 +41,8 @@ partialUserAgents = ['Android-GData', \
 'Android-Finsky', \
 'AndroidDownloadManager', \
 'Chrome', \
-'GoogleMobile']
+'GoogleMobile', \
+'Crashlytics']
 
 appIds = {'1:1086610230652:android:131e4c3db28fca84':'com.google.android.googlequicksearchbox', \
 '1:493454522602:android:4877c2b5f408a8b2':'com.google.android.apps.maps', \
@@ -77,7 +81,7 @@ def checkRequestHeaders(flow, headers, results):
 				flow.source = 'File Download'
 			type = 'IP Address'
 			info = flow.address
-			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+			results.append(Result.Result(flow, type, info))
 		elif (headers['User-Agent'][:10] == 'DroidGuard'):
 			flow.source = 'DroidGuard'
 		elif (headers['User-Agent'][:14] == 'Android-Finsky' and flow.source == ''):
@@ -87,11 +91,28 @@ def checkRequestHeaders(flow, headers, results):
 				flow.source = 'News Feed Article'
 			else:
 				flow.source = 'Google Chrome'
+		elif (headers['User-Agent'][:11] == 'Crashlytics'):
+			flow.source = 'Crashlytics'
 	
 	if ('authorization' in headers.keys()):
 		type = 'User Info: Authorization Token'
 		info = flow.requestHeaders['authorization']
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
+
+	if ('X-CRASHLYTICS-DEVICE-MODEL' in headers.keys()):
+		type = 'System Info: Model'
+		info = headers['X-CRASHLYTICS-DEVICE-MODEL']
+		results.append(Result.Result(flow, type, info))
+
+	if ('X-CRASHLYTICS-OS-DISPLAY-VERSION' in headers.keys()):
+		type = 'System Info: OS Version'
+		info = headers['X-CRASHLYTICS-OS-DISPLAY-VERSION']
+		results.append(Result.Result(flow, type, info))
+
+	if ('X-CRASHLYTICS-INSTALLATION-ID' in headers.keys()):
+		type = 'System Info: Crashlytics ID'
+		info = headers['X-CRASHLYTICS-INSTALLATION-ID']
+		results.append(Result.Result(flow, type, info))
 
 def checkResponseHeaders(flow, headers, results):
 	return None
@@ -102,7 +123,7 @@ def checkGetURL(flow, results):
 		flow.source = 'WiFi Connection'
 		type = 'System Status'
 		info = 'WiFi connection active'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 	
 	#Google Ping
 	elif (flow.url == 'https://www.google.com/generate_204'):
@@ -114,11 +135,11 @@ def checkGetURL(flow, results):
 		flow.source = 'Google Account Data Sync'
 		type = 'System Info: GCM ID'
 		info = flow.requestContent[flow.requestContent.find('gcm://?regId=')+13:flow.requestContent.find('&androidId=')]
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 		
 		type = 'System Info: Android ID'
 		info = flow.requestContent[flow.requestContent.find('&androidId=')+11:flow.requestContent.find('\n')]
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 	
 	elif (flow.url.find('preloads?doc=android.autoinstalls.config.') > -1):
 		flow.source = 'App Preloader'
@@ -127,7 +148,7 @@ def checkGetURL(flow, results):
 		info = info[info.find('build_fingerprint:')+19:]
 		info = info[:info.find('\n')]
 		info = info.strip()
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 
 	elif (flow.url.find('https://www.google.com/complete/search') > -1):
 		flow.source = 'Google Search History Sync'
@@ -139,23 +160,29 @@ def checkGetURL(flow, results):
 		info = AppDefault.fixUrlEncoding(info)
 		if (info in appIds.keys()):
 			info = appIds[info]
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 
 		type = 'System Info: App Instance ID'
 		info = flow.requestContent
 		info = info[info.find('app_instance_id:')+17:]
 		info = info[:info.find('\n')].strip()
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 	
 	elif (flow.url.find('https://www.googleapis.com/userlocation/v1/settings') == 0):
 		flow.source = 'Android Location Settings Sync'
 		type = 'System Info: Model'
 		info = AppDefault.findFormEntry(flow.requestContent, 'brand') + ' ' + AppDefault.findFormEntry(flow.requestContent, 'model')
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 		
 		type = 'System Info: Build'
 		info = AppDefault.findFormEntry(flow.requestContent, 'platform')
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.googleapis.com/userlocation/v1/reports') == 0):
+		flow.source = 'Location Report'
+		type = 'Location Info'
+		info = flow.requestContent
+		results.append(Result.Result(flow, type, info))
 
 	elif (flow.url[:27] == 'https://play.googleapis.com'):
 		flow.source = 'Google Play Store'
@@ -169,13 +196,19 @@ def checkGetURL(flow, results):
 	elif (flow.url.find('https://www.google.com/complete/search') == 0):
 		flow.source = 'Google Search History Sync'
 
+	elif (flow.url == 'https://clients3.google.com/generate_204'):
+		flow.source = 'Google Connectivity Check'
+
+	elif (flow.url.find('https://www.googleapis.com/plus/v2whitelisted/people/me') == 0):
+		flow.source = 'Google Friends Lookup'
+
 def checkPostURL(flow, results):
 	#Weather lookup
 	if (flow.url.find('www.google.com/tg/fe/request?rqt=58') > -1):
 		flow.source = 'Weather Lookup'
 		#type = 'Location'
 		#info = ''
-		#results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		#results.append(Result.Result(flow, type, info))
 	
 	elif (flow.url.find('https://www.googleapis.com/androidantiabuse/v1/x/create?') > -1):
 		flow.source = 'DroidGuard'
@@ -185,7 +218,7 @@ def checkPostURL(flow, results):
 		info = AppDefault.cleanEncoding(info)
 		info = info.strip()
 		info = info[10:]
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 		
 		type = 'System Info: Brand'
 		info = flow.requestContent[flow.requestContent.find('BRAND'):]
@@ -193,7 +226,7 @@ def checkPostURL(flow, results):
 		info = AppDefault.cleanEncoding(info)
 		info = info[5:]
 		info = info.strip()
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 		
 		type = 'System Info: Model'
 		info = flow.requestContent[flow.requestContent.find('MODEL'):]
@@ -201,7 +234,7 @@ def checkPostURL(flow, results):
 		info = AppDefault.cleanEncoding(info)
 		info = info[5:]
 		info = info.strip()
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 		
 		type = 'System Info: Serial Number'
 		info = flow.requestContent[flow.requestContent.find('SERIAL'):]
@@ -209,7 +242,7 @@ def checkPostURL(flow, results):
 		info = AppDefault.cleanEncoding(info)
 		info = info[6:]
 		info = info.strip()
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 
 	elif (flow.url[:27] == 'https://play.googleapis.com'):
 		flow.source = 'Google Play Store'
@@ -225,7 +258,7 @@ def checkPostURL(flow, results):
 			if (temp == 'true'):
 				type = 'System Status: Memory Monitoring'
 				info = 'Android memory is being monitored'
-				results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+				results.append(Result.Result(flow, type, info))
 		if (flow.responseContent.find('adwords:enable_primes_network_monitoring') > -1):
 			temp = flow.responseContent[flow.responseContent.find('1: adwords:enable_primes_network_monitoring'):]
 			temp = temp[temp.find('2:')+3:]
@@ -233,7 +266,7 @@ def checkPostURL(flow, results):
 			if (temp == 'true'):
 				type = 'System Status: Network Monitoring'
 				info = 'Android network activity is being monitored'
-				results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+				results.append(Result.Result(flow, type, info))
 		if (flow.responseContent.find('adwords:enable_primes_timing_monitoring') > -1):
 			temp = flow.responseContent[flow.responseContent.find('1: adwords:enable_primes_timing_monitoring'):]
 			temp = temp[temp.find('2:')+3:]
@@ -241,7 +274,7 @@ def checkPostURL(flow, results):
 			if (temp == 'true'):
 				type = 'System Status: Timing Monitoring'
 				info = 'Android timing is being monitored'
-				results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+				results.append(Result.Result(flow, type, info))
 		if (flow.responseContent.find('adwords:enable_silent_feedback') > -1):
 			temp = flow.responseContent[flow.responseContent.find('1: adwords:enable_silent_feedback'):]
 			temp = temp[temp.find('2:')+3:]
@@ -249,7 +282,7 @@ def checkPostURL(flow, results):
 			if (temp == 'true'):
 				type = 'System Status: Silent Feedback'
 				info = 'Silent feedback is enabled'
-				results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+				results.append(Result.Result(flow, type, info))
 
 	#Location pull
 	elif (flow.url.find('https://www.googleapis.com/geolocation') > -1):
@@ -258,17 +291,17 @@ def checkPostURL(flow, results):
 		info = flow.requestContent
 		info = info[info.find('"cellTowers": ['):]
 		info = info[:info.find(']')+1]
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 		
 		type = 'Location: WiFi Access Points'
 		info = flow.requestContent
 		info = info[info.find('"wifiAccessPoints": ['):]
 		info = info[:info.find(']')+1]
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 		
 		type = 'Location: Request Key'
 		info = flow.url[flow.url.find('key=')+4:]
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 	
 	elif (flow.url.find('https://app-measurement.com') == 0):
 		flow.source = 'App Measurement'
@@ -281,14 +314,14 @@ def checkPostURL(flow, results):
 				info = info[:40]
 				if (info in appIds.keys()):
 					info = appIds[info]
-				results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+				results.append(Result.Result(flow, type, info))
 			if (cleaned.find('app_open') > -1):
 				type = 'System Info: App Open'
 				info = cleaned[cleaned.find(':android:')-14:]
 				info = info[:39]
 				if (info in appIds.keys()):
 					info = appIds[info]
-				results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+				results.append(Result.Result(flow, type, info))
 
 	elif (flow.url == 'https://android.googleapis.com/auth'):
 		flow.source = 'Google Login'
@@ -309,27 +342,27 @@ def checkPostURL(flow, results):
 		
 		type = 'System Info: Android ID'
 		info = AppDefault.findFormEntry(flow.requestContent, 'androidId')
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 		
 		type = 'System Info: Country'
 		info = AppDefault.findFormEntry(flow.requestContent, 'device_country')
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 		
 		type = 'System Info: Language'
 		info = AppDefault.findFormEntry(flow.requestContent, 'lang')
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 		
 		type = 'User Info: Email Address'
 		info = AppDefault.findFormEntry(flow.requestContent, 'Email')
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 		
 		type = 'System Info: Android Client Signature'
 		info = AppDefault.findFormEntry(flow.requestContent, 'client_sig')
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 		
 		type = 'System Info: Google Mobile Services Token'
 		info = AppDefault.findFormEntry(flow.requestContent, 'Token')
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 
 	elif (flow.url.find('https://www.googleapis.com/experimentsandconfigs/v1/getExperimentsAndConfigs') == 0):
 		flow.source = 'Experimental Features Config Sync'
@@ -341,18 +374,18 @@ def checkPostURL(flow, results):
 			and AppDefault.findFormEntry(flow.requestContent, 't') == 'screenview'):
 			type = 'User Action'
 			info = 'Viewing Contacts'
-			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+			results.append(Result.Result(flow, type, info))
 
 		elif (AppDefault.findFormEntry(flow.requestContent, 'utc') == 'Create reminder'):
 			type = 'User Action'
 			info = 'Google Calendar Reminder Created'
-			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+			results.append(Result.Result(flow, type, info))
 
 	elif (flow.url == 'https://android.googleapis.com/auth/devicekey'):
 		flow.source = 'Google Mobile Services'
 		type = 'System Info: Device Key'
 		info = flow.requestContent
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 
 	elif (flow.url == 'https://accounts.google.com/oauth/multilogin'):
 		flow.source == 'Google Account Login'
@@ -364,17 +397,17 @@ def checkPostURL(flow, results):
 			type = 'User Info: Name'
 			info = account[account.find('"display_name":')+16:]
 			info = info[:info.find('"')]
-			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+			results.append(Result.Result(flow, type, info))
 
 			type = 'User Info: Email Address'
 			info = account[account.find('"display_email":')+17:]
 			info = info[:info.find('"')]
-			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+			results.append(Result.Result(flow, type, info))
 
 			type = 'User Info: Account ID'
 			info = account[account.find('"obfuscated_id":')+17:]
 			info = info[:info.find('"')]
-			results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+			results.append(Result.Result(flow, type, info))
 
 	elif (flow.url == 'https://www.googleapis.com/cryptauth/v1/deviceSync/getmydevices'):
 		flow.source = 'Google Account Device Lookup'
@@ -384,7 +417,7 @@ def checkPostURL(flow, results):
 		flow.source = 'Google Assistant'
 		type = 'System Info: Assistant Pair ID'
 		info = AppDefault.findFormEntry(flow.requestContent, 'pair')
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 
 	elif (flow.url == 'https://www.google.com/tg/fe/request?rqt=98&bq=0'):
 		flow.source = 'Assistant Weather Card'
@@ -392,13 +425,19 @@ def checkPostURL(flow, results):
 		info = AppDefault.cleanEncoding(flow.responseContent)
 		info = info[info.find(' in ')+4:]
 		info = info[:info.find('\\')-1]
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
 
 	elif (flow.url == 'https://www.google.com/loc/m/api'):
 		flow.source = 'Google Location API'
 		type = 'Location'
 		info = 'Location'
-		results.append(Result.Result(flow.app, flow.destination, flow.source, type, info, flow.all))
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://mobilenetworkscoring-pa.googleapis.com/v1/GetWifiQuality') == 0):
+		flow.source = 'WiFi Strength Query'
+		type = 'System Info: WiFi Strength'
+		info = 'Key: ' + flow.url[flow.url.find('key=')+4:]
+		results.append(Result.Result(flow, type, info))
 
 def getURLs():
 	return urls

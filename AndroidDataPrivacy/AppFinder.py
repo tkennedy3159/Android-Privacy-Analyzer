@@ -8,7 +8,7 @@ def findApp(flow, appList):
 	if (app == '' and 'User-Agent' in flow.requestHeaders.keys()):
 		app = identifyUserAgent(flow.requestHeaders['User-Agent'], appList)
 	if (app == ''):
-		app = identifyURL(flow.url, appList)
+		app = identifyURL(flow, flow.url, appList)
 	if (app == '' and 'referer' in flow.requestHeaders):
 		app = identifyReferer(flow.requestHeaders['referer'], appList)
 	app = translate(app)
@@ -39,6 +39,14 @@ def identifyUserAgent(agent, appList):
 			if (agent.find(item) > -1):
 				return 'Youtube'
 
+	if 'Reddit' in appList:
+		import AndroidDataPrivacy.Applications.Reddit as Reddit
+		if agent in Reddit.userAgents:
+			return 'Reddit'
+		for item in Reddit.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'Reddit'
+
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 		if agent in CertInstaller.userAgents:
@@ -49,7 +57,7 @@ def identifyUserAgent(agent, appList):
 
 	return ''
 
-def identifyURL(url, appList):
+def identifyURL(flow, url, appList):
 	if 'AndroidNative' in appList:
 		import AndroidDataPrivacy.Applications.AndroidNative as AndroidNative
 		if url in AndroidNative.urls:
@@ -74,6 +82,14 @@ def identifyURL(url, appList):
 			if (url.find(item) > -1):
 				return 'Youtube'
 
+	if 'Reddit' in appList:
+		import AndroidDataPrivacy.Applications.Reddit as Reddit
+		if url in Reddit.urls:
+			return 'Reddit'
+		for item in Reddit.partialURLs:
+			if (url.find(item) > -1):
+				return 'Reddit'
+
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 		if url in CertInstaller.urls:
@@ -81,6 +97,15 @@ def identifyURL(url, appList):
 		for item in CertInstaller.partialURLs:
 			if (url.find(item) > -1):
 				return 'CertInstaller'
+
+	if (url[:21] == 'https://api.branch.io'):
+		temp = flow.requestContent
+		temp = temp[temp.find('"cd": {'):]
+		temp = temp[:temp.find('}')]
+		temp = temp[temp.find('"pn": "')+7:]
+		temp = temp[:temp.find('"')]
+		if (temp[:10] == 'com.reddit'):
+			return 'Reddit'
 
 	return ''
 
@@ -101,6 +126,7 @@ def translate(app):
 	or app == 'com.google.android.calendar' \
 	or app == 'com.google.android.contacts' \
 	or app == 'com.google.android.apps.maps' \
+	or app == 'com.google.android.talk' \
 	or app == 'com.google.android.apps.docs'):
 		app = 'GSuite'
 	if (app == ''):

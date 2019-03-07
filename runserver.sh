@@ -27,7 +27,8 @@ while [ 0 -lt 1 ]
 do
 	sleep 5s
 	cat stream.txt >> capture.txt
-	cat stream.txt >> backup.txt
+	tr < capture.txt -d '\000' > capturefixed.txt
+	cat capturefixed.txt >> backup.txt
 	echo "" > stream.txt
 	python3 ~/Android-Privacy-Analyzer/AnalysisMain.py
 	echo "" > capture.txt

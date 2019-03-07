@@ -10,16 +10,17 @@ import AndroidDataPrivacy.Applications.AppDefault as AppDefault
 import AndroidDataPrivacy.Applications.AndroidNative as AndroidNative
 import AndroidDataPrivacy.Applications.GSuite as GSuite
 import AndroidDataPrivacy.Applications.Youtube as Youtube
+import AndroidDataPrivacy.Applications.Reddit as Reddit
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 1
+testNum = 3
 filename = "backup.txt"
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
 flows = []
 results = []
-appList = ['AppDefault','AndroidNative','GSuite','Youtube', 'CertInstaller']
+appList = ['AppDefault','AndroidNative','GSuite','Youtube', 'Reddit', 'CertInstaller']
 log = syslog_client.Syslog()
 
 def printFlows():
@@ -40,7 +41,7 @@ def separateFlows():
 		if (count > 0):
 			flow = flow + line
 			count = count - 1
-		elif (line[0:1] == ' ' or line[1:2] == '' or line[:21] == 'cd=com.google.android'):
+		elif (line[0:1] == ' ' or line[1:2] == '' or line[0:6] == '<0x00>' or line[:21] == 'cd=com.google.android'):
 			flow = flow + line
 		elif (line[0:15] == 'generic profile'):
 			flow = flow + line
@@ -115,6 +116,8 @@ def checkFlow(flow):
 		GSuite.checkBehavior(flow, results)
 	if (flow.app == 'Youtube' and 'Youtube' in appList):
 		Youtube.checkBehavior(flow, results)
+	if (flow.app == 'Reddit' and 'Reddit' in appList):
+		Reddit.checkBehavior(flow, results)
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
 		AndroidNative.checkBehavior(flow, results)
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):
@@ -153,6 +156,6 @@ def analyzeAll():
 
 separateFlows()
 #printFlows()
-analyzeAll()
-#testFlow(testNum)
+#analyzeAll()
+testFlow(testNum)
 #findNewFlows()

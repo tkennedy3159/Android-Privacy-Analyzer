@@ -1,0 +1,17 @@
+
+
+192.168.0.14:43023: clientconnect
+::ffff:192.168.0.14:43023: Set new server address: mdh-pa.googleapis.com:443
+::ffff:192.168.0.14:43023: serverconnect
+  -> ('mdh-pa.googleapis.com', 443)
+::ffff:192.168.0.14:43023: Establish TLS with server
+::ffff:192.168.0.14:43023: ALPN selected by server: grpc-exp
+::ffff:192.168.0.14:43023: Establish TLS with client
+::ffff:192.168.0.14:43023: ALPN for client: b'grpc-exp'
+::ffff:192.168.0.14:43023: request
+  -> Request(PRI *)
+Initiating HTTP/2 connections with prior knowledge are currently not supported.
+::ffff:192.168.0.14:43023: serverdisconnect
+  -> ('mdh-pa.googleapis.com', 443)
+192.168.0.14:43023: Connection killed
+192.168.0.14:43023: clientdisconnect

@@ -17,6 +17,10 @@ def checkBehavior(flow, results):
 		analyzePostRequest(flow, results)
 	if (flow.requestType == 'HEAD'):
 		analyzePostRequest(flow, results)
+	if (flow.requestType == 'PUT'):
+		analyzePutRequest(flow, results)
+	if (flow.requestType == 'DELETE'):
+		analyzeDeleteRequest(flow, results)
 
 def analyzeGetRequest(flow, results):
 	checkGetURL(flow, results)
@@ -42,6 +46,22 @@ def analyzeHeadRequest(flow, results):
 	AppDefault.checkResponseHeadersDefault(flow, flow.responseHeaders, results)
 	AppDefault.analyzeHeadRequestDefault(flow, results)
 
+def analyzePutRequest(flow, results):
+	checkPutURL(flow, results)
+	checkRequestHeaders(flow, flow.requestHeaders, results)
+	AppDefault.checkRequestHeadersDefault(flow, flow.requestHeaders, results)
+	checkResponseHeaders(flow, flow.responseHeaders, results)
+	AppDefault.checkResponseHeadersDefault(flow, flow.responseHeaders, results)
+	AppDefault.analyzePutRequestDefault(flow, results)
+
+def analyzeDeleteRequest(flow, results):
+	checkDeleteURL(flow, results)
+	checkRequestHeaders(flow, flow.requestHeaders, results)
+	AppDefault.checkRequestHeadersDefault(flow, flow.requestHeaders, results)
+	checkResponseHeaders(flow, flow.responseHeaders, results)
+	AppDefault.checkResponseHeadersDefault(flow, flow.responseHeaders, results)
+	AppDefault.analyzeDeleteRequestDefault(flow, results)
+
 def checkRequestHeaders(flow, headers, results):
 	return None
 
@@ -55,4 +75,10 @@ def checkPostURL(flow, results):
 	return None
 
 def checkHeadURL(flow, results):
+	return None
+
+def checkPutURL(flow, results):
+	return None
+
+def checkDeleteURL(flow, results):
 	return None
