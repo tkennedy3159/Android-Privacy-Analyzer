@@ -25,11 +25,11 @@ echo "" > capture.txt
 #Then empty the contents to stream
 while [ 0 -lt 1 ]
 do
-	sleep 5s
+	sleep 10s
 	cat stream.txt >> capture.txt
 	tr < capture.txt -d '\000' > capturefixed.txt
 	cat capturefixed.txt >> backup.txt
 	echo "" > stream.txt
-	python3 ~/Android-Privacy-Analyzer/AnalysisMain.py
+	python3 ./AnalysisMain.py
 	echo "" > capture.txt
 done
