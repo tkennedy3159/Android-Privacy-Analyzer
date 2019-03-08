@@ -129,6 +129,10 @@ def translate(app):
 	or app == 'com.google.android.talk' \
 	or app == 'com.google.android.apps.docs'):
 		app = 'GSuite'
+
+	elif (app == 'com.reddit.frontpage'):
+		app = 'Reddit'
+
 	if (app == ''):
 		app = 'AppDefault'
 	return app

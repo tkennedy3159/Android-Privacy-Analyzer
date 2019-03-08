@@ -26,7 +26,7 @@ def analyzePostRequestDefault(flow, results):
 		results.append(Result.Result(flow, type, info))
 
 	if (flow.url == 'https://android.clients.google.com/c2dm/register3'):
-		flow.source = flow.requestHeaders['app'] + ' Login'
+		flow.source = flow.requestHeaders['app'] + ' GCM Login'
 		type = 'System Info: Device ID'
 		info = flow.requestContent
 		info = info[info.find('device:')+7:]
@@ -39,7 +39,119 @@ def analyzePostRequestDefault(flow, results):
 		info = info[info.find('token=')+6:]
 		info = info.strip()
 		results.append(Result.Result(flow, type, info))
+
+		type = 'Certificate'
+		info = findFormEntry(flow.requestContent, 'cert')
+		results.append(Result.Result(flow, type, info))
 	
+
+	elif (flow.url.find('https://t.appsflyer.com/api') == 0):
+		flow.source = flow.url[flow.url.find('app_id=')+7:]
+		flow.source = 'AppsFlyer ' + flow.source
+		content = flow.requestContent
+
+		type = 'Ad ID'
+		info = content[content.find('"advertiserId":')+17:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+		type = 'Android ID'
+		info = content[content.find('"android_id":')+15:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+		type = 'AppsFlyer Key'
+		info = content[content.find('"appsflyerKey":')+17:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+		type = 'User Info: Opened App Count'
+		info = content[content.find('"counter":')+12:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+		if (flow.requestContent.find('"batteryLevel":') > -1):
+			type = 'System Info: Battery Level'
+			info = content[content.find('"batteryLevel":')+17:]
+			info = info[:info.find('"')] + '%'
+			results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Brand'
+		info = content[content.find('"brand":')+10:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Build'
+		info = content[content.find('"build_display_id":')+21:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Screen Size'
+		width = content[content.find('"x_px":')+9:]
+		width = width[:width.find('"')]
+		height = content[content.find('"y_px":')+9:]
+		height = height[:height.find('"')]
+		info = width + ' x ' + height
+		results.append(Result.Result(flow, type, info))
+
+		if (flow.requestContent.find('sensors') > -1):
+			type = 'System Info: Sensor Data'
+			info = findJSONListNonSpaced(flow.requestContent, 'sensors')
+			results.append(Result.Result(flow, type, info))
+
+		if (flow.requestContent.find('"uid":') > -1):
+			type = 'System Info: AppFlyer UID'
+			info = content[content.find('"uid":')+8:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://register.appsflyer.com/api') == 0):
+		content = flow.requestContent
+		flow.source = content[content.find('"app_name":')+13:]
+		flow.source = flow.source[:flow.source.find('"')] + ' AppFlyer'
+
+		type = 'Ad ID'
+		info = content[content.find('"advertiserId":')+17:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+		type = 'AppFlyer GCM Token'
+		info = content[content.find('"af_gcm_token":')+17:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: App Version'
+		info = content[content.find('"app_version_name":')+21:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: App Install Date'
+		info = content[content.find('"installDate":')+16:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+		type = 'User Info: App Launch Count'
+		info = content[content.find('"launch_counter":')+19:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Model'
+		brand = content[content.find('"brand":')+10:]
+		brand = brand[:brand.find('"')]
+		model = content[content.find('"model":')+10:]
+		model = model[:model.find('"')]
+		info = brand + ' ' + model
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Network Connection'
+		info = content[content.find('"network":')+12:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: AppFlyer UID'
+		info = content[content.find('"uid":')+8:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
 
 def analyzeHeadRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):

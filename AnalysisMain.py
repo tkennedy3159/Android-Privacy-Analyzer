@@ -13,8 +13,8 @@ import AndroidDataPrivacy.Applications.Youtube as Youtube
 import AndroidDataPrivacy.Applications.Reddit as Reddit
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 3
-filename = "backup.txt"
+testNum = 1
+filename = "capturefixed.txt"
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
@@ -41,7 +41,7 @@ def separateFlows():
 		if (count > 0):
 			flow = flow + line
 			count = count - 1
-		elif (line[0:1] == ' ' or line[1:2] == '' or line[0:6] == '<0x00>' or line[:21] == 'cd=com.google.android'):
+		elif (line[0:1] == ' ' or line[1:2] == '' or line[:21] == 'cd=com.google.android'):
 			flow = flow + line
 		elif (line[0:15] == 'generic profile'):
 			flow = flow + line
@@ -81,6 +81,7 @@ def checkForUseless(flow):
 		flow[0:flow.find('\n')].find(': HTTP/2 connection terminated by server: error code:') > -1 or \
 		flow[0:flow.find('\n')].find('Establish TLS') > -1 or \
 		flow[0:].find('Cannot establish TLS with client') > -1 or \
+		flow[0:].find('Error connecting to') > -1 or \
 		flow[0:flow.find('\n')].find('server communication error:') > -1 or \
 		flow[0:flow.find('\n')].find('Connection killed') > -1 or \
 		flow[0:flow.find('\n')].find('NotImplementedError') > -1):
@@ -125,7 +126,7 @@ def checkFlow(flow):
 	AppDefault.syncSource(flow, results)
 	print(flow.all)
 	printLogs(results)
-	#sendLogs(results)
+	sendLogs(results)
 
 def sendLogs(results):
 	for result in results:
@@ -156,6 +157,6 @@ def analyzeAll():
 
 separateFlows()
 #printFlows()
-#analyzeAll()
-testFlow(testNum)
+analyzeAll()
+#testFlow(testNum)
 #findNewFlows()

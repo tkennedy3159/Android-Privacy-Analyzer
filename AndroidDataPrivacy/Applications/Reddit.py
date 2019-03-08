@@ -2,13 +2,15 @@ import AndroidDataPrivacy.Flow as Flow
 import AndroidDataPrivacy.Result as Result
 import AndroidDataPrivacy.Applications.AppDefault as AppDefault
 
-urls = []
+urls = ['https://gql.reddit.com/']
 
 partialURLs = ['https://www.reddit.com']
 
 userAgents = []
 
 partialUserAgents = ['Reddit']
+
+appIds = {'1:933360113277:android:2918df7f0aab10ef':'com.reddit.frontpage'}
 
 def checkBehavior(flow, results):
 	if (flow.requestType == 'GET'):
@@ -64,11 +66,11 @@ def analyzeDeleteRequest(flow, results):
 
 def checkRequestHeaders(flow, headers, results):
 	if ('User-Agent' in headers.keys()):
-		if (headers['User-Agent'][:6] == 'Reddit'):
+		if (headers['User-Agent'][:6] == 'Reddit' and flow.source == ''):
 			flow.source = 'Reddit'
 
 	if ('x-reddit-device-id' in headers.keys()):
-		type = 'User Info: Reddit ID'
+		type = 'User Info: Reddit Device ID'
 		info = headers['x-reddit-device-id']
 		results.append(Result.Result(flow, type, info))
 
@@ -79,12 +81,18 @@ def checkRequestHeaders(flow, headers, results):
 
 def checkResponseHeaders(flow, headers, results):
 	if ('x-reddit-loid' in headers.keys()):
-		type = 'User Info: Reddit ID'
+		type = 'User Info: Reddit LOID'
 		info = headers['x-reddit-loid']
 		results.append(Result.Result(flow, type, info))
 
+	if ('x-reddit-session' in headers.keys()):
+		type = 'User Info: Reddit Session ID'
+		info = headers['x-reddit-session']
+		results.append(Result.Result(flow, type, info))
+
 def checkGetURL(flow, results):
-	return None
+	if (flow.url.find('https://oauth.reddit.com/api/v1/me') == 0):
+		flow.source = 'Reddit Login'
 
 def checkPostURL(flow, results):
 	if (flow.url == 'https://www.reddit.com/api/v1/access_token'):
@@ -94,7 +102,7 @@ def checkPostURL(flow, results):
 		info = info[:info.find('"')]
 		results.append(Result.Result(flow, type, info))
 
-	if (flow.url == 'https://api.branch.io/v1/install'):
+	if (flow.url.find('https://api.branch.io/') == 0):
 		flow.source = 'Branch.io'
 		content = flow.requestContent
 
@@ -153,6 +161,58 @@ def checkPostURL(flow, results):
 		info = content[content.find('"latest_update_time":')+22:]
 		info = info[:info.find(',')]
 		results.append(Result.Result(flow, type, info))
+
+		if (flow.url[len(flow.url)-4:] == 'open'):
+			type = 'User Action: Opened App'
+			info = 'Reddit'
+			results.append(Result.Result(flow, type, info))
+
+			type = 'User info: Branch ID'
+			info = content[content.find('"identity_id":')+16:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow, type, info))
+
+			type = 'System Info: Device Fingerprint ID'
+			info = content[content.find('"device_fingerprint_id":')+26:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow, type, info))
+
+		elif (flow.url[len(flow.url)-7:] == 'install'):
+			type = 'User Action: Installed App'
+			info = 'Reddit'
+			results.append(Result.Result(flow, type, info))
+
+	elif (flow.url == 'https://gql.reddit.com/'):
+		if (flow.responseContent.find('experimentVariants') > -1):
+			type = 'Experimental Features Config'
+			info = AppDefault.findJSONListNonSpaced(flow.responseContent, 'experimentVariants')
+			results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://gateway.reddit.com/redditmobile/1/android/config') == 0):
+		type = 'Experimental Features Config'
+		info = AppDefault.findFormEntry(flow.requestContent, 'experiments')
+		results.append(Result.Result(flow, type, info))
+		info = AppDefault.findJSONListNonSpaced(flow.responseContent, 'buckets')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://gateway.reddit.com/redditmobile') == 0):
+		type = 'Reddit Client ID'
+		info = AppDefault.findFormEntry(flow.requestContent, 'client_id')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Timezone'
+		info = AppDefault.findFormEntry(flow.requestContent, 'tz_name')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url == 'https://events.redditmedia.com/v1'):
+		event = flow.requestContent[flow.requestContent.find('"event_type":')+14:]
+		event = event[:event.find('"')]
+		time = flow.requestContent[flow.requestContent.find('"event_ts":')+11:]
+		time = time[:time.find(',')]
+		if (event == 'cs.app_launch_android'):
+			type = 'User Action: Reddit Opened'
+			info = 'Reddit Opened @ ' + time
+			results.append(Result.Result(flow, type, info))
 
 def checkHeadURL(flow, results):
 	return None
