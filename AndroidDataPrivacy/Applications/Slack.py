@@ -1,8 +1,10 @@
+import base64
 import AndroidDataPrivacy.Flow as Flow
 import AndroidDataPrivacy.Result as Result
 import AndroidDataPrivacy.Applications.AppDefault as AppDefault
 
-urls = ['https://sessions.bugsnag.com/']
+urls = ['https://sessions.bugsnag.com/', \
+'https://slack.com/beacon/track/']
 
 partialURLs = ['https://slack.com/api']
 
@@ -101,6 +103,11 @@ def checkPostURL(flow, results):
 		results.append(Result.Result(flow, type, info))
 
 	elif (flow.url == 'https://sessions.bugsnag.com/'):
+		if ('Bugsnag-Api-Key' in flow.requestHeaders.keys()):
+			type = 'Bugsnag API Key'
+			info = flow.requestHeaders['Bugsnag-Api-Key']
+			results.append(Result.Result(flow, type, info))
+
 		if (AppDefault.findJSONItem(flow.requestContent, 'packageName') == 'com.Slack'):
 			flow.source = 'Slack Bugsnag'
 
@@ -180,6 +187,23 @@ def checkPostURL(flow, results):
 	elif (flow.url == 'https://slack.com/api/conversations.history'):
 		type = 'Channel Messages Sync'
 		info = 'Channel: ' + AppDefault.findFormEntry(flow.requestContent, 'channel')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url == 'https://slack.com/beacon/track/'):
+		type = 'System Info: Performance Tracking'
+		info = AppDefault.findFormEntry(flow.requestContent, 'data')
+		info = base64.b64decode(info)
+		info = info.decode("UTF-8")
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url == 'https://slack.com/api/chat.postMessage'):
+		type = 'User Action: Send Message'
+		info = 'Message "' + AppDefault.findFormEntry(flow.requestContent, 'text') + '" sent to channel ' + AppDefault.findFormEntry(flow.requestContent, 'channel')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url == 'https://slack.com/api/conversations.mark'):
+		type = 'User Action: Viewed Channel'
+		info = 'Viewed channel ' + AppDefault.findFormEntry(flow.requestContent, 'channel') + ' at ' + AppDefault.findFormEntry(flow.requestContent, 'ts')
 		results.append(Result.Result(flow, type, info))
 
 def checkHeadURL(flow, results):

@@ -1,53 +1,88 @@
 
 
-192.168.0.14:45855 -> WebSocket 1 message -> wss-mobile.slack.com:443/connect?flannel=2&token=xoxs-13703605394-332388225202-578679183392-54b8d6c5f78cdf44a93d1b2d955948dece088f629fb3cbe96caacafc4faa829a&channel_count_everyone=1&start_args=features%3D1%26agent%3Dslackandroid%26device_id%3Decce8de88890a47d%26eac_cache_ts%3D1%26feature_intl_channel_names%3D1%26new_notif_prefs%3D1%26version%3D19.3.1.0%26no_users%3D1%26platform%3Dandroid&encoding=gzip
+192.168.0.14:48801: clientconnect
+::ffff:192.168.0.14:48801: Set new server address: mdh-pa.googleapis.com:443
+::ffff:192.168.0.14:48801: serverconnect
+  -> ('mdh-pa.googleapis.com', 443)
+::ffff:192.168.0.14:48801: Establish TLS with server
+192.168.0.14:48803: clientconnect
+::ffff:192.168.0.14:48803: Set new server address: chromesyncpasswords-pa.googleapis.com:443
+::ffff:192.168.0.14:48803: serverconnect
+  -> ('chromesyncpasswords-pa.googleapis.com', 443)
+::ffff:192.168.0.14:48803: Establish TLS with server
+::ffff:192.168.0.14:48801: ALPN selected by server: grpc-exp
+::ffff:192.168.0.14:48801: Establish TLS with client
+::ffff:192.168.0.14:48801: ALPN for client: b'grpc-exp'
+::ffff:192.168.0.14:48803: ALPN selected by server: h2
+::ffff:192.168.0.14:48803: Establish TLS with client
+::ffff:192.168.0.14:48803: ALPN for client: b'h2'
+::ffff:192.168.0.14:48801: request
+  -> Request(PRI *)
+Initiating HTTP/2 connections with prior knowledge are currently not supported.
+::ffff:192.168.0.14:48801: serverdisconnect
+  -> ('mdh-pa.googleapis.com', 443)
+192.168.0.14:48801: Connection killed
+192.168.0.14:48801: clientdisconnect
+::ffff:192.168.0.14:48803: HTTP2 Event from client
+  -> <RemoteSettingsChanged changed_settings:{}>
+::ffff:192.168.0.14:48803: HTTP2 Event from server
+  -> <RemoteSettingsChanged changed_settings:{ChangedSetting(setting=SettingCodes.MAX_CONCURRENT_STREAMS, original_value=None, new_value=100), ChangedSetting(setting=SettingCodes.INITIAL_WINDOW_SIZE, original_value=65535, new_value=1048576), ChangedSetting(setting=SettingCodes.MAX_HEADER_LIST_SIZE, original_value=None, new_value=16384)}>
+::ffff:192.168.0.14:48803: HTTP2 Event from server
+  -> <WindowUpdated stream_id:0, delta:983041>
+::ffff:192.168.0.14:48803: HTTP2 Event from server
+  -> <SettingsAcknowledged changed_settings:{}>
+::ffff:192.168.0.14:48803: HTTP2 Event from client
+  -> <SettingsAcknowledged changed_settings:{ChangedSetting(setting=SettingCodes.INITIAL_WINDOW_SIZE, original_value=65535, new_value=1048576), ChangedSetting(setting=SettingCodes.MAX_CONCURRENT_STREAMS, original_value=100, new_value=100), ChangedSetting(setting=SettingCodes.MAX_HEADER_LIST_SIZE, original_value=65536, new_value=16384)}>
+::ffff:192.168.0.14:48803: HTTP2 Event from client
+  -> <RequestReceived stream_id:3, headers:[(b':scheme', b'https'), (b':method', b'POST'), (b':authority', b'chromesyncpasswords-pa.googleapis.com:443'), (b':path', b'/google.internal.chrome.sync.passwords.v1.Passwords/ListPriorityPreferences'), (b'user-agent', b'grpc-java-okhttp/1.18.0-SNAPSHOT'), (b'content-type', b'application/grpc'), (b'te', b'trailers'), (b'x-goog-spatula', b'CjYKFmNvbS5nb29nbGUuYW5kcm9pZC5nbXMaHE9KR0tSVDBIR1pOVStMR2E4RjdHVml6dFY0Zz0SICyBawIxNopJ5ZYJmnCw2FRH9sY9Q7pwNkVl3JOa0oOBGJW56IW0vITEMiCyl5XJ9eOL1kkqSQBeaoCce1Q4V6w14iJEhNIsyFcEYy2hAcsoY2pYhrxRd2nKBqZnBomAMIt+NuIdklZHl7q6MB5CQFw6S0BQcnRElHNpCXwRvN4='), (b'authorization', b'Bearer ya29.GswB0QZ-jetXwmo26YBS940DoFEdAsCbzx9y4mab67reWykH_fF0TSTsyXd8Kye0EpgIsgSlvrBUph_dbF7qaB812fEW0Q7y8lsJGE2N5MX5ybp1K-8u3ldbliMIB6jDXADSjAnfZn1c93Ki-PXWXNAIMRSl-Y3nU66SNVV1JwdoKiborPjZZRMHA7PocvLRSo7aHXcWChKCBc_owCdHYx7ayzwb5kdwdK7tmnz_ZiWqoYktIBUJoZ2Y2kkGiI48mWVie4Z0GHPP2h48NHEa'), (b'grpc-accept-encoding', b'gzip'), (b'grpc-timeout', b'9680069u')]>
+::ffff:192.168.0.14:48803: HTTP2 Event from client
+  -> <DataReceived stream_id:3, flow_controlled_length:63, data:000000003a0a3875736572732f6d652f62697274>
+::ffff:192.168.0.14:48803: HTTP2 Event from client
+  -> <StreamEnded stream_id:3>
+::ffff:192.168.0.14:48803: HTTP2 Event from client
+  -> <SettingsAcknowledged changed_settings:{}>
+::ffff:192.168.0.14:48803: HTTP2 Event from server
+  -> <SettingsAcknowledged changed_settings:{}>
+::ffff:192.168.0.14:48803: request
+  -> Request(POST chromesyncpasswords-pa.googleapis.com:443/google.internal.chrome.sync.passwords.v1.Passwords/ListPriorityPreferences)
+::ffff:192.168.0.14:48803: HTTP2 Event from server
+  -> <ResponseReceived stream_id:1, headers:[(b':status', b'200'), (b'content-disposition', b'attachment'), (b'content-type', b'application/grpc'), (b'date', b'Tue, 19 Mar 2019 21:29:33 GMT'), (b'alt-svc', b'quic=":443"; ma=2592000; v="46,44,43,39"')]>
+::ffff:192.168.0.14:48803: HTTP2 Event from server
+  -> <DataReceived stream_id:1, flow_controlled_length:1997, data:00000007c80a86020abb0175736572732f6d652f>
+::ffff:192.168.0.14:48803: HTTP2 Event from server
+  -> <TrailersReceived stream_id:1, headers:[(b'grpc-status', b'0'), (b'content-disposition', b'attachment')]>
+::ffff:192.168.0.14:48803: NotImplementedError('TrailersReceived not implemented',)
+::ffff:192.168.0.14:48803: serverdisconnect
+  -> ('chromesyncpasswords-pa.googleapis.com', 443)
+192.168.0.14:48803: clientdisconnect
+192.168.0.14:48789 -> WebSocket 1 message -> wss-mobile.slack.com:443/?channel_count_everyone=1&dp=1&encoding=gzip&flannel=2&frt=Hf-FAwEBA2ZydAH_hgABAgEBUAEKAAEBUwEKAAAA_gH9_4YB_gHUNf-BAwEBA2ZycAH_ggABBQECUnUBDAABAlRpAQwAAQJFaQEMAAECVWkBDAABAk10Af-EAAAAEP-DBQEBBFRpbWUB_4QAAAD-AYr_ggH-AVx3c3M6Ly9jZXJiZXJ1cy15anh1LmxiLnNsYWNrLW1zZ3MuY29tL3dlYnNvY2tldC93SkxBVE1jWEs3Uzc4dzZ6alJJa0JqZnluQjBoSnRJb3Z6SFdqOUpGSGFrb0xwTVJGMDlqdFVnbFI2Rnl1aDQ2Z0t2ZThnVmcydl9oMWNLVUxsUU5kWXZMYnRsdTYyUFNBeE14aXlwRWtOUTlvTXVwRVFhYmVVRnU0ZkFZYzk4aUNfT0JSWDItamNub0RaUk5pOUQ3TXNWMS1JZk8xaWszeHlURXdKQXNhWG5LZW90SW0teXR1WGZXS0JzWGxTdFdHZEU1QkFjdEdYRV9iZUFkN2MxVzVKS0RWXzdVazBXWTZMR2IzWHMwT0Y3WklOQWtmcU5nTEJKOTFVRGRwbUhqRmhqZF9VaFRDRHhCNk9kZFdsS1UwOEZjcWxZOHl2N1hEVkF0ZzlMcFgtZz0BCVQwRExQSFRCTAIJVTlTQkU2TTVZAQ8BAAAADtQjVhMDMmUx_lwAASAjsjGKezIpQMHydC6rllR2rohUzfaTT-OjkXtiVCt0eQA&no_user_changes=1&token=xoxs-13703605394-332388225202-578679183392-54b8d6c5f78cdf44a93d1b2d955948dece088f629fb3cbe96caacafc4faa829a
+
+    {"ids":["UBNQQ98R1","U0GESQU4A","U0G1EAFMF","UAA0B89F1","U2KK8BWCU","U2PEJFF5K","U0DQ4U1V0","U3HGP9M42","UA8SDMH27","U1EET7J2C","U0DLQLX6C","UA8RE5JEP","U1XS7KVR8","U0M2JMHR9","U9HA1MM7F","U53LCRA9H","U2PQ4CS67","U9SBE6M5Y","U49H53ZU0","U9SEGP483","U9WMZMULC","U227QJGHH","UBYBNQW7N","U20H1CAF2","U2115P50T","U0EE3A5GA","U2VJ43LLU","U20ET93BN","U49SP4AQM","U0G3X8P9R","U16HPRT9P","U0NP5MM9Q","U0DLR70Q1"],"type":"presence_sub"}
+
+192.168.0.14:48789 -> WebSocket 1 message -> wss-mobile.slack.com:443/?channel_count_everyone=1&dp=1&encoding=gzip&flannel=2&frt=Hf-FAwEBA2ZydAH_hgABAgEBUAEKAAEBUwEKAAAA_gH9_4YB_gHUNf-BAwEBA2ZycAH_ggABBQECUnUBDAABAlRpAQwAAQJFaQEMAAECVWkBDAABAk10Af-EAAAAEP-DBQEBBFRpbWUB_4QAAAD-AYr_ggH-AVx3c3M6Ly9jZXJiZXJ1cy15anh1LmxiLnNsYWNrLW1zZ3MuY29tL3dlYnNvY2tldC93SkxBVE1jWEs3Uzc4dzZ6alJJa0JqZnluQjBoSnRJb3Z6SFdqOUpGSGFrb0xwTVJGMDlqdFVnbFI2Rnl1aDQ2Z0t2ZThnVmcydl9oMWNLVUxsUU5kWXZMYnRsdTYyUFNBeE14aXlwRWtOUTlvTXVwRVFhYmVVRnU0ZkFZYzk4aUNfT0JSWDItamNub0RaUk5pOUQ3TXNWMS1JZk8xaWszeHlURXdKQXNhWG5LZW90SW0teXR1WGZXS0JzWGxTdFdHZEU1QkFjdEdYRV9iZUFkN2MxVzVKS0RWXzdVazBXWTZMR2IzWHMwT0Y3WklOQWtmcU5nTEJKOTFVRGRwbUhqRmhqZF9VaFRDRHhCNk9kZFdsS1UwOEZjcWxZOHl2N1hEVkF0ZzlMcFgtZz0BCVQwRExQSFRCTAIJVTlTQkU2TTVZAQ8BAAAADtQjVhMDMmUx_lwAASAjsjGKezIpQMHydC6rllR2rohUzfaTT-OjkXtiVCt0eQA&no_user_changes=1&token=xoxs-13703605394-332388225202-578679183392-54b8d6c5f78cdf44a93d1b2d955948dece088f629fb3cbe96caacafc4faa829a
 
     {"type":"ping", "id":999}
 
-192.168.0.14:45855 <- WebSocket 2 message <- wss-mobile.slack.com:443/connect?flannel=2&token=xoxs-13703605394-332388225202-578679183392-54b8d6c5f78cdf44a93d1b2d955948dece088f629fb3cbe96caacafc4faa829a&channel_count_everyone=1&start_args=features%3D1%26agent%3Dslackandroid%26device_id%3Decce8de88890a47d%26eac_cache_ts%3D1%26feature_intl_channel_names%3D1%26new_notif_prefs%3D1%26version%3D19.3.1.0%26no_users%3D1%26platform%3Dandroid&encoding=gzip
+192.168.0.14:48789 <- WebSocket 2 message <- wss-mobile.slack.com:443/?channel_count_everyone=1&dp=1&encoding=gzip&flannel=2&frt=Hf-FAwEBA2ZydAH_hgABAgEBUAEKAAEBUwEKAAAA_gH9_4YB_gHUNf-BAwEBA2ZycAH_ggABBQECUnUBDAABAlRpAQwAAQJFaQEMAAECVWkBDAABAk10Af-EAAAAEP-DBQEBBFRpbWUB_4QAAAD-AYr_ggH-AVx3c3M6Ly9jZXJiZXJ1cy15anh1LmxiLnNsYWNrLW1zZ3MuY29tL3dlYnNvY2tldC93SkxBVE1jWEs3Uzc4dzZ6alJJa0JqZnluQjBoSnRJb3Z6SFdqOUpGSGFrb0xwTVJGMDlqdFVnbFI2Rnl1aDQ2Z0t2ZThnVmcydl9oMWNLVUxsUU5kWXZMYnRsdTYyUFNBeE14aXlwRWtOUTlvTXVwRVFhYmVVRnU0ZkFZYzk4aUNfT0JSWDItamNub0RaUk5pOUQ3TXNWMS1JZk8xaWszeHlURXdKQXNhWG5LZW90SW0teXR1WGZXS0JzWGxTdFdHZEU1QkFjdEdYRV9iZUFkN2MxVzVKS0RWXzdVazBXWTZMR2IzWHMwT0Y3WklOQWtmcU5nTEJKOTFVRGRwbUhqRmhqZF9VaFRDRHhCNk9kZFdsS1UwOEZjcWxZOHl2N1hEVkF0ZzlMcFgtZz0BCVQwRExQSFRCTAIJVTlTQkU2TTVZAQ8BAAAADtQjVhMDMmUx_lwAASAjsjGKezIpQMHydC6rllR2rohUzfaTT-OjkXtiVCt0eQA&no_user_changes=1&token=xoxs-13703605394-332388225202-578679183392-54b8d6c5f78cdf44a93d1b2d955948dece088f629fb3cbe96caacafc4faa829a
 
     0000000000 01 1f 8b 08 00 00 00 00 00 00 ff aa 56 2a a9 2c   ............V*.,
     0000000010 48 55 b2 52 2a c8 cf 4b 57 d2 51 50 2a 4a 2d c8   HU.R*..KW.QP*J-.
     0000000020 a9 8c 2f c9 57 b2 b2 b4 b4 ac 05 04 00 00 ff ff   ../.W...........
     0000000030 5b 60 c0 78 1f 00 00 00                           [`.x....
 
-192.168.0.14:45895: clientconnect
-::ffff:192.168.0.14:45895: Set new server address: chromesyncpasswords-pa.googleapis.com:443
-::ffff:192.168.0.14:45895: serverconnect
-  -> ('chromesyncpasswords-pa.googleapis.com', 443)
-::ffff:192.168.0.14:45895: Establish TLS with server
-::ffff:192.168.0.14:45895: ALPN selected by server: h2
-::ffff:192.168.0.14:45895: Establish TLS with client
-::ffff:192.168.0.14:45895: ALPN for client: b'h2'
-::ffff:192.168.0.14:45895: HTTP2 Event from client
-  -> <RemoteSettingsChanged changed_settings:{}>
-::ffff:192.168.0.14:45895: HTTP2 Event from server
-  -> <RemoteSettingsChanged changed_settings:{ChangedSetting(setting=SettingCodes.MAX_CONCURRENT_STREAMS, original_value=None, new_value=100), ChangedSetting(setting=SettingCodes.INITIAL_WINDOW_SIZE, original_value=65535, new_value=1048576), ChangedSetting(setting=SettingCodes.MAX_HEADER_LIST_SIZE, original_value=None, new_value=16384)}>
-::ffff:192.168.0.14:45895: HTTP2 Event from server
-  -> <WindowUpdated stream_id:0, delta:983041>
-::ffff:192.168.0.14:45895: HTTP2 Event from client
-  -> <SettingsAcknowledged changed_settings:{ChangedSetting(setting=SettingCodes.INITIAL_WINDOW_SIZE, original_value=65535, new_value=1048576), ChangedSetting(setting=SettingCodes.MAX_CONCURRENT_STREAMS, original_value=100, new_value=100), ChangedSetting(setting=SettingCodes.MAX_HEADER_LIST_SIZE, original_value=65536, new_value=16384)}>
-::ffff:192.168.0.14:45895: HTTP2 Event from client
-  -> <RequestReceived stream_id:3, headers:[(b':scheme', b'https'), (b':method', b'POST'), (b':authority', b'chromesyncpasswords-pa.googleapis.com:443'), (b':path', b'/google.internal.chrome.sync.passwords.v1.Passwords/ListPriorityPreferences'), (b'user-agent', b'grpc-java-okhttp/1.18.0-SNAPSHOT'), (b'content-type', b'application/grpc'), (b'te', b'trailers'), (b'x-goog-spatula', b'CjYKFmNvbS5nb29nbGUuYW5kcm9pZC5nbXMaHE9KR0tSVDBIR1pOVStMR2E4RjdHVml6dFY0Zz0SINw2YmUpk9suv8KGyiovt8w0ugzIFshBEZ8397Mud7KFGJW56IW0vITEMiCQ58+035rk1+cBKkkAXmqAnMkDxAk7Yeayqw8q+EmCEmKZiS94g2qKCUYUWPvu+XLKyGmEQKi0SZt3MUVqv/dgmOAzHFBw7C4kD4akTi6idzoOkGNY'), (b'authorization', b'Bearer ya29.GswB0QaUKueT9gW7c--mSz6NzHDxmVvDJZOvJkYJqXDd4ZnuDjPkQWhdC-fdm6a2PaMqUBgm_q0FtLA38BV9z0HhxHli1z5WzmLlGaEG1E7lOgsyLxduRiHQoLdRE6pXrc92EVZZj_jpkMILFJnZ_gw4G2cNqAszNpmU0LxTOwZRXRaX-nUUz77EKhMn8_y3EuSkNprq-8L25f5WJkcxih4WgLyb7cR84NjLTOn-74diddxfOydqCBcPAyLnlReqKOgkfygyLtWoyLET9nvw'), (b'grpc-accept-encoding', b'gzip'), (b'grpc-timeout', b'9253563u')]>
-::ffff:192.168.0.14:45895: HTTP2 Event from client
-  -> <DataReceived stream_id:3, flow_controlled_length:63, data:000000003a0a3875736572732f6d652f62697274>
-::ffff:192.168.0.14:45895: HTTP2 Event from client
-  -> <StreamEnded stream_id:3>
-::ffff:192.168.0.14:45895: HTTP2 Event from client
-  -> <SettingsAcknowledged changed_settings:{}>
-::ffff:192.168.0.14:45895: HTTP2 Event from server
-  -> <SettingsAcknowledged changed_settings:{}>
-::ffff:192.168.0.14:45895: request
-  -> Request(POST chromesyncpasswords-pa.googleapis.com:443/google.internal.chrome.sync.passwords.v1.Passwords/ListPriorityPreferences)
-::ffff:192.168.0.14:45895: HTTP2 Event from server
-  -> <SettingsAcknowledged changed_settings:{}>
-::ffff:192.168.0.14:45895: HTTP2 Event from server
-  -> <ResponseReceived stream_id:1, headers:[(b':status', b'200'), (b'content-disposition', b'attachment'), (b'content-type', b'application/grpc'), (b'date', b'Tue, 19 Mar 2019 05:58:39 GMT'), (b'alt-svc', b'quic=":443"; ma=2592000; v="46,44,43,39"')]>
-::ffff:192.168.0.14:45895: HTTP2 Event from server
-  -> <DataReceived stream_id:1, flow_controlled_length:1997, data:00000007c80a86020abb0175736572732f6d652f>
-::ffff:192.168.0.14:45895: HTTP2 Event from server
-  -> <TrailersReceived stream_id:1, headers:[(b'grpc-status', b'0'), (b'content-disposition', b'attachment')]>
-::ffff:192.168.0.14:45895: NotImplementedError('TrailersReceived not implemented',)
-::ffff:192.168.0.14:45895: serverdisconnect
-  -> ('chromesyncpasswords-pa.googleapis.com', 443)
-192.168.0.14:45895: clientdisconnect
+192.168.0.14:48789 -> WebSocket 1 message -> wss-mobile.slack.com:443/?channel_count_everyone=1&dp=1&encoding=gzip&flannel=2&frt=Hf-FAwEBA2ZydAH_hgABAgEBUAEKAAEBUwEKAAAA_gH9_4YB_gHUNf-BAwEBA2ZycAH_ggABBQECUnUBDAABAlRpAQwAAQJFaQEMAAECVWkBDAABAk10Af-EAAAAEP-DBQEBBFRpbWUB_4QAAAD-AYr_ggH-AVx3c3M6Ly9jZXJiZXJ1cy15anh1LmxiLnNsYWNrLW1zZ3MuY29tL3dlYnNvY2tldC93SkxBVE1jWEs3Uzc4dzZ6alJJa0JqZnluQjBoSnRJb3Z6SFdqOUpGSGFrb0xwTVJGMDlqdFVnbFI2Rnl1aDQ2Z0t2ZThnVmcydl9oMWNLVUxsUU5kWXZMYnRsdTYyUFNBeE14aXlwRWtOUTlvTXVwRVFhYmVVRnU0ZkFZYzk4aUNfT0JSWDItamNub0RaUk5pOUQ3TXNWMS1JZk8xaWszeHlURXdKQXNhWG5LZW90SW0teXR1WGZXS0JzWGxTdFdHZEU1QkFjdEdYRV9iZUFkN2MxVzVKS0RWXzdVazBXWTZMR2IzWHMwT0Y3WklOQWtmcU5nTEJKOTFVRGRwbUhqRmhqZF9VaFRDRHhCNk9kZFdsS1UwOEZjcWxZOHl2N1hEVkF0ZzlMcFgtZz0BCVQwRExQSFRCTAIJVTlTQkU2TTVZAQ8BAAAADtQjVhMDMmUx_lwAASAjsjGKezIpQMHydC6rllR2rohUzfaTT-OjkXtiVCt0eQA&no_user_changes=1&token=xoxs-13703605394-332388225202-578679183392-54b8d6c5f78cdf44a93d1b2d955948dece088f629fb3cbe96caacafc4faa829a
+
+    {"ids":["U9SBE6M5Y","U49H53ZU0","U9SEGP483"],"type":"presence_sub"}
+
+192.168.0.14:48789 -> WebSocket 1 message -> wss-mobile.slack.com:443/?channel_count_everyone=1&dp=1&encoding=gzip&flannel=2&frt=Hf-FAwEBA2ZydAH_hgABAgEBUAEKAAEBUwEKAAAA_gH9_4YB_gHUNf-BAwEBA2ZycAH_ggABBQECUnUBDAABAlRpAQwAAQJFaQEMAAECVWkBDAABAk10Af-EAAAAEP-DBQEBBFRpbWUB_4QAAAD-AYr_ggH-AVx3c3M6Ly9jZXJiZXJ1cy15anh1LmxiLnNsYWNrLW1zZ3MuY29tL3dlYnNvY2tldC93SkxBVE1jWEs3Uzc4dzZ6alJJa0JqZnluQjBoSnRJb3Z6SFdqOUpGSGFrb0xwTVJGMDlqdFVnbFI2Rnl1aDQ2Z0t2ZThnVmcydl9oMWNLVUxsUU5kWXZMYnRsdTYyUFNBeE14aXlwRWtOUTlvTXVwRVFhYmVVRnU0ZkFZYzk4aUNfT0JSWDItamNub0RaUk5pOUQ3TXNWMS1JZk8xaWszeHlURXdKQXNhWG5LZW90SW0teXR1WGZXS0JzWGxTdFdHZEU1QkFjdEdYRV9iZUFkN2MxVzVKS0RWXzdVazBXWTZMR2IzWHMwT0Y3WklOQWtmcU5nTEJKOTFVRGRwbUhqRmhqZF9VaFRDRHhCNk9kZFdsS1UwOEZjcWxZOHl2N1hEVkF0ZzlMcFgtZz0BCVQwRExQSFRCTAIJVTlTQkU2TTVZAQ8BAAAADtQjVhMDMmUx_lwAASAjsjGKezIpQMHydC6rllR2rohUzfaTT-OjkXtiVCt0eQA&no_user_changes=1&token=xoxs-13703605394-332388225202-578679183392-54b8d6c5f78cdf44a93d1b2d955948dece088f629fb3cbe96caacafc4faa829a
+
+    {"ids":[],"type":"presence_sub"}
+
+192.168.0.14:48805: clientconnect
+::ffff:192.168.0.14:48805: Set new server address: mdh-pa.googleapis.com:443
+::ffff:192.168.0.14:48805: serverconnect
+  -> ('mdh-pa.googleapis.com', 443)
+::ffff:192.168.0.14:48805: Establish TLS with server
+::ffff:192.168.0.14:48805: ALPN selected by server: grpc-exp
+::ffff:192.168.0.14:48805: Establish TLS with client
+::ffff:192.168.0.14:48805: ALPN for client: b'grpc-exp'

@@ -48,7 +48,8 @@ appIds = {'1:1086610230652:android:131e4c3db28fca84':'com.google.android.googleq
 '1:493454522602:android:4877c2b5f408a8b2':'com.google.android.apps.maps', \
 '1:206908507205:android:167bd0ff59cd7d44':'com.google.android.apps.tachyon', \
 '1:531457836147:android:0fb36a1600ce546b':'com.google.android.apps.photos', \
-'1:933360113277:android:2918df7f0aab10ef':'com.reddit.frontpage'}
+'1:933360113277:android:2918df7f0aab10ef':'com.reddit.frontpage', \
+'1:508767403424:android:7c2619785291111d':'com.slack'}
 
 def checkBehavior(flow, results):
 	if (flow.requestType == 'GET'):
