@@ -91,8 +91,10 @@ def checkResponseHeaders(flow, headers, results):
 		results.append(Result.Result(flow, type, info))
 
 def checkGetURL(flow, results):
-	if (flow.url.find('https://oauth.reddit.com/api/v1/me') == 0):
-		flow.source = 'Reddit Login'
+	if (flow.url.find('https://oauth.reddit.com/api/subreddit_autocomplete') == 0):
+		type = 'User Action: Typed in Search'
+		info = '"' + AppDefault.findFormEntry(flow.requestContent, 'query') + '"'
+		results.append(Result.Result(flow, type, info))
 
 def checkPostURL(flow, results):
 	if (flow.url == 'https://www.reddit.com/api/v1/access_token'):
@@ -102,9 +104,19 @@ def checkPostURL(flow, results):
 		info = info[:info.find('"')]
 		results.append(Result.Result(flow, type, info))
 
-	if (flow.url.find('https://api.branch.io/') == 0):
+	elif (flow.url.find('https://api.branch.io/') == 0):
 		flow.source = 'Branch.io'
 		content = flow.requestContent
+
+		if (flow.url[len(flow.url)-4:len(flow.url)] == 'open'):
+			type = 'User Action: App Opened'
+			info = 'Reddit Opened'
+			results.append(Result.Result(flow, type, info))
+
+		elif (flow.url[len(flow.url)-5:len(flow.url)] == 'close'):
+			type = 'User Action: App Closed'
+			info = 'Reddit Closed'
+			results.append(Result.Result(flow, type, info))
 
 		type = 'System Info: Model'
 		brand = content[content.find('"brand":')+10:]
@@ -212,6 +224,19 @@ def checkPostURL(flow, results):
 		if (event == 'cs.app_launch_android'):
 			type = 'User Action: Reddit Opened'
 			info = 'Reddit Opened @ ' + time
+			results.append(Result.Result(flow, type, info))
+		else:
+			type = 'Reddit Activity & Info Dump'
+			info = flow.requestContent
+			results.append(Result.Result(flow, type, info))
+
+	elif (flow.url == 'https://www.reddit.com/api/v1/login'):
+		if (flow.requestContent.find('passwd:') > -1):
+			type = 'User Action: Reddit Login'
+			info = 'Logged in as ' + AppDefault.findFormEntry(flow.requestContent, 'user')
+			results.append(Result.Result(flow, type, info))
+			type = 'User Info: Password'
+			info = AppDefault.findFormEntry(flow.requestContent, 'passwd')
 			results.append(Result.Result(flow, type, info))
 
 def checkHeadURL(flow, results):

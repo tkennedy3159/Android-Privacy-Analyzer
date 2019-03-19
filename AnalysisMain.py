@@ -11,16 +11,17 @@ import AndroidDataPrivacy.Applications.AndroidNative as AndroidNative
 import AndroidDataPrivacy.Applications.GSuite as GSuite
 import AndroidDataPrivacy.Applications.Youtube as Youtube
 import AndroidDataPrivacy.Applications.Reddit as Reddit
+import AndroidDataPrivacy.Applications.Slack as Slack
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 1
-filename = "capturefixed.txt"
+testNum = 27
+filename = "backup.txt"
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
 flows = []
 results = []
-appList = ['AppDefault','AndroidNative','GSuite','Youtube', 'Reddit', 'CertInstaller']
+appList = ['AppDefault','AndroidNative','GSuite','Youtube', 'Reddit', 'Slack', 'CertInstaller']
 log = syslog_client.Syslog()
 
 def printFlows():
@@ -119,6 +120,8 @@ def checkFlow(flow):
 		Youtube.checkBehavior(flow, results)
 	if (flow.app == 'Reddit' and 'Reddit' in appList):
 		Reddit.checkBehavior(flow, results)
+	if (flow.app == 'Slack' and 'Slack' in appList):
+		Slack.checkBehavior(flow, results)
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
 		AndroidNative.checkBehavior(flow, results)
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):
@@ -126,7 +129,7 @@ def checkFlow(flow):
 	AppDefault.syncSource(flow, results)
 	print(flow.all)
 	printLogs(results)
-	sendLogs(results)
+	#sendLogs(results)
 
 def sendLogs(results):
 	for result in results:

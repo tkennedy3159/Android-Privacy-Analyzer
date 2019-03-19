@@ -1,2 +1,53 @@
 
 
+192.168.0.14:45855 -> WebSocket 1 message -> wss-mobile.slack.com:443/connect?flannel=2&token=xoxs-13703605394-332388225202-578679183392-54b8d6c5f78cdf44a93d1b2d955948dece088f629fb3cbe96caacafc4faa829a&channel_count_everyone=1&start_args=features%3D1%26agent%3Dslackandroid%26device_id%3Decce8de88890a47d%26eac_cache_ts%3D1%26feature_intl_channel_names%3D1%26new_notif_prefs%3D1%26version%3D19.3.1.0%26no_users%3D1%26platform%3Dandroid&encoding=gzip
+
+    {"type":"ping", "id":999}
+
+192.168.0.14:45855 <- WebSocket 2 message <- wss-mobile.slack.com:443/connect?flannel=2&token=xoxs-13703605394-332388225202-578679183392-54b8d6c5f78cdf44a93d1b2d955948dece088f629fb3cbe96caacafc4faa829a&channel_count_everyone=1&start_args=features%3D1%26agent%3Dslackandroid%26device_id%3Decce8de88890a47d%26eac_cache_ts%3D1%26feature_intl_channel_names%3D1%26new_notif_prefs%3D1%26version%3D19.3.1.0%26no_users%3D1%26platform%3Dandroid&encoding=gzip
+
+    0000000000 01 1f 8b 08 00 00 00 00 00 00 ff aa 56 2a a9 2c   ............V*.,
+    0000000010 48 55 b2 52 2a c8 cf 4b 57 d2 51 50 2a 4a 2d c8   HU.R*..KW.QP*J-.
+    0000000020 a9 8c 2f c9 57 b2 b2 b4 b4 ac 05 04 00 00 ff ff   ../.W...........
+    0000000030 5b 60 c0 78 1f 00 00 00                           [`.x....
+
+192.168.0.14:45895: clientconnect
+::ffff:192.168.0.14:45895: Set new server address: chromesyncpasswords-pa.googleapis.com:443
+::ffff:192.168.0.14:45895: serverconnect
+  -> ('chromesyncpasswords-pa.googleapis.com', 443)
+::ffff:192.168.0.14:45895: Establish TLS with server
+::ffff:192.168.0.14:45895: ALPN selected by server: h2
+::ffff:192.168.0.14:45895: Establish TLS with client
+::ffff:192.168.0.14:45895: ALPN for client: b'h2'
+::ffff:192.168.0.14:45895: HTTP2 Event from client
+  -> <RemoteSettingsChanged changed_settings:{}>
+::ffff:192.168.0.14:45895: HTTP2 Event from server
+  -> <RemoteSettingsChanged changed_settings:{ChangedSetting(setting=SettingCodes.MAX_CONCURRENT_STREAMS, original_value=None, new_value=100), ChangedSetting(setting=SettingCodes.INITIAL_WINDOW_SIZE, original_value=65535, new_value=1048576), ChangedSetting(setting=SettingCodes.MAX_HEADER_LIST_SIZE, original_value=None, new_value=16384)}>
+::ffff:192.168.0.14:45895: HTTP2 Event from server
+  -> <WindowUpdated stream_id:0, delta:983041>
+::ffff:192.168.0.14:45895: HTTP2 Event from client
+  -> <SettingsAcknowledged changed_settings:{ChangedSetting(setting=SettingCodes.INITIAL_WINDOW_SIZE, original_value=65535, new_value=1048576), ChangedSetting(setting=SettingCodes.MAX_CONCURRENT_STREAMS, original_value=100, new_value=100), ChangedSetting(setting=SettingCodes.MAX_HEADER_LIST_SIZE, original_value=65536, new_value=16384)}>
+::ffff:192.168.0.14:45895: HTTP2 Event from client
+  -> <RequestReceived stream_id:3, headers:[(b':scheme', b'https'), (b':method', b'POST'), (b':authority', b'chromesyncpasswords-pa.googleapis.com:443'), (b':path', b'/google.internal.chrome.sync.passwords.v1.Passwords/ListPriorityPreferences'), (b'user-agent', b'grpc-java-okhttp/1.18.0-SNAPSHOT'), (b'content-type', b'application/grpc'), (b'te', b'trailers'), (b'x-goog-spatula', b'CjYKFmNvbS5nb29nbGUuYW5kcm9pZC5nbXMaHE9KR0tSVDBIR1pOVStMR2E4RjdHVml6dFY0Zz0SINw2YmUpk9suv8KGyiovt8w0ugzIFshBEZ8397Mud7KFGJW56IW0vITEMiCQ58+035rk1+cBKkkAXmqAnMkDxAk7Yeayqw8q+EmCEmKZiS94g2qKCUYUWPvu+XLKyGmEQKi0SZt3MUVqv/dgmOAzHFBw7C4kD4akTi6idzoOkGNY'), (b'authorization', b'Bearer ya29.GswB0QaUKueT9gW7c--mSz6NzHDxmVvDJZOvJkYJqXDd4ZnuDjPkQWhdC-fdm6a2PaMqUBgm_q0FtLA38BV9z0HhxHli1z5WzmLlGaEG1E7lOgsyLxduRiHQoLdRE6pXrc92EVZZj_jpkMILFJnZ_gw4G2cNqAszNpmU0LxTOwZRXRaX-nUUz77EKhMn8_y3EuSkNprq-8L25f5WJkcxih4WgLyb7cR84NjLTOn-74diddxfOydqCBcPAyLnlReqKOgkfygyLtWoyLET9nvw'), (b'grpc-accept-encoding', b'gzip'), (b'grpc-timeout', b'9253563u')]>
+::ffff:192.168.0.14:45895: HTTP2 Event from client
+  -> <DataReceived stream_id:3, flow_controlled_length:63, data:000000003a0a3875736572732f6d652f62697274>
+::ffff:192.168.0.14:45895: HTTP2 Event from client
+  -> <StreamEnded stream_id:3>
+::ffff:192.168.0.14:45895: HTTP2 Event from client
+  -> <SettingsAcknowledged changed_settings:{}>
+::ffff:192.168.0.14:45895: HTTP2 Event from server
+  -> <SettingsAcknowledged changed_settings:{}>
+::ffff:192.168.0.14:45895: request
+  -> Request(POST chromesyncpasswords-pa.googleapis.com:443/google.internal.chrome.sync.passwords.v1.Passwords/ListPriorityPreferences)
+::ffff:192.168.0.14:45895: HTTP2 Event from server
+  -> <SettingsAcknowledged changed_settings:{}>
+::ffff:192.168.0.14:45895: HTTP2 Event from server
+  -> <ResponseReceived stream_id:1, headers:[(b':status', b'200'), (b'content-disposition', b'attachment'), (b'content-type', b'application/grpc'), (b'date', b'Tue, 19 Mar 2019 05:58:39 GMT'), (b'alt-svc', b'quic=":443"; ma=2592000; v="46,44,43,39"')]>
+::ffff:192.168.0.14:45895: HTTP2 Event from server
+  -> <DataReceived stream_id:1, flow_controlled_length:1997, data:00000007c80a86020abb0175736572732f6d652f>
+::ffff:192.168.0.14:45895: HTTP2 Event from server
+  -> <TrailersReceived stream_id:1, headers:[(b'grpc-status', b'0'), (b'content-disposition', b'attachment')]>
+::ffff:192.168.0.14:45895: NotImplementedError('TrailersReceived not implemented',)
+::ffff:192.168.0.14:45895: serverdisconnect
+  -> ('chromesyncpasswords-pa.googleapis.com', 443)
+192.168.0.14:45895: clientdisconnect

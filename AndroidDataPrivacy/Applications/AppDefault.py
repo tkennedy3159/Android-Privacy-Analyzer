@@ -44,31 +44,43 @@ def analyzePostRequestDefault(flow, results):
 		info = findFormEntry(flow.requestContent, 'cert')
 		results.append(Result.Result(flow, type, info))
 	
-
-	elif (flow.url.find('https://t.appsflyer.com/api') == 0):
-		flow.source = flow.url[flow.url.find('app_id=')+7:]
-		flow.source = 'AppsFlyer ' + flow.source
+	elif (flow.url.find('appsflyer.com/api') > -1):
 		content = flow.requestContent
+		if (flow.url.find('https://t.appsflyer.com/api') == 0):
+			flow.source = flow.url[flow.url.find('app_id=')+7:]
+			flow.source = 'AppsFlyer ' + flow.source
+
+		if (flow.url.find('https://register.appsflyer.com/api') == 0):
+			flow.source = content[content.find('"app_name":')+13:]
+			flow.source = flow.source[:flow.source.find('"')] + ' AppsFlyer'
+
+		if (flow.url.find('https://events.appsflyer.com/api') == 0):
+			flow.source = flow.url[flow.url.find('app_id=')+7:]
+			if (flow.source.find('&') > -1):
+				flow.source = flow.source[:flow.source.find('&')]
+			flow.source = flow.source + ' AppsFlyer'
 
 		type = 'Ad ID'
 		info = content[content.find('"advertiserId":')+17:]
 		info = info[:info.find('"')]
 		results.append(Result.Result(flow, type, info))
 
-		type = 'Android ID'
-		info = content[content.find('"android_id":')+15:]
-		info = info[:info.find('"')]
-		results.append(Result.Result(flow, type, info))
+		if (flow.requestContent.find('"android_id":') > -1):
+			type = 'Android ID'
+			info = content[content.find('"android_id":')+15:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow, type, info))
 
 		type = 'AppsFlyer Key'
 		info = content[content.find('"appsflyerKey":')+17:]
 		info = info[:info.find('"')]
 		results.append(Result.Result(flow, type, info))
 
-		type = 'User Info: Opened App Count'
-		info = content[content.find('"counter":')+12:]
-		info = info[:info.find('"')]
-		results.append(Result.Result(flow, type, info))
+		if (flow.requestContent.find('"counter":') > -1):
+			type = 'User Info: Opened App Count'
+			info = content[content.find('"counter":')+12:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow, type, info))
 
 		if (flow.requestContent.find('"batteryLevel":') > -1):
 			type = 'System Info: Battery Level'
@@ -99,26 +111,11 @@ def analyzePostRequestDefault(flow, results):
 			info = findJSONListNonSpaced(flow.requestContent, 'sensors')
 			results.append(Result.Result(flow, type, info))
 
-		if (flow.requestContent.find('"uid":') > -1):
-			type = 'System Info: AppFlyer UID'
-			info = content[content.find('"uid":')+8:]
+		if (flow.requestContent.find('"af_gcm_token":') > -1):
+			type = 'AppFlyer GCM Token'
+			info = content[content.find('"af_gcm_token":')+17:]
 			info = info[:info.find('"')]
 			results.append(Result.Result(flow, type, info))
-
-	elif (flow.url.find('https://register.appsflyer.com/api') == 0):
-		content = flow.requestContent
-		flow.source = content[content.find('"app_name":')+13:]
-		flow.source = flow.source[:flow.source.find('"')] + ' AppFlyer'
-
-		type = 'Ad ID'
-		info = content[content.find('"advertiserId":')+17:]
-		info = info[:info.find('"')]
-		results.append(Result.Result(flow, type, info))
-
-		type = 'AppFlyer GCM Token'
-		info = content[content.find('"af_gcm_token":')+17:]
-		info = info[:info.find('"')]
-		results.append(Result.Result(flow, type, info))
 
 		type = 'System Info: App Version'
 		info = content[content.find('"app_version_name":')+21:]
@@ -130,10 +127,11 @@ def analyzePostRequestDefault(flow, results):
 		info = info[:info.find('"')]
 		results.append(Result.Result(flow, type, info))
 
-		type = 'User Info: App Launch Count'
-		info = content[content.find('"launch_counter":')+19:]
-		info = info[:info.find('"')]
-		results.append(Result.Result(flow, type, info))
+		if (flow.requestContent.find('"launch_counter":') > -1):
+			type = 'User Info: App Launch Count'
+			info = content[content.find('"launch_counter":')+19:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow, type, info))
 
 		type = 'System Info: Model'
 		brand = content[content.find('"brand":')+10:]
@@ -148,9 +146,19 @@ def analyzePostRequestDefault(flow, results):
 		info = info[:info.find('"')]
 		results.append(Result.Result(flow, type, info))
 
-		type = 'System Info: AppFlyer UID'
+		type = 'System Info: AppsFlyer UID'
 		info = content[content.find('"uid":')+8:]
 		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url == 'https://api.branch.io/v1/close'):
+		flow.source = 'Branch.io'
+		type = 'User Action: Closed App'
+		branchkey = flow.requestContent[flow.requestContent.find('"branch_key":')+15:]
+		branchkey = branchkey[:branchkey.find('"')]
+		sessionkey = flow.requestContent[flow.requestContent.find('"session_id":')+15:]
+		sessionkey = sessionkey[:sessionkey.find('"')]
+		info = 'Closed App with Branch Key ' + branchkey + ' and session ID ' + sessionkey
 		results.append(Result.Result(flow, type, info))
 
 def analyzeHeadRequestDefault(flow, results):
@@ -333,3 +341,40 @@ def findJSONListNonSpaced(content, listName):
 			index = index + 1
 	part = part[:index]
 	return part
+
+def findJSONItem(content, itemName):
+	item = content[content.find(itemName):]
+	comma = item[:item.find(',')]
+	bracket = item[:item.find('}')]
+	if (item.find(',') > -1 and item.find('}') > -1):
+		if (len(comma) < len(bracket)):
+			item = comma
+		else:
+			item = bracket
+	elif (item.find(',') > -1):
+		item = comma
+	elif (item.find('}') > -1):
+		item = bracket
+	item = item[item.find(':')+1:].strip()
+	if(item[:1] == '"' and item[len(item)-1:len(item)] == '"'):
+		item = item[1:len(item)-1]
+	return item
+
+def findJSONGroup(content, groupName):
+	group = content[content.find(groupName):]
+	bracketindex = group.find('{')
+	group = group[bracketindex+1:]
+	count = 1
+	index = 1
+	while count > 0:
+		if (group[index:index+9] == '(cut off)'):
+			count = 0
+		else:
+			if (group[index:index+1] == '{'):
+				count = count + 1
+			elif (group[index:index+1] == '}'):
+				count = count - 1
+			index = index + 1
+	group = content[content.find(groupName):]
+	group = group[:index+bracketindex]
+	return group

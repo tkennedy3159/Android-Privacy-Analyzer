@@ -3,5 +3,6 @@ AndroidDataPrivacy/__pycache__
 AndroidDataPrivacy/Applications/__pycache__
 stream.txt
 capture.txt
+capturefixed.txt
 backup.txt
 newflows.txt

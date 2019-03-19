@@ -5,3 +5,5 @@
 - Photos check if POST with lots of encoding comes when viewing photos
 - Drive check to see if openDrive is true on "Google Drive File Lookup" sources
 - Figure out why Google Maps is offline
+- Parse out Reddit activity & info dump
+- Parse out Slack and Experiments

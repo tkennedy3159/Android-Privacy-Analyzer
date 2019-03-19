@@ -47,6 +47,14 @@ def identifyUserAgent(agent, appList):
 			if (agent.find(item) > -1):
 				return 'Reddit'
 
+	if 'Slack' in appList:
+		import AndroidDataPrivacy.Applications.Slack as Slack
+		if agent in Slack.userAgents:
+			return 'Slack'
+		for item in Slack.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'Slack'
+
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 		if agent in CertInstaller.userAgents:
@@ -90,6 +98,14 @@ def identifyURL(flow, url, appList):
 			if (url.find(item) > -1):
 				return 'Reddit'
 
+	if 'Slack' in appList:
+		import AndroidDataPrivacy.Applications.Slack as Slack
+		if url in Slack.urls:
+			return 'Slack'
+		for item in Slack.partialURLs:
+			if (url.find(item) > -1):
+				return 'Slack'
+
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 		if url in CertInstaller.urls:
@@ -126,6 +142,7 @@ def translate(app):
 	or app == 'com.google.android.calendar' \
 	or app == 'com.google.android.contacts' \
 	or app == 'com.google.android.apps.maps' \
+	or app == 'com.google.android.apps.photos' \
 	or app == 'com.google.android.talk' \
 	or app == 'com.google.android.apps.docs'):
 		app = 'GSuite'
