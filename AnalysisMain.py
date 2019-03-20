@@ -5,6 +5,7 @@ import AndroidDataPrivacy.syslog_client as syslog_client
 import AndroidDataPrivacy.Flow as Flow
 import AndroidDataPrivacy.Result as Result
 import AndroidDataPrivacy.AppFinder as AppFinder
+import AndroidDataPrivacy.RawDataSearch as RawDataSearch
 
 import AndroidDataPrivacy.Applications.AppDefault as AppDefault
 import AndroidDataPrivacy.Applications.AndroidNative as AndroidNative
@@ -14,14 +15,15 @@ import AndroidDataPrivacy.Applications.Reddit as Reddit
 import AndroidDataPrivacy.Applications.Slack as Slack
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 33
-filename = "capturefixed.txt"
+testNum = 1
+filename = "backup.txt"
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
 flows = []
 results = []
-appList = ['AppDefault','AndroidNative','GSuite','Youtube', 'Reddit', 'Slack', 'CertInstaller']
+appList = ['AppDefault','AndroidNative','GSuite','Youtube', \
+'Reddit', 'Slack', 'CertInstaller', 'RawDataSearch']
 log = syslog_client.Syslog()
 
 def printFlows():
@@ -127,6 +129,9 @@ def checkFlow(flow):
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):
 		AppDefault.checkBehavior(flow, results)
 	AppDefault.syncSource(flow, results)
+	if ('RawDataSearch' in appList):
+		RawDataSearch.addNewResults(results)
+		RawDataSearch.searchFlow(flow, results)
 	print(flow.all)
 	printLogs(results)
 	#sendLogs(results)
@@ -160,6 +165,6 @@ def analyzeAll():
 
 separateFlows()
 #printFlows()
-analyzeAll()
-#testFlow(testNum)
+#analyzeAll()
+testFlow(testNum)
 #findNewFlows()

@@ -6,7 +6,8 @@ import AndroidDataPrivacy.Applications.AppDefault as AppDefault
 urls = ['https://sessions.bugsnag.com/', \
 'https://slack.com/beacon/track/']
 
-partialURLs = ['https://slack.com/api']
+partialURLs = ['https://slack.com/api', \
+'https://wss-mobile.slack.com']
 
 userAgents = ['']
 
@@ -81,7 +82,18 @@ def checkResponseHeaders(flow, headers, results):
 		results.append(Result.Result(flow, type, info))
 
 def checkGetURL(flow, results):
-	return None
+	if (flow.url.find('https://wss-mobile.slack.com') == 0):
+		flow.source = 'Slack'
+
+		if (len(AppDefault.findFormEntry(flow.requestContent, 'token')) > 25):
+			type = 'Slack Token'
+			info = AppDefault.findFormEntry(flow.requestContent, 'token')
+			#results.append(Result.Result(flow, type, info))
+
+		if (len(AppDefault.findFormEntry(flow.requestContent, 'push_token')) > 25):
+			type = 'Slack Push Token'
+			info = AppDefault.findFormEntry(flow.requestContent, 'push_token')
+			#results.append(Result.Result(flow, type, info))
 
 def checkPostURL(flow, results):
 	if (flow.url.find('https://slack.com/api') == 0):
