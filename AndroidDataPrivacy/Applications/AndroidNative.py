@@ -88,7 +88,7 @@ def checkRequestHeaders(flow, headers, results):
 			flow.source = 'DroidGuard'
 		elif (headers['User-Agent'][:14] == 'Android-Finsky' and flow.source == ''):
 			flow.source = 'Google Play Store'
-		elif (headers['User-Agent'].find('Chrome') > -1):
+		elif (headers['User-Agent'].find('Chrome') > -1 and flow.source == ''):
 			if ('referer' in headers.keys() and headers['referer'].find('android-app://com.google.android.googlequicksearchbox') == 0):
 				flow.source = 'News Feed Article'
 			else:

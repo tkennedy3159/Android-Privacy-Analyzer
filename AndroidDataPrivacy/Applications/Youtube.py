@@ -7,7 +7,7 @@ info = ''
 
 urls = []
 
-partialURLs = []
+partialURLs = ['https://youtubei.googleapis.com']
 
 userAgents = []
 
@@ -50,14 +50,40 @@ def checkRequestHeaders(flow, headers, results):
 		if (headers['User-Agent'][:26] == 'com.google.android.youtube'):
 			flow.source = 'Youtube'
 
+	if ('x-goog-device-auth' in headers.keys()):
+		type = 'System Info: Google API Device Authentication'
+		info = headers['x-goog-device-auth']
+		results.append(Result.Result(flow, type, info))
+
+	if ('x-goog-visitor-id' in headers.keys()):
+		type = 'User Info: Google Visitor ID'
+		info = headers['x-goog-visitor-id']
+		results.append(Result.Result(flow, type, info))
+
 def checkResponseHeaders(flow, headers, results):
 	return None
 
 def checkGetURL(flow, results):
-	return None
+	if (flow.url.find('https://www.googleadservices.com/pagead/conversion') == 0):
+		type = 'System Info: Youtube App Version'
+		info = AppDefault.findFormEntry(flow.requestContent, 'appversion')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Android Version'
+		info = AppDefault.findFormEntry(flow.requestContent, 'osversion')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'User Info: Youtube Screen Name'
+		info = AppDefault.findFormEntry(flow.requestContent, 'data.screen_name')
+		results.append(Result.Result(flow, type, info))
 
 def checkPostURL(flow, results):
-	return None
+	if (flow.url.find('https://youtubei.googleapis.com/youtubei') == 0 and flow.url.find('key=') > -1):
+		type = 'User Info: Google API Key'
+		info = flow.url[flow.url.find('key=')+4:]
+		if (info.find('&') > -1):
+			info = info[:info.find('&')]
+		results.append(Result.Result(flow, type, info))
 
 def checkHeadURL(flow, results):
 	return None

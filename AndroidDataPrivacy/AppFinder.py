@@ -150,6 +150,9 @@ def translate(app):
 	elif (app == 'com.reddit.frontpage'):
 		app = 'Reddit'
 
+	elif (app == 'com.google.android.youtube'):
+		app = 'Youtube'
+
 	if (app == ''):
 		app = 'AppDefault'
 	return app

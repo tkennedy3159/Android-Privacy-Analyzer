@@ -15,15 +15,16 @@ import AndroidDataPrivacy.Applications.Reddit as Reddit
 import AndroidDataPrivacy.Applications.Slack as Slack
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 1
-filename = "backup.txt"
+testNum = 9
+#filename = 'capturefixed.txt'
+filename = 'backup.txt'
 file = open(filename, "r")
-newFlowFileName = 'newflows.txt'
+#newFlowFileName = 'newflows.txt'
 capture = file.readlines()
 flows = []
 results = []
 appList = ['AppDefault','AndroidNative','GSuite','Youtube', \
-'Reddit', 'Slack', 'CertInstaller', 'RawDataSearch']
+'Reddit', 'Slack', 'CertInstaller']
 log = syslog_client.Syslog()
 
 def printFlows():
@@ -78,9 +79,15 @@ def checkForUseless(flow):
 		flow[0:flow.find('\n')].find('serverconnect') > -1 or \
 		flow[0:flow.find('\n')].find('clientdisconnect') > -1 or \
 		flow[0:flow.find('\n')].find('serverdisconnect') > -1 or \
+		flow[0:flow.find('\n')].find('Error in WebSocket connection') > -1 or \
+		flow[0:flow.find('\n')].find('WebSocket connection closed') > -1 or \
 		flow[flow.find('\n'):].find('-> Request') > -1 or \
 		flow[flow.find('\n'):].find('-> Response') > -1 or \
+		flow[0:flow.find('\n')].find(': CONNECT') > -1 or \
 		flow[0:flow.find('\n')].find('Set new server address:') > -1 or \
+		flow[0:flow.find('\n')].find('<- WebSocket 2 message') > -1 or \
+		flow[0:flow.find('\n')].find('-> WebSocket 1 message') > -1 or \
+		flow[0:flow.find('\n')].find('Failed to send error response to client:') > -1 or \
 		flow[0:flow.find('\n')].find(': HTTP/2 connection terminated by server: error code:') > -1 or \
 		flow[0:flow.find('\n')].find('Establish TLS') > -1 or \
 		flow[0:].find('Cannot establish TLS with client') > -1 or \
@@ -165,6 +172,6 @@ def analyzeAll():
 
 separateFlows()
 #printFlows()
-#analyzeAll()
-testFlow(testNum)
+analyzeAll()
+#testFlow(testNum)
 #findNewFlows()

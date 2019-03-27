@@ -88,12 +88,12 @@ def checkGetURL(flow, results):
 		if (len(AppDefault.findFormEntry(flow.requestContent, 'token')) > 25):
 			type = 'Slack Token'
 			info = AppDefault.findFormEntry(flow.requestContent, 'token')
-			#results.append(Result.Result(flow, type, info))
+			results.append(Result.Result(flow, type, info))
 
 		if (len(AppDefault.findFormEntry(flow.requestContent, 'push_token')) > 25):
 			type = 'Slack Push Token'
 			info = AppDefault.findFormEntry(flow.requestContent, 'push_token')
-			#results.append(Result.Result(flow, type, info))
+			results.append(Result.Result(flow, type, info))
 
 def checkPostURL(flow, results):
 	if (flow.url.find('https://slack.com/api') == 0):

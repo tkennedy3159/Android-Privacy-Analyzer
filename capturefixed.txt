@@ -1,88 +1,446 @@
 
 
-192.168.0.14:48801: clientconnect
-::ffff:192.168.0.14:48801: Set new server address: mdh-pa.googleapis.com:443
-::ffff:192.168.0.14:48801: serverconnect
-  -> ('mdh-pa.googleapis.com', 443)
-::ffff:192.168.0.14:48801: Establish TLS with server
-192.168.0.14:48803: clientconnect
-::ffff:192.168.0.14:48803: Set new server address: chromesyncpasswords-pa.googleapis.com:443
-::ffff:192.168.0.14:48803: serverconnect
-  -> ('chromesyncpasswords-pa.googleapis.com', 443)
-::ffff:192.168.0.14:48803: Establish TLS with server
-::ffff:192.168.0.14:48801: ALPN selected by server: grpc-exp
-::ffff:192.168.0.14:48801: Establish TLS with client
-::ffff:192.168.0.14:48801: ALPN for client: b'grpc-exp'
-::ffff:192.168.0.14:48803: ALPN selected by server: h2
-::ffff:192.168.0.14:48803: Establish TLS with client
-::ffff:192.168.0.14:48803: ALPN for client: b'h2'
-::ffff:192.168.0.14:48801: request
-  -> Request(PRI *)
-Initiating HTTP/2 connections with prior knowledge are currently not supported.
-::ffff:192.168.0.14:48801: serverdisconnect
-  -> ('mdh-pa.googleapis.com', 443)
-192.168.0.14:48801: Connection killed
-192.168.0.14:48801: clientdisconnect
-::ffff:192.168.0.14:48803: HTTP2 Event from client
-  -> <RemoteSettingsChanged changed_settings:{}>
-::ffff:192.168.0.14:48803: HTTP2 Event from server
-  -> <RemoteSettingsChanged changed_settings:{ChangedSetting(setting=SettingCodes.MAX_CONCURRENT_STREAMS, original_value=None, new_value=100), ChangedSetting(setting=SettingCodes.INITIAL_WINDOW_SIZE, original_value=65535, new_value=1048576), ChangedSetting(setting=SettingCodes.MAX_HEADER_LIST_SIZE, original_value=None, new_value=16384)}>
-::ffff:192.168.0.14:48803: HTTP2 Event from server
-  -> <WindowUpdated stream_id:0, delta:983041>
-::ffff:192.168.0.14:48803: HTTP2 Event from server
-  -> <SettingsAcknowledged changed_settings:{}>
-::ffff:192.168.0.14:48803: HTTP2 Event from client
-  -> <SettingsAcknowledged changed_settings:{ChangedSetting(setting=SettingCodes.INITIAL_WINDOW_SIZE, original_value=65535, new_value=1048576), ChangedSetting(setting=SettingCodes.MAX_CONCURRENT_STREAMS, original_value=100, new_value=100), ChangedSetting(setting=SettingCodes.MAX_HEADER_LIST_SIZE, original_value=65536, new_value=16384)}>
-::ffff:192.168.0.14:48803: HTTP2 Event from client
-  -> <RequestReceived stream_id:3, headers:[(b':scheme', b'https'), (b':method', b'POST'), (b':authority', b'chromesyncpasswords-pa.googleapis.com:443'), (b':path', b'/google.internal.chrome.sync.passwords.v1.Passwords/ListPriorityPreferences'), (b'user-agent', b'grpc-java-okhttp/1.18.0-SNAPSHOT'), (b'content-type', b'application/grpc'), (b'te', b'trailers'), (b'x-goog-spatula', b'CjYKFmNvbS5nb29nbGUuYW5kcm9pZC5nbXMaHE9KR0tSVDBIR1pOVStMR2E4RjdHVml6dFY0Zz0SICyBawIxNopJ5ZYJmnCw2FRH9sY9Q7pwNkVl3JOa0oOBGJW56IW0vITEMiCyl5XJ9eOL1kkqSQBeaoCce1Q4V6w14iJEhNIsyFcEYy2hAcsoY2pYhrxRd2nKBqZnBomAMIt+NuIdklZHl7q6MB5CQFw6S0BQcnRElHNpCXwRvN4='), (b'authorization', b'Bearer ya29.GswB0QZ-jetXwmo26YBS940DoFEdAsCbzx9y4mab67reWykH_fF0TSTsyXd8Kye0EpgIsgSlvrBUph_dbF7qaB812fEW0Q7y8lsJGE2N5MX5ybp1K-8u3ldbliMIB6jDXADSjAnfZn1c93Ki-PXWXNAIMRSl-Y3nU66SNVV1JwdoKiborPjZZRMHA7PocvLRSo7aHXcWChKCBc_owCdHYx7ayzwb5kdwdK7tmnz_ZiWqoYktIBUJoZ2Y2kkGiI48mWVie4Z0GHPP2h48NHEa'), (b'grpc-accept-encoding', b'gzip'), (b'grpc-timeout', b'9680069u')]>
-::ffff:192.168.0.14:48803: HTTP2 Event from client
-  -> <DataReceived stream_id:3, flow_controlled_length:63, data:000000003a0a3875736572732f6d652f62697274>
-::ffff:192.168.0.14:48803: HTTP2 Event from client
-  -> <StreamEnded stream_id:3>
-::ffff:192.168.0.14:48803: HTTP2 Event from client
-  -> <SettingsAcknowledged changed_settings:{}>
-::ffff:192.168.0.14:48803: HTTP2 Event from server
-  -> <SettingsAcknowledged changed_settings:{}>
-::ffff:192.168.0.14:48803: request
-  -> Request(POST chromesyncpasswords-pa.googleapis.com:443/google.internal.chrome.sync.passwords.v1.Passwords/ListPriorityPreferences)
-::ffff:192.168.0.14:48803: HTTP2 Event from server
-  -> <ResponseReceived stream_id:1, headers:[(b':status', b'200'), (b'content-disposition', b'attachment'), (b'content-type', b'application/grpc'), (b'date', b'Tue, 19 Mar 2019 21:29:33 GMT'), (b'alt-svc', b'quic=":443"; ma=2592000; v="46,44,43,39"')]>
-::ffff:192.168.0.14:48803: HTTP2 Event from server
-  -> <DataReceived stream_id:1, flow_controlled_length:1997, data:00000007c80a86020abb0175736572732f6d652f>
-::ffff:192.168.0.14:48803: HTTP2 Event from server
-  -> <TrailersReceived stream_id:1, headers:[(b'grpc-status', b'0'), (b'content-disposition', b'attachment')]>
-::ffff:192.168.0.14:48803: NotImplementedError('TrailersReceived not implemented',)
-::ffff:192.168.0.14:48803: serverdisconnect
-  -> ('chromesyncpasswords-pa.googleapis.com', 443)
-192.168.0.14:48803: clientdisconnect
-192.168.0.14:48789 -> WebSocket 1 message -> wss-mobile.slack.com:443/?channel_count_everyone=1&dp=1&encoding=gzip&flannel=2&frt=Hf-FAwEBA2ZydAH_hgABAgEBUAEKAAEBUwEKAAAA_gH9_4YB_gHUNf-BAwEBA2ZycAH_ggABBQECUnUBDAABAlRpAQwAAQJFaQEMAAECVWkBDAABAk10Af-EAAAAEP-DBQEBBFRpbWUB_4QAAAD-AYr_ggH-AVx3c3M6Ly9jZXJiZXJ1cy15anh1LmxiLnNsYWNrLW1zZ3MuY29tL3dlYnNvY2tldC93SkxBVE1jWEs3Uzc4dzZ6alJJa0JqZnluQjBoSnRJb3Z6SFdqOUpGSGFrb0xwTVJGMDlqdFVnbFI2Rnl1aDQ2Z0t2ZThnVmcydl9oMWNLVUxsUU5kWXZMYnRsdTYyUFNBeE14aXlwRWtOUTlvTXVwRVFhYmVVRnU0ZkFZYzk4aUNfT0JSWDItamNub0RaUk5pOUQ3TXNWMS1JZk8xaWszeHlURXdKQXNhWG5LZW90SW0teXR1WGZXS0JzWGxTdFdHZEU1QkFjdEdYRV9iZUFkN2MxVzVKS0RWXzdVazBXWTZMR2IzWHMwT0Y3WklOQWtmcU5nTEJKOTFVRGRwbUhqRmhqZF9VaFRDRHhCNk9kZFdsS1UwOEZjcWxZOHl2N1hEVkF0ZzlMcFgtZz0BCVQwRExQSFRCTAIJVTlTQkU2TTVZAQ8BAAAADtQjVhMDMmUx_lwAASAjsjGKezIpQMHydC6rllR2rohUzfaTT-OjkXtiVCt0eQA&no_user_changes=1&token=xoxs-13703605394-332388225202-578679183392-54b8d6c5f78cdf44a93d1b2d955948dece088f629fb3cbe96caacafc4faa829a
+::ffff:192.168.0.14:42410: request
+  -> Request(GET /videoplayback?c=ANDROID&expire=1553674020&dur=103.561&pl=34&gir=yes&ipbits=0&signature=9D7055CEBDD42A7BD58E7AA0D217FD8CA906DCBA.A3718E567B5C82FECC8756856C9AED79329D75B6&itag=247&mn=sn-bvvbax-cvne%2Csn-ab5szn76&txp=5531432&mm=31%2C29&requiressl=yes&clen=5455680&mime=video%2Fwebm&keepalive=yes&source=youtube&ms=au%2Crdu&key=yt6&mv=m&mt=1553652291&sparams=clen%2Cdur%2Cei%2Cgir%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Ckeepalive%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Crequiressl%2Csource%2Cexpire&ip=2601%3A19b%3Ac700%3Ace80%3Ae0ba%3A5d07%3A1b6c%3A7df&fvip=6&lmt=1553550988465764&id=o-AH-zrqkE_u6LncRpJqlHO4tw4ywzj2WSy75g1vr5XSRA&ei=xNqaXJnALYKJ8wTbjZ6wBw&initcwndbps=1987500&cpn=nG9wacwIsYTgUxqM&rn=8&bwe=810721%3A1&nt=116)
+::ffff:192.168.0.14:42410: response
+  -> Response(206 Partial Content, video/webm, 504.82k)
+192.168.0.14:42410: GET https://r6---sn-bvvbax-cvne.googlevideo.com/videoplayback?c=ANDROID&expire=1553674020&dur=103.561&pl=34&gir=yes&ipbits=0&signature=9D7055CEBDD42A7BD58E7AA0D217FD8CA906DCBA.A3718E567B5C82FECC8756856C9AED79329D75B6&itag=247&mn=sn-bvvbax-cvne%2Csn-ab5szn76&txp=5531432&mm=31%2C29&requiressl=yes&clen=5455680&mime=video%2Fwebm&keepalive=yes&source=youtube&ms=au%2Crdu&key=yt6&mv=m&mt=1553652291&sparams=clen%2Cdur%2Cei%2Cgir%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Ckeepalive%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Crequiressl%2Csource%2Cexpire&ip=2601%3A19b%3Ac700%3Ace80%3Ae0ba%3A5d07%3A1b6c%3A7df&fvip=6&lmt=1553550988465764&id=o-AH-zrqkE_u6LncRpJqlHO4tw4ywzj2WSy75g1vr5XSRA&ei=xNqaXJnALYKJ8wTbjZ6wBw&initcwndbps=1987500&cpn=nG9wacwIsYTgUxqM&rn=8&bwe=810721%3A1&nt=116
+    Host: r6---sn-bvvbax-cvne.googlevideo.com
+    Connection: keep-alive
+    Range: bytes=1360196-1877134
+    User-Agent: com.google.android.youtube/14.06.56(Linux; U; Android 9; en_US; PH-1 Build/PPR1.181005.099; Cronet/73.0.3683.12)
+    Accept-Encoding: identity
 
-    {"ids":["UBNQQ98R1","U0GESQU4A","U0G1EAFMF","UAA0B89F1","U2KK8BWCU","U2PEJFF5K","U0DQ4U1V0","U3HGP9M42","UA8SDMH27","U1EET7J2C","U0DLQLX6C","UA8RE5JEP","U1XS7KVR8","U0M2JMHR9","U9HA1MM7F","U53LCRA9H","U2PQ4CS67","U9SBE6M5Y","U49H53ZU0","U9SEGP483","U9WMZMULC","U227QJGHH","UBYBNQW7N","U20H1CAF2","U2115P50T","U0EE3A5GA","U2VJ43LLU","U20ET93BN","U49SP4AQM","U0G3X8P9R","U16HPRT9P","U0NP5MM9Q","U0DLR70Q1"],"type":"presence_sub"}
+    c:           ANDROID
+    expire:      1553674020
+    dur:         103.561
+    pl:          34
+    gir:         yes
+    ipbits:      0
+    signature:   9D7055CEBDD42A7BD58E7AA0D217FD8CA906DCBA.A3718E567B5C82FECC8756856C9AED79329D75B6
+    itag:        247
+    mn:          sn-bvvbax-cvne,sn-ab5szn76
+    txp:         5531432
+    mm:          31,29
+    requiressl:  yes
+    clen:        5455680
+    mime:        video/webm
+    keepalive:   yes
+    source:      youtube
+    ms:          au,rdu
+    key:         yt6
+    mv:          m
+    mt:          1553652291
+    sparams:     clen,dur,ei,gir,id,initcwndbps,ip,ipbits,itag,keepalive,lmt,mime,mm,mn,ms,mv,pl,requiressl,source,expire
+    ip:          2601:19b:c700:ce80:e0ba:5d07:1b6c:7df
+    fvip:        6
+    lmt:         1553550988465764
+    id:          o-AH-zrqkE_u6LncRpJqlHO4tw4ywzj2WSy75g1vr5XSRA
+    ei:          xNqaXJnALYKJ8wTbjZ6wBw
+    initcwndbps: 1987500
+    cpn:         nG9wacwIsYTgUxqM
+    rn:          8
+    bwe:         810721:1
+    nt:          116
 
-192.168.0.14:48789 -> WebSocket 1 message -> wss-mobile.slack.com:443/?channel_count_everyone=1&dp=1&encoding=gzip&flannel=2&frt=Hf-FAwEBA2ZydAH_hgABAgEBUAEKAAEBUwEKAAAA_gH9_4YB_gHUNf-BAwEBA2ZycAH_ggABBQECUnUBDAABAlRpAQwAAQJFaQEMAAECVWkBDAABAk10Af-EAAAAEP-DBQEBBFRpbWUB_4QAAAD-AYr_ggH-AVx3c3M6Ly9jZXJiZXJ1cy15anh1LmxiLnNsYWNrLW1zZ3MuY29tL3dlYnNvY2tldC93SkxBVE1jWEs3Uzc4dzZ6alJJa0JqZnluQjBoSnRJb3Z6SFdqOUpGSGFrb0xwTVJGMDlqdFVnbFI2Rnl1aDQ2Z0t2ZThnVmcydl9oMWNLVUxsUU5kWXZMYnRsdTYyUFNBeE14aXlwRWtOUTlvTXVwRVFhYmVVRnU0ZkFZYzk4aUNfT0JSWDItamNub0RaUk5pOUQ3TXNWMS1JZk8xaWszeHlURXdKQXNhWG5LZW90SW0teXR1WGZXS0JzWGxTdFdHZEU1QkFjdEdYRV9iZUFkN2MxVzVKS0RWXzdVazBXWTZMR2IzWHMwT0Y3WklOQWtmcU5nTEJKOTFVRGRwbUhqRmhqZF9VaFRDRHhCNk9kZFdsS1UwOEZjcWxZOHl2N1hEVkF0ZzlMcFgtZz0BCVQwRExQSFRCTAIJVTlTQkU2TTVZAQ8BAAAADtQjVhMDMmUx_lwAASAjsjGKezIpQMHydC6rllR2rohUzfaTT-OjkXtiVCt0eQA&no_user_changes=1&token=xoxs-13703605394-332388225202-578679183392-54b8d6c5f78cdf44a93d1b2d955948dece088f629fb3cbe96caacafc4faa829a
+ << 206 Partial Content 504.82k
+    Last-Modified: Mon, 25 Mar 2019 21:56:28 GMT
+    Content-Type: video/webm
+    Date: Wed, 27 Mar 2019 02:07:16 GMT
+    Expires: Wed, 27 Mar 2019 02:07:16 GMT
+    Cache-Control: private, max-age=21284
+    Content-Range: bytes 1360196-1877134/5455680
+    Accept-Ranges: bytes
+    Content-Length: 516939
+    Connection: keep-alive
+    Alt-Svc: quic=":443"; ma=2592000; v="46,44,43,39"
+    X-Content-Type-Options: nosniff
+    Server: gvs 1.0
 
-    {"type":"ping", "id":999}
+    0000000000 1f 43 b6 75 21 64 86 e7 82 4f ab a3 20 74 61 81   .C.u!d...O.. ta.
+    0000000010 00 00 80 82 49 83 42 40 4f f0 2c f6 12 38 24 1c   ....I.B@O.,..8$.
+    0000000020 18 8a 18 02 e0 7f d1 f9 be 4f f9 9f fa 1f a3 f7   .........O......
+    0000000030 b0 f6 7f c7 ee 57 da 9e 72 9f 0b f1 71 9f e1 7d   .....W..r...q..}
+    0000000040 26 23 f4 38 96 c5 eb 7b 8b b0 7a ef 5d f1 bb 66   &#.8...{..z.]..f
+    0000000050 b1 70 3e 07 c3 e6 8c 79 9f 41 ec 3e 93 f1 fb b3   .p>....y.A.>....
+    0000000060 f8 b3 2f e4 f4 38 8f dc bf f2 f2 d8 1d 4f de ab   ../..8.......O..
+    0000000070 e2 7e 9f 9f fb be 37 ef f8 df a3 48 3d 66 2e 0e   .~....7....H=f..
+    0000000080 cf f5 16 5e d6 5c 57 cb ad ce dd 17 47 75 ed 0f   ...^.\W.....Gu..
+    0000000090 d2 3f 33 c9 cd d7 bc 77 5e d2 7e 30 7e 37 48 dd   .?3....w^.~0~7H.
+    00000000a0 db bd ae 7d 25 47 77 a6 40 8c 7b f7 aa 34 0d f4   ...}%Gw.@.{..4..
+    00000000b0 a5 2a e2 78 07 2a 97 83 77 6e ed d1 c8 7e d3 e0   .*.x.*..wn...~..
+    00000000c0 69 0c 19 8d de e4 ff 97 fe 17 d3 ff 67 f8 7e 8f   i...........g.~.
+    00000000d0 ed 1f f8 ef 46 3c d2 46 f8 c9 83 60 00 00 00 16   ....F<.F...`....
+    00000000e0 7f 69 1f fb ad d4 25 85 01 df 7b 83 f8 9b d9 eb   .i....%...{.....
+    00000000f0 34 d2 3a df a3 54 dc bf 6a 0c c0 94 76 85 82 29   4.:..T..j...v..)
+    0000000100 5e 06 70 05 60 37 af 48 68 05 c5 f3 f9 e2 47 48   ^.p.`7.Hh.....GH
+    0000000110 b3 95 e1 d1 de b2 98 6f 53 e1 2d 5b a8 b1 7c b9   .......oS.-[..|.
+    0000000120 1c 1a 9b 1c d1 d8 28 4d 6b 67 e4 a0 e4 c2 31 70   ......(Mkg....1p
+    0000000130 55 c6 2d ec 1e 1c 23 80 3a 2c 8f ca 27 52 fc 0e   U.-...#.:,..'R..
+    0000000140 be 5d cc 97 26 fa e1 83 36 37 70 fc b3 2a e8 20   .]..&...67p..*. 
+    0000000150 bb 23 10 11 95 c6 1c fc 5a 1e 95 71 36 c9 cd 28   .#......Z..q6..(
+    0000000160 a9 24 36 f9 e6 36 63 25 95 50 59 75 41 3c 10 de   .$6..6c%.PYuA<..
+    0000000170 13 06 ed 10 45 97 fd 83 7d 8f 49 c1 54 b9 48 e2   ....E...}.I.T.H.
+    0000000180 b9 26 eb 4a 25 55 0a 4e 65 0e 98 96 c0 e4 9a 51   .&.J%U.Ne......Q
+    0000000190 7d 9d 84 5e 39 67 0e 4d 86 dd a1 a3 e0 c1 d0 08   }..^9g.M........
+    00000001a0 f5 ee 47 7a b2 68 a7 80 b8 79 6a 29 fc 6e 78 bd   ..Gz.h...yj).nx.
+    00000001b0 8b d6 32 fd bf ae 82 ae b4 d0 b7 e0 a1 46 68 21   ..2..........Fh!
+    00000001c0 7d ee e6 03 8f f6 5a 60 e7 73 fa d0 14 93 52 88   }.....Z`.s....R.
+    00000001d0 01 a2 fa 87 15 1f d7 30 1f ed b5 ab 9e 8d 65 67   .......0......eg
+    00000001e0 ef 59 3c 71 e7 4c 66 5c bd e9 b6 07 91 f2 fe d2   .Y<q.Lf\........
+    00000001f0 bd 99 81 a7 b6 e2 d0 50 96 63 36 ca 33 d3 e1 cc   .......P.c6.3...
+    0000000200 ee c0 c2 1f 21 c2 ca a2 6b 3d 5a 2d 6d c8 35 6b   ....!...k=Z-m.5k
+    0000000210 dc ed bb 63 f7 24 76 35 90 9d 45 b5 0a 8c c5 01   ...c.$v5..E.....
+    0000000220 87 f9 45 1d aa fb fa f8 5f 97 fa 15 ac 47 f5 07   ..E....._....G..
+    0000000230 25 e1 0f 81 54 40 bf eb 9d 12 b2 1a d5 00 6a 10   %...T@........j.
+    0000000240 78 bc 59 0a b3 85 0e 51 6b 62 c5 83 cd 0f df 13   x.Y....Qkb......
+    0000000250 5d 8a 93 78 ac 5a f7 49 20 f9 10 34 b7 58 43 8a   ]..x.Z.I ..4.XC.
+    0000000260 5d 09 95 fe 6d c9 4b 4d 2c ae 21 62 77 bf 7e 60   ]...m.KM,.!bw.~`
+    0000000270 c4 07 3c 76 a0 04 e5 66 ea e6 19 ca 56 70 4b 19   ..<v...f....VpK.
+    0000000280 e1 07 79 bc 15 93 2b 8c 4e 1a 89 ef a0 b5 5b 59   ..y...+.N.....[Y
+    0000000290 01 18 2a d4 4c b9 d1 38 86 ca 73 28 b8 05 27 28   ..*.L..8..s(..'(
+    00000002a0 46 b3 89 78 4f 88 23 ab dc 93 f8 f8 4d 5b 66 b3   F..xO.#.....M[f.
+    00000002b0 f8 73 a4 e2 2a 28 8a 17 2d 14 29 64 66 79 2c a5   .s..*(..-.)dfy,.
+    00000002c0 eb 04 9b b1 ab f9 a5 2c 66 af cd 3a 00 27 92 26   .......,f..:.'.&
+    00000002d0 22 d1 2d 0a 04 bc 3a d7 98 71 cb a5 89 f3 86 d2   ".-...:..q......
+    00000002e0 2a 0f 92 7f f0 17 c5 69 42 94 86 5e 2b f1 31 bc   *......iB..^+.1.
+    00000002f0 73 de 6b db da 8f 46 64 91 4f fe 4d d6 b7 6e 6a   s.k...Fd.O.M..nj
+    0000000300 fe 54 1e 5f 9f 46 5c 9d 71 82 de 5e e2 f7 58 98   .T._.F\.q..^..X.
+    0000000310 b2 b7 75 ef 9d de 02 f0 2a ad 59 f2 ee 8c 86 a9   ..u.....*.Y.....
+    0000000320 ec 70 ae 53 9e f1 bb b7 24 f5 d1 69 59 11 14 6a   .p.S....$..iY..j
+    0000000330 48 2a 1f 7d f2 c9 06 c2 e2 d4 90 21 22 27 13 b5   H*.}.......!"'..
+    0000000340 ab 76 12 10 ba c9 65 dc 35 f8 7a 28 51 41 52 bd   .v....e.5.z(QAR.
+    0000000350 29 17 5e 55 07 08 ce ec 67 56 5e 90 b3 12 bc cf   ).^U....gV^.....
+    0000000360 7b 7d b9 60 fd 4e b2 33 cd 56 33 bf a7 09 94 0f   {}.`.N.3.V3.....
+    0000000370 5c b7 ef 20 6f a0 68 38 74 0a a8 f6 82 21 04 02   \.. o.h8t....!..
+    0000000380 17 4f e8 8a a4 a7 b4 64 01 ef 83 1b f7 6c 64 cf   .O.....d.....ld.
+    0000000390 35 89 aa d1 7e ef 99 a3 d6 13 9d 35 7a 02 11 cd   5...~......5z...
+    00000003a0 44 18 59 16 f5 1f df 0a 85 4a 03 eb 63 11 b6 eb   D.Y......J..c...
+    00000003b0 ef 27 a3 0e 8c 91 fe 31 3c f5 39 3b ff 5e 0f af   .'.....1<.9;.^..
+    00000003c0 a6 fc 55 d3 16 55 ae 14 8d af 35 89 4a f8 24 f8   ..U..U....5.J.$.
+    00000003d0 22 fe 01 41 fa 65 08 8c b9 0f bf e4 34 4c 9d 49   "..A.e......4L.I
+    00000003e0 01 a0 da be b3 29 11 89 16 fd 19 78 74 39 ef 1b   .....).....xt9..
+    00000003f0 93 8e 06 3c 0f 21 09 4b bd 35 87 f4 78 fd 7d eb   ...<.!.K.5..x.}.
+    0000000400 53 8f 11 81 6c 02 eb a8 e6 86 3a 02 d8 51 de 53   S...l.....:..Q.S
+    0000000410 77 a8 ce ff 7f b7 6d 62 a6 04 74 39 6d cc f9 25   w.....mb..t9m..%
+    0000000420 3b 5b 7c 21 46 de c1 22 9f 33 e6 27 e2 ea e6 a2   ;[|!F..".3.'....
+    0000000430 40 8d 70 eb 2b 8b 00 f6 8f 1a ab 3a cf a4 77 af   @.p.+......:..w.
+    0000000440 2d 72 df 86 d2 14 c6 91 38 46 9e 7c 1a 47 a2 92   -r......8F.|.G..
+    0000000450 c9 03 ca d9 9e 72 90 69 b9 22 7b 7c 0c e2 e4 74   .....r.i."{|...t
+    (cut off)
 
-192.168.0.14:48789 <- WebSocket 2 message <- wss-mobile.slack.com:443/?channel_count_everyone=1&dp=1&encoding=gzip&flannel=2&frt=Hf-FAwEBA2ZydAH_hgABAgEBUAEKAAEBUwEKAAAA_gH9_4YB_gHUNf-BAwEBA2ZycAH_ggABBQECUnUBDAABAlRpAQwAAQJFaQEMAAECVWkBDAABAk10Af-EAAAAEP-DBQEBBFRpbWUB_4QAAAD-AYr_ggH-AVx3c3M6Ly9jZXJiZXJ1cy15anh1LmxiLnNsYWNrLW1zZ3MuY29tL3dlYnNvY2tldC93SkxBVE1jWEs3Uzc4dzZ6alJJa0JqZnluQjBoSnRJb3Z6SFdqOUpGSGFrb0xwTVJGMDlqdFVnbFI2Rnl1aDQ2Z0t2ZThnVmcydl9oMWNLVUxsUU5kWXZMYnRsdTYyUFNBeE14aXlwRWtOUTlvTXVwRVFhYmVVRnU0ZkFZYzk4aUNfT0JSWDItamNub0RaUk5pOUQ3TXNWMS1JZk8xaWszeHlURXdKQXNhWG5LZW90SW0teXR1WGZXS0JzWGxTdFdHZEU1QkFjdEdYRV9iZUFkN2MxVzVKS0RWXzdVazBXWTZMR2IzWHMwT0Y3WklOQWtmcU5nTEJKOTFVRGRwbUhqRmhqZF9VaFRDRHhCNk9kZFdsS1UwOEZjcWxZOHl2N1hEVkF0ZzlMcFgtZz0BCVQwRExQSFRCTAIJVTlTQkU2TTVZAQ8BAAAADtQjVhMDMmUx_lwAASAjsjGKezIpQMHydC6rllR2rohUzfaTT-OjkXtiVCt0eQA&no_user_changes=1&token=xoxs-13703605394-332388225202-578679183392-54b8d6c5f78cdf44a93d1b2d955948dece088f629fb3cbe96caacafc4faa829a
+::ffff:192.168.0.14:42384: request
+  -> Request(GET /initplayback?source=youtube&itag=0&pvi=0&pai=0&owc=yes&id=86e1ab3d246096ef&rn=13&cms_redirect=yes&mip=2601:19b:c700:ce80:e0ba:5d07:1b6c:7df&mm=31&mn=sn-bvvbax-cvne&ms=au&mt=1553652291&mv=m&pl=34)
+::ffff:192.168.0.14:42380: request
+  -> Request(GET /initplayback?source=youtube&itag=0&pvi=0&pai=0&owc=yes&id=56882564a94ff429&rn=12&cms_redirect=yes&mip=2601:19b:c700:ce80:e0ba:5d07:1b6c:7df&mm=31&mn=sn-bvvbax-cvne&ms=au&mt=1553652291&mv=m&pl=34)
+::ffff:192.168.0.14:42382: request
+  -> Request(GET /initplayback?source=youtube&itag=0&pvi=0&pai=0&owc=yes&id=70212456081b0a6d&rn=14&cms_redirect=yes&mip=2601:19b:c700:ce80:e0ba:5d07:1b6c:7df&mm=31&mn=sn-bvvbax-cvnl&ms=au&mt=1553652291&mv=m&pl=34)
+::ffff:192.168.0.14:42380: response
+  -> Response(204 No Content, no content)
+192.168.0.14:42380: GET https://r8---sn-bvvbax-cvne.googlevideo.com/initplayback?source=youtube&itag=0&pvi=0&pai=0&owc=yes&id=56882564a94ff429&rn=12&cms_redirect=yes&mip=2601:19b:c700:ce80:e0ba:5d07:1b6c:7df&mm=31&mn=sn-bvvbax-cvne&ms=au&mt=1553652291&mv=m&pl=34
+    Host: r8---sn-bvvbax-cvne.googlevideo.com
+    Connection: keep-alive
+    User-Agent: com.google.android.youtube/14.06.56(Linux; U; Android 9; en_US; PH-1 Build/PPR1.181005.099; Cronet/73.0.3683.12)
+    Accept-Encoding: gzip, deflate
 
-    0000000000 01 1f 8b 08 00 00 00 00 00 00 ff aa 56 2a a9 2c   ............V*.,
-    0000000010 48 55 b2 52 2a c8 cf 4b 57 d2 51 50 2a 4a 2d c8   HU.R*..KW.QP*J-.
-    0000000020 a9 8c 2f c9 57 b2 b2 b4 b4 ac 05 04 00 00 ff ff   ../.W...........
-    0000000030 5b 60 c0 78 1f 00 00 00                           [`.x....
+    source:       youtube
+    itag:         0
+    pvi:          0
+    pai:          0
+    owc:          yes
+    id:           56882564a94ff429
+    rn:           12
+    cms_redirect: yes
+    mip:          2601:19b:c700:ce80:e0ba:5d07:1b6c:7df
+    mm:           31
+    mn:           sn-bvvbax-cvne
+    ms:           au
+    mt:           1553652291
+    mv:           m
+    pl:           34
 
-192.168.0.14:48789 -> WebSocket 1 message -> wss-mobile.slack.com:443/?channel_count_everyone=1&dp=1&encoding=gzip&flannel=2&frt=Hf-FAwEBA2ZydAH_hgABAgEBUAEKAAEBUwEKAAAA_gH9_4YB_gHUNf-BAwEBA2ZycAH_ggABBQECUnUBDAABAlRpAQwAAQJFaQEMAAECVWkBDAABAk10Af-EAAAAEP-DBQEBBFRpbWUB_4QAAAD-AYr_ggH-AVx3c3M6Ly9jZXJiZXJ1cy15anh1LmxiLnNsYWNrLW1zZ3MuY29tL3dlYnNvY2tldC93SkxBVE1jWEs3Uzc4dzZ6alJJa0JqZnluQjBoSnRJb3Z6SFdqOUpGSGFrb0xwTVJGMDlqdFVnbFI2Rnl1aDQ2Z0t2ZThnVmcydl9oMWNLVUxsUU5kWXZMYnRsdTYyUFNBeE14aXlwRWtOUTlvTXVwRVFhYmVVRnU0ZkFZYzk4aUNfT0JSWDItamNub0RaUk5pOUQ3TXNWMS1JZk8xaWszeHlURXdKQXNhWG5LZW90SW0teXR1WGZXS0JzWGxTdFdHZEU1QkFjdEdYRV9iZUFkN2MxVzVKS0RWXzdVazBXWTZMR2IzWHMwT0Y3WklOQWtmcU5nTEJKOTFVRGRwbUhqRmhqZF9VaFRDRHhCNk9kZFdsS1UwOEZjcWxZOHl2N1hEVkF0ZzlMcFgtZz0BCVQwRExQSFRCTAIJVTlTQkU2TTVZAQ8BAAAADtQjVhMDMmUx_lwAASAjsjGKezIpQMHydC6rllR2rohUzfaTT-OjkXtiVCt0eQA&no_user_changes=1&token=xoxs-13703605394-332388225202-578679183392-54b8d6c5f78cdf44a93d1b2d955948dece088f629fb3cbe96caacafc4faa829a
+ << 204 No Content 0b
+    Content-Type: multipart/byteranges; boundary=GoogMRZ6F3DEQ1N4
+    Date: Wed, 27 Mar 2019 02:07:17 GMT
+    Server: gvs 1.0
+    Content-Length: 0
+    X-Google-Security-Signals: FRAMEWORK=HTTPSERVER2
+    X-XSS-Protection: 1; mode=block
+    X-Frame-Options: SAMEORIGIN
 
-    {"ids":["U9SBE6M5Y","U49H53ZU0","U9SEGP483"],"type":"presence_sub"}
+::ffff:192.168.0.14:42382: response
+  -> Response(204 No Content, no content)
+192.168.0.14:42382: GET https://r10---sn-bvvbax-cvnl.googlevideo.com/initplayback?source=youtube&itag=0&pvi=0&pai=0&owc=yes&id=70212456081b0a6d&rn=14&cms_redirect=yes&mip=2601:19b:c700:ce80:e0ba:5d07:1b6c:7df&mm=31&mn=sn-bvvbax-cvnl&ms=au&mt=1553652291&mv=m&pl=34
+    Host: r10---sn-bvvbax-cvnl.googlevideo.com
+    Connection: keep-alive
+    User-Agent: com.google.android.youtube/14.06.56(Linux; U; Android 9; en_US; PH-1 Build/PPR1.181005.099; Cronet/73.0.3683.12)
+    Accept-Encoding: gzip, deflate
 
-192.168.0.14:48789 -> WebSocket 1 message -> wss-mobile.slack.com:443/?channel_count_everyone=1&dp=1&encoding=gzip&flannel=2&frt=Hf-FAwEBA2ZydAH_hgABAgEBUAEKAAEBUwEKAAAA_gH9_4YB_gHUNf-BAwEBA2ZycAH_ggABBQECUnUBDAABAlRpAQwAAQJFaQEMAAECVWkBDAABAk10Af-EAAAAEP-DBQEBBFRpbWUB_4QAAAD-AYr_ggH-AVx3c3M6Ly9jZXJiZXJ1cy15anh1LmxiLnNsYWNrLW1zZ3MuY29tL3dlYnNvY2tldC93SkxBVE1jWEs3Uzc4dzZ6alJJa0JqZnluQjBoSnRJb3Z6SFdqOUpGSGFrb0xwTVJGMDlqdFVnbFI2Rnl1aDQ2Z0t2ZThnVmcydl9oMWNLVUxsUU5kWXZMYnRsdTYyUFNBeE14aXlwRWtOUTlvTXVwRVFhYmVVRnU0ZkFZYzk4aUNfT0JSWDItamNub0RaUk5pOUQ3TXNWMS1JZk8xaWszeHlURXdKQXNhWG5LZW90SW0teXR1WGZXS0JzWGxTdFdHZEU1QkFjdEdYRV9iZUFkN2MxVzVKS0RWXzdVazBXWTZMR2IzWHMwT0Y3WklOQWtmcU5nTEJKOTFVRGRwbUhqRmhqZF9VaFRDRHhCNk9kZFdsS1UwOEZjcWxZOHl2N1hEVkF0ZzlMcFgtZz0BCVQwRExQSFRCTAIJVTlTQkU2TTVZAQ8BAAAADtQjVhMDMmUx_lwAASAjsjGKezIpQMHydC6rllR2rohUzfaTT-OjkXtiVCt0eQA&no_user_changes=1&token=xoxs-13703605394-332388225202-578679183392-54b8d6c5f78cdf44a93d1b2d955948dece088f629fb3cbe96caacafc4faa829a
+    source:       youtube
+    itag:         0
+    pvi:          0
+    pai:          0
+    owc:          yes
+    id:           70212456081b0a6d
+    rn:           14
+    cms_redirect: yes
+    mip:          2601:19b:c700:ce80:e0ba:5d07:1b6c:7df
+    mm:           31
+    mn:           sn-bvvbax-cvnl
+    ms:           au
+    mt:           1553652291
+    mv:           m
+    pl:           34
 
-    {"ids":[],"type":"presence_sub"}
+ << 204 No Content 0b
+    Content-Type: multipart/byteranges; boundary=GoogMRZ6F3DEQ1N4
+    Date: Wed, 27 Mar 2019 02:07:17 GMT
+    Server: gvs 1.0
+    Content-Length: 0
+    X-Google-Security-Signals: FRAMEWORK=HTTPSERVER2
+    X-XSS-Protection: 1; mode=block
+    X-Frame-Options: SAMEORIGIN
 
-192.168.0.14:48805: clientconnect
-::ffff:192.168.0.14:48805: Set new server address: mdh-pa.googleapis.com:443
-::ffff:192.168.0.14:48805: serverconnect
-  -> ('mdh-pa.googleapis.com', 443)
-::ffff:192.168.0.14:48805: Establish TLS with server
-::ffff:192.168.0.14:48805: ALPN selected by server: grpc-exp
-::ffff:192.168.0.14:48805: Establish TLS with client
-::ffff:192.168.0.14:48805: ALPN for client: b'grpc-exp'
+::ffff:192.168.0.14:42384: response
+  -> Response(204 No Content, no content)
+192.168.0.14:42384: GET https://r8---sn-bvvbax-cvne.googlevideo.com/initplayback?source=youtube&itag=0&pvi=0&pai=0&owc=yes&id=86e1ab3d246096ef&rn=13&cms_redirect=yes&mip=2601:19b:c700:ce80:e0ba:5d07:1b6c:7df&mm=31&mn=sn-bvvbax-cvne&ms=au&mt=1553652291&mv=m&pl=34
+    Host: r8---sn-bvvbax-cvne.googlevideo.com
+    Connection: keep-alive
+    User-Agent: com.google.android.youtube/14.06.56(Linux; U; Android 9; en_US; PH-1 Build/PPR1.181005.099; Cronet/73.0.3683.12)
+    Accept-Encoding: gzip, deflate
+
+    source:       youtube
+    itag:         0
+    pvi:          0
+    pai:          0
+    owc:          yes
+    id:           86e1ab3d246096ef
+    rn:           13
+    cms_redirect: yes
+    mip:          2601:19b:c700:ce80:e0ba:5d07:1b6c:7df
+    mm:           31
+    mn:           sn-bvvbax-cvne
+    ms:           au
+    mt:           1553652291
+    mv:           m
+    pl:           34
+
+ << 204 No Content 0b
+    Content-Type: multipart/byteranges; boundary=GoogMRZ6F3DEQ1N4
+    Date: Wed, 27 Mar 2019 02:07:17 GMT
+    Server: gvs 1.0
+    Content-Length: 0
+    X-Google-Security-Signals: FRAMEWORK=HTTPSERVER2
+    X-XSS-Protection: 1; mode=block
+    X-Frame-Options: SAMEORIGIN
+
+::ffff:192.168.0.14:42408: HTTP2 Event from client
+  -> <RequestReceived stream_id:9, headers:[(b':method', b'GET'), (b':authority', b's.youtube.com'), (b':scheme', b'https'), (b':path', b'/api/stats/watchtime?plid=AAWFCeSl0kW2zqYK&of=DJRQcEUGa1Omwnk4UNNaDA&autoplay=1&docid=Bt5k5Ix_wS8&cl=240375459&adformat=1_8&uga=m22&vm=CAEQABgE&ns=yt&len=104&fexp=11202606%2C11206652%2C11207906%2C11209588%2C11210480%2C11211208%2C11211411%2C11211468%2C11211647%2C11211695%2C23701349%2C23710476%2C23726564%2C23735347%2C23736684%2C23738543%2C23744176%2C23751767%2C23752869%2C23754502%2C23755886%2C23755898%2C23760558%2C23762649%2C23769163%2C23774933%2C23776810%2C23777630%2C23783626%2C23785132%2C23785187%2C23785333%2C23789756%2C23790861%2C23791157%2C23791604%2C23794403%2C23795555%2C23795633%2C23795687%2C23796356%2C23797625%2C23797657%2C23798241%2C23798786%2C23798891%2C23798891%2C23799235%2C23799361%2C23799630%2C23800467%2C23800732%2C23801087%2C23801181%2C23801270%2C23801461%2C23801710%2C23801808%2C23802043%2C23802101%2C23802310%2C23802683%2C23802828%2C39781156%2C9441148%2C9449243%2C9456940%2C9469074%2C9471655%2C9479784%2C9484626&ei=xNqaXJnALYKJ8wTbjZ6wBw&mos=1&el=adunit&cpn=nG9wacwIsYTgUxqM&ver=2&cplatform=mobile&cbr=com.google.android.youtube&c=android&cmodel=PH-1&cos=Android&csdk=28&cbrver=14.06.56&cver=14.06.56&cosver=9&cbrand=Essential%20Products&cplayer=ANDROID_EXOPLAYER&rt=20.0&lact=33073&fmt=247&afmt=140&state=playing&volume=0&st=8.8&vis=5&conn=3&uao=0&et=18.8&rti=20.0&rtn=30.0'), (b'authorization', b'Bearer ya29.GtMB2QYBFRu9DPNG9zkHWKxyUAy8o2p2C0So8O34u3ooRxgGZNCMPISbTqZY8rfmpiEisPWxXorkM_b4k-yL8jo4eFKUuMB83Ydw5ToUoLqz-uYQN6BKbemZh-OBbGFl_mrq6O0ymjZPHPDngU7tMyRvnb95OL51FuOJcS8avxhmAiReaXQ-GxCZNMHqCqxOP9ru6eg6utfRJPirIYIYQAVQn8mGzIReyLtxK2MaMIBV9cmihzXCHOiqvHEfKUVEXHeKoeyb6PhxwdBz23oEPUvJ-hzHzA'), (b'x-goog-event-time', b'1553652441519'), (b'x-goog-visitor-id', b'CgtJLTF2SjFONEgtOCi5tevkBQ%3D%3D'), (b'x-goog-request-time', b'1553652441584'), (b'user-agent', b'com.google.android.youtube/14.06.56(Linux; U; Android 9; en_US; PH-1 Build/PPR1.181005.099) gzip'), (b'accept-encoding', b'gzip, deflate')]>
+::ffff:192.168.0.14:42408: HTTP2 Event from client
+  -> <StreamEnded stream_id:9>
+::ffff:192.168.0.14:42408: HTTP2 Event from client
+  -> <PriorityUpdated stream_id:9, weight:183, depends_on:0, exclusive:True>
+::ffff:192.168.0.14:42408: HTTP/2 PRIORITY frame suppressed. Use --http2-priority to enable forwarding.
+::ffff:192.168.0.14:42408: request
+  -> Request(GET s.youtube.com:443/api/stats/watchtime?plid=AAWFCeSl0kW2zqYK&of=DJRQcEUGa1Omwnk4UNNaDA&autoplay=1&docid=Bt5k5Ix_wS8&cl=240375459&adformat=1_8&uga=m22&vm=CAEQABgE&ns=yt&len=104&fexp=11202606%2C11206652%2C11207906%2C11209588%2C11210480%2C11211208%2C11211411%2C11211468%2C11211647%2C11211695%2C23701349%2C23710476%2C23726564%2C23735347%2C23736684%2C23738543%2C23744176%2C23751767%2C23752869%2C23754502%2C23755886%2C23755898%2C23760558%2C23762649%2C23769163%2C23774933%2C23776810%2C23777630%2C23783626%2C23785132%2C23785187%2C23785333%2C23789756%2C23790861%2C23791157%2C23791604%2C23794403%2C23795555%2C23795633%2C23795687%2C23796356%2C23797625%2C23797657%2C23798241%2C23798786%2C23798891%2C23798891%2C23799235%2C23799361%2C23799630%2C23800467%2C23800732%2C23801087%2C23801181%2C23801270%2C23801461%2C23801710%2C23801808%2C23802043%2C23802101%2C23802310%2C23802683%2C23802828%2C39781156%2C9441148%2C9449243%2C9456940%2C9469074%2C9471655%2C9479784%2C9484626&ei=xNqaXJnALYKJ8wTbjZ6wBw&mos=1&el=adunit&cpn=nG9wacwIsYTgUxqM&ver=2&cplatform=mobile&cbr=com.google.android.youtube&c=android&cmodel=PH-1&cos=Android&csdk=28&cbrver=14.06.56&cver=14.06.56&cosver=9&cbrand=Essential%20Products&cplayer=ANDROID_EXOPLAYER&rt=20.0&lact=33073&fmt=247&afmt=140&state=playing&volume=0&st=8.8&vis=5&conn=3&uao=0&et=18.8&rti=20.0&rtn=30.0)
+::ffff:192.168.0.14:42408: HTTP/2 PRIORITY information in HEADERS frame suppressed. Use --http2-priority to enable forwarding.
+::ffff:192.168.0.14:42408: HTTP2 Event from server
+  -> <ResponseReceived stream_id:9, headers:[(b':status', b'204'), (b'content-type', b'text/html; charset=UTF-8'), (b'date', b'Wed, 27 Mar 2019 02:07:21 GMT'), (b'pragma', b'no-cache'), (b'expires', b'Fri, 01 Jan 1990 00:00:00 GMT'), (b'cache-control', b'no-cache, must-revalidate'), (b'x-content-type-options', b'nosniff'), (b'server', b'Video Stats Server'), (b'content-length', b'0'), (b'x-xss-protection', b'1; mode=block'), (b'x-frame-options', b'SAMEORIGIN'), (b'alt-svc', b'quic=":443"; ma=2592000; v="46,44,43,39"')]>
+::ffff:192.168.0.14:42408: HTTP2 Event from server
+  -> <DataReceived stream_id:9, flow_controlled_length:0, data:>
+::ffff:192.168.0.14:42408: HTTP2 Event from server
+  -> <StreamEnded stream_id:9>
+::ffff:192.168.0.14:42408: response
+  -> Response(204 , no content)
+192.168.0.14:42408: GET https://s.youtube.com/api/stats/watchtime?plid=AAWFCeSl0kW2zqYK&of=DJRQcEUGa1Omwnk4UNNaDA&autoplay=1&docid=Bt5k5Ix_wS8&cl=240375459&adformat=1_8&uga=m22&vm=CAEQABgE&ns=yt&len=104&fexp=11202606%2C11206652%2C11207906%2C11209588%2C11210480%2C11211208%2C11211411%2C11211468%2C11211647%2C11211695%2C23701349%2C23710476%2C23726564%2C23735347%2C23736684%2C23738543%2C23744176%2C23751767%2C23752869%2C23754502%2C23755886%2C23755898%2C23760558%2C23762649%2C23769163%2C23774933%2C23776810%2C23777630%2C23783626%2C23785132%2C23785187%2C23785333%2C23789756%2C23790861%2C23791157%2C23791604%2C23794403%2C23795555%2C23795633%2C23795687%2C23796356%2C23797625%2C23797657%2C23798241%2C23798786%2C23798891%2C23798891%2C23799235%2C23799361%2C23799630%2C23800467%2C23800732%2C23801087%2C23801181%2C23801270%2C23801461%2C23801710%2C23801808%2C23802043%2C23802101%2C23802310%2C23802683%2C23802828%2C39781156%2C9441148%2C9449243%2C9456940%2C9469074%2C9471655%2C9479784%2C9484626&ei=xNqaXJnALYKJ8wTbjZ6wBw&mos=1&el=adunit&cpn=nG9wacwIsYTgUxqM&ver=2&cplatform=mobile&cbr=com.google.android.youtube&c=android&cmodel=PH-1&cos=Android&csdk=28&cbrver=14.06.56&cver=14.06.56&cosver=9&cbrand=Essential%20Products&cplayer=ANDROID_EXOPLAYER&rt=20.0&lact=33073&fmt=247&afmt=140&state=playing&volume=0&st=8.8&vis=5&conn=3&uao=0&et=18.8&rti=20.0&rtn=30.0 HTTP/2.0
+    :authority: s.youtube.com
+    authorization: Bearer ya29.GtMB2QYBFRu9DPNG9zkHWKxyUAy8o2p2C0So8O34u3ooRxgGZNCMPISbTqZY8rfmpiEisPWxXorkM_b4k-yL8jo4eFKUuMB83Ydw5ToUoLqz-uYQN6BKbemZh-OBbGFl_mrq6O0ymjZPHPDngU7tMyRvnb95OL51FuOJcS8avxhmAiReaXQ-GxCZNMHqCqxOP9ru6eg6utfRJPirIYIYQAVQn8mGzIReyLtxK2MaMIBV9cmihzXCHOiqvHEfKUVEXHeKoeyb6PhxwdBz23oEPUvJ-hzHzA
+    x-goog-event-time: 1553652441519
+    x-goog-visitor-id: CgtJLTF2SjFONEgtOCi5tevkBQ%3D%3D
+    x-goog-request-time: 1553652441584
+    user-agent: com.google.android.youtube/14.06.56(Linux; U; Android 9; en_US; PH-1 Build/PPR1.181005.099) gzip
+    accept-encoding: gzip, deflate
+
+    plid:      AAWFCeSl0kW2zqYK
+    of:        DJRQcEUGa1Omwnk4UNNaDA
+    autoplay:  1
+    docid:     Bt5k5Ix_wS8
+    cl:        240375459
+    adformat:  1_8
+    uga:       m22
+    vm:        CAEQABgE
+    ns:        yt
+    len:       104
+    fexp:      11202606,11206652,11207906,11209588,11210480,11211208,11211411,11211468,11211647,11211695,23701349,23710476,23726564,23735347,23736684,23738543,23744176,23751767,23752869,23754502,23755886,23755898,23760558,23762649,23769163,23774933,23776810,23777630,23783626,23785132,23785187,23785333,23789756,23790861,23791157,23791604,23794403,23795555,23795633,23795687,23796356,23797625,23797657,23798241,23798786,23798891,23798891,23799235,23799361,23799630,23800467,23800732,23801087,23801181,23801270,23801461,23801710,23801808,23802043,23802101,23802310,23802683,23802828,39781156,9441148,9449243,9456940,9469074,9471655,9479784,9484626
+    ei:        xNqaXJnALYKJ8wTbjZ6wBw
+    mos:       1
+    el:        adunit
+    cpn:       nG9wacwIsYTgUxqM
+    ver:       2
+    cplatform: mobile
+    cbr:       com.google.android.youtube
+    c:         android
+    cmodel:    PH-1
+    cos:       Android
+    csdk:      28
+    cbrver:    14.06.56
+    cver:      14.06.56
+    cosver:    9
+    cbrand:    Essential Products
+    cplayer:   ANDROID_EXOPLAYER
+    rt:        20.0
+    lact:      33073
+    fmt:       247
+    afmt:      140
+    state:     playing
+    volume:    0
+    st:        8.8
+    vis:       5
+    conn:      3
+    uao:       0
+    et:        18.8
+    rti:       20.0
+    rtn:       30.0
+
+ << 204  0b
+    content-type: text/html; charset=UTF-8
+    date: Wed, 27 Mar 2019 02:07:21 GMT
+    pragma: no-cache
+    expires: Fri, 01 Jan 1990 00:00:00 GMT
+    cache-control: no-cache, must-revalidate
+    x-content-type-options: nosniff
+    server: Video Stats Server
+    content-length: 0
+    x-xss-protection: 1; mode=block
+    x-frame-options: SAMEORIGIN
+    alt-svc: quic=":443"; ma=2592000; v="46,44,43,39"
+
+::ffff:192.168.0.14:42410: request
+  -> Request(GET /videoplayback?c=ANDROID&expire=1553674020&dur=103.630&pl=34&gir=yes&ipbits=0&signature=7CD376BB38499A6A0DE5501E8458E220292A866F.69D066D93F9EC98CBCF0734DD29A1BB97F4A164A&itag=140&mn=sn-bvvbax-cvne%2Csn-ab5szn76&txp=5531432&mm=31%2C29&requiressl=yes&clen=1677906&mime=audio%2Fmp4&keepalive=yes&source=youtube&ms=au%2Crdu&key=yt6&mv=m&mt=1553652291&sparams=clen%2Cdur%2Cei%2Cgir%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Ckeepalive%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Crequiressl%2Csource%2Cexpire&ip=2601%3A19b%3Ac700%3Ace80%3Ae0ba%3A5d07%3A1b6c%3A7df&fvip=6&lmt=1553550784311281&id=o-AH-zrqkE_u6LncRpJqlHO4tw4ywzj2WSy75g1vr5XSRA&ei=xNqaXJnALYKJ8wTbjZ6wBw&initcwndbps=1987500&cpn=nG9wacwIsYTgUxqM&rn=9&bwe=1084520%3A1&nt=116)
+::ffff:192.168.0.14:42410: response
+  -> Response(206 Partial Content, audio/mp4, 157.83k)
+192.168.0.14:42410: GET https://r6---sn-bvvbax-cvne.googlevideo.com/videoplayback?c=ANDROID&expire=1553674020&dur=103.630&pl=34&gir=yes&ipbits=0&signature=7CD376BB38499A6A0DE5501E8458E220292A866F.69D066D93F9EC98CBCF0734DD29A1BB97F4A164A&itag=140&mn=sn-bvvbax-cvne%2Csn-ab5szn76&txp=5531432&mm=31%2C29&requiressl=yes&clen=1677906&mime=audio%2Fmp4&keepalive=yes&source=youtube&ms=au%2Crdu&key=yt6&mv=m&mt=1553652291&sparams=clen%2Cdur%2Cei%2Cgir%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Ckeepalive%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Crequiressl%2Csource%2Cexpire&ip=2601%3A19b%3Ac700%3Ace80%3Ae0ba%3A5d07%3A1b6c%3A7df&fvip=6&lmt=1553550784311281&id=o-AH-zrqkE_u6LncRpJqlHO4tw4ywzj2WSy75g1vr5XSRA&ei=xNqaXJnALYKJ8wTbjZ6wBw&initcwndbps=1987500&cpn=nG9wacwIsYTgUxqM&rn=9&bwe=1084520%3A1&nt=116
+    Host: r6---sn-bvvbax-cvne.googlevideo.com
+    Connection: keep-alive
+    Range: bytes=485826-647443
+    User-Agent: com.google.android.youtube/14.06.56(Linux; U; Android 9; en_US; PH-1 Build/PPR1.181005.099; Cronet/73.0.3683.12)
+    Accept-Encoding: identity
+
+    c:           ANDROID
+    expire:      1553674020
+    dur:         103.630
+    pl:          34
+    gir:         yes
+    ipbits:      0
+    signature:   7CD376BB38499A6A0DE5501E8458E220292A866F.69D066D93F9EC98CBCF0734DD29A1BB97F4A164A
+    itag:        140
+    mn:          sn-bvvbax-cvne,sn-ab5szn76
+    txp:         5531432
+    mm:          31,29
+    requiressl:  yes
+    clen:        1677906
+    mime:        audio/mp4
+    keepalive:   yes
+    source:      youtube
+    ms:          au,rdu
+    key:         yt6
+    mv:          m
+    mt:          1553652291
+    sparams:     clen,dur,ei,gir,id,initcwndbps,ip,ipbits,itag,keepalive,lmt,mime,mm,mn,ms,mv,pl,requiressl,source,expire
+    ip:          2601:19b:c700:ce80:e0ba:5d07:1b6c:7df
+    fvip:        6
+    lmt:         1553550784311281
+    id:          o-AH-zrqkE_u6LncRpJqlHO4tw4ywzj2WSy75g1vr5XSRA
+    ei:          xNqaXJnALYKJ8wTbjZ6wBw
+    initcwndbps: 1987500
+    cpn:         nG9wacwIsYTgUxqM
+    rn:          9
+    bwe:         1084520:1
+    nt:          116
+
+ << 206 Partial Content 157.83k
+    Last-Modified: Mon, 25 Mar 2019 21:53:04 GMT
+    Content-Type: audio/mp4
+    Date: Wed, 27 Mar 2019 02:07:26 GMT
+    Expires: Wed, 27 Mar 2019 02:07:26 GMT
+    Cache-Control: private, max-age=21274
+    Content-Range: bytes 485826-647443/1677906
+    Accept-Ranges: bytes
+    Content-Length: 161618
+    Connection: keep-alive
+    Alt-Svc: quic=":443"; ma=2592000; v="46,44,43,39"
+    X-Content-Type-Options: nosniff
+    Server: gvs 1.0
+
+    0000000000 00 00 07 18 6d 6f 6f 66 00 00 00 10 6d 66 68 64   ....moof....mfhd
+    0000000010 00 00 00 00 00 00 00 04 00 00 07 00 74 72 61 66   ............traf
+    0000000020 00 00 00 1c 74 66 68 64 00 02 00 2a 00 00 00 01   ....tfhd...*....
+    0000000030 00 00 00 01 00 00 04 00 00 00 00 00 00 00 00 10   ................
+    0000000040 74 66 64 74 00 00 00 00 00 14 28 00 00 00 06 cc   tfdt......(.....
+    0000000050 74 72 75 6e 00 00 02 01 00 00 01 ae 00 00 07 20   trun........... 
+    0000000060 00 00 01 74 00 00 01 6c 00 00 01 6c 00 00 01 72   ...t...l...l...r
+    0000000070 00 00 01 69 00 00 01 8b 00 00 01 6c 00 00 01 7d   ...i.......l...}
+    0000000080 00 00 01 73 00 00 01 8a 00 00 01 a7 00 00 01 60   ...s...........`
+    0000000090 00 00 01 63 00 00 01 5f 00 00 01 5f 00 00 01 76   ...c..._..._...v
+    00000000a0 00 00 01 65 00 00 01 6e 00 00 01 75 00 00 01 73   ...e...n...u...s
+    00000000b0 00 00 01 6e 00 00 01 6e 00 00 01 79 00 00 01 83   ...n...n...y....
+    00000000c0 00 00 01 93 00 00 01 60 00 00 01 67 00 00 01 5a   .......`...g...Z
+    00000000d0 00 00 01 81 00 00 01 85 00 00 01 79 00 00 01 71   ...........y...q
+    00000000e0 00 00 01 82 00 00 01 6a 00 00 01 73 00 00 01 6f   .......j...s...o
+    00000000f0 00 00 01 83 00 00 01 7a 00 00 01 66 00 00 01 65   .......z...f...e
+    0000000100 00 00 01 73 00 00 01 6c 00 00 01 70 00 00 01 78   ...s...l...p...x
+    0000000110 00 00 01 84 00 00 01 76 00 00 01 66 00 00 01 74   .......v...f...t
+    0000000120 00 00 01 73 00 00 01 7f 00 00 01 6b 00 00 01 95   ...s.......k....
+    0000000130 00 00 01 67 00 00 01 6a 00 00 01 6e 00 00 01 6d   ...g...j...n...m
+    0000000140 00 00 01 6f 00 00 01 77 00 00 01 68 00 00 01 82   ...o...w...h....
+    0000000150 00 00 01 73 00 00 01 79 00 00 01 6f 00 00 01 77   ...s...y...o...w
+    0000000160 00 00 01 72 00 00 01 71 00 00 01 b0 00 00 01 c8   ...r...q........
+    0000000170 00 00 01 76 00 00 01 6d 00 00 01 6f 00 00 01 68   ...v...m...o...h
+    0000000180 00 00 01 68 00 00 01 63 00 00 01 72 00 00 01 5c   ...h...c...r...\
+    0000000190 00 00 01 71 00 00 01 69 00 00 01 67 00 00 01 72   ...q...i...g...r
+    00000001a0 00 00 01 75 00 00 01 6d 00 00 01 6c 00 00 01 70   ...u...m...l...p
+    00000001b0 00 00 01 77 00 00 01 6b 00 00 01 6d 00 00 01 7a   ...w...k...m...z
+    00000001c0 00 00 01 67 00 00 01 73 00 00 01 7c 00 00 01 76   ...g...s...|...v
+    00000001d0 00 00 01 6c 00 00 01 6e 00 00 01 6f 00 00 01 65   ...l...n...o...e
+    00000001e0 00 00 01 65 00 00 01 7a 00 00 01 73 00 00 01 7d   ...e...z...s...}
+    00000001f0 00 00 01 8f 00 00 01 73 00 00 01 6d 00 00 01 68   .......s...m...h
+    0000000200 00 00 01 78 00 00 01 6f 00 00 01 72 00 00 01 6d   ...x...o...r...m
+    0000000210 00 00 01 75 00 00 01 69 00 00 01 78 00 00 01 ae   ...u...i...x....
+    0000000220 00 00 01 69 00 00 01 63 00 00 01 77 00 00 01 72   ...i...c...w...r
+    0000000230 00 00 01 6e 00 00 01 6a 00 00 01 6d 00 00 01 73   ...n...j...m...s
+    0000000240 00 00 01 6b 00 00 01 68 00 00 01 bc 00 00 01 62   ...k...h.......b
+    0000000250 00 00 01 6e 00 00 01 73 00 00 01 70 00 00 01 6a   ...n...s...p...j
+    0000000260 00 00 01 73 00 00 01 70 00 00 01 69 00 00 01 74   ...s...p...i...t
+    0000000270 00 00 01 65 00 00 01 a8 00 00 01 b0 00 00 01 6a   ...e...........j
+    0000000280 00 00 01 64 00 00 01 65 00 00 01 65 00 00 01 71   ...d...e...e...q
+    0000000290 00 00 01 71 00 00 01 6c 00 00 01 69 00 00 01 6d   ...q...l...i...m
+    00000002a0 00 00 01 85 00 00 01 d6 00 00 01 72 00 00 01 5c   ...........r...\
+    00000002b0 00 00 01 6c 00 00 01 63 00 00 01 6e 00 00 01 6c   ...l...c...n...l
+    00000002c0 00 00 01 5d 00 00 01 64 00 00 01 72 00 00 01 71   ...]...d...r...q
+    00000002d0 00 00 01 81 00 00 01 91 00 00 01 75 00 00 01 6b   ...........u...k
+    00000002e0 00 00 01 6d 00 00 01 5e 00 00 01 6b 00 00 01 65   ...m...^...k...e
+    00000002f0 00 00 01 69 00 00 01 6d 00 00 01 6b 00 00 01 a9   ...i...m...k....
+    0000000300 00 00 01 e5 00 00 01 6b 00 00 01 5b 00 00 01 60   .......k...[...`
+    0000000310 00 00 01 69 00 00 01 5e 00 00 01 69 00 00 01 5b   ...i...^...i...[
+    0000000320 00 00 01 65 00 00 01 72 00 00 01 8c 00 00 01 e2   ...e...r........
+    0000000330 00 00 01 81 00 00 01 6a 00 00 01 50 00 00 01 58   .......j...P...X
+    0000000340 00 00 01 79 00 00 01 52 00 00 01 63 00 00 01 66   ...y...R...c...f
+    0000000350 00 00 01 7b 00 00 01 61 00 00 01 f3 00 00 01 b7   ...{...a........
+    0000000360 00 00 01 68 00 00 01 4f 00 00 01 50 00 00 01 69   ...h...O...P...i
+    0000000370 00 00 01 57 00 00 01 62 00 00 01 89 00 00 01 63   ...W...b.......c
+    0000000380 00 00 01 64 00 00 01 b8 00 00 01 a1 00 00 01 55   ...d...........U
+    0000000390 00 00 01 62 00 00 01 57 00 00 01 63 00 00 01 63   ...b...W...c...c
+    00000003a0 00 00 01 77 00 00 01 6c 00 00 01 6f 00 00 01 61   ...w...l...o...a
+    00000003b0 00 00 01 9e 00 00 01 b2 00 00 01 62 00 00 01 6c   ...........b...l
+    00000003c0 00 00 01 64 00 00 01 63 00 00 01 64 00 00 01 5e   ...d...c...d...^
+    00000003d0 00 00 01 66 00 00 01 61 00 00 01 72 00 00 01 66   ...f...a...r...f
+    00000003e0 00 00 01 da 00 00 01 5b 00 00 01 60 00 00 01 65   .......[...`...e
+    00000003f0 00 00 01 68 00 00 01 66 00 00 01 6e 00 00 01 72   ...h...f...n...r
+    0000000400 00 00 01 65 00 00 01 73 00 00 01 7d 00 00 02 04   ...e...s...}....
+    0000000410 00 00 01 64 00 00 01 68 00 00 01 5f 00 00 01 5d   ...d...h..._...]
+    0000000420 00 00 01 66 00 00 01 61 00 00 01 65 00 00 01 70   ...f...a...e...p
+    0000000430 00 00 01 79 00 00 01 6f 00 00 01 a9 00 00 01 90   ...y...o........
+    0000000440 00 00 01 5d 00 00 01 5e 00 00 01 6d 00 00 01 5f   ...]...^...m..._
+    0000000450 00 00 01 7b 00 00 01 6a 00 00 01 65 00 00 01 6a   ...{...j...e...j
+    (cut off)
+
