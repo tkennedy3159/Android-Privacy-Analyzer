@@ -17,7 +17,7 @@ def analyzeGetRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
 		info = flow.address
 		type = 'IP Address'
-		results.append(Result.Result(flow, type, info))
+		#results.append(Result.Result(flow, type, info))
 
 def analyzePostRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):

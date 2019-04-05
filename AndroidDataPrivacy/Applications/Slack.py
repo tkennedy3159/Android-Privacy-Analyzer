@@ -197,8 +197,8 @@ def checkPostURL(flow, results):
 			results.append(Result.Result(flow, type, info))
 
 	elif (flow.url == 'https://slack.com/api/conversations.history'):
-		type = 'Channel Messages Sync'
-		info = 'Channel: ' + AppDefault.findFormEntry(flow.requestContent, 'channel')
+		type = 'Channel Messages Sync Channel'
+		info = AppDefault.findFormEntry(flow.requestContent, 'channel')
 		results.append(Result.Result(flow, type, info))
 
 	elif (flow.url == 'https://slack.com/beacon/track/'):

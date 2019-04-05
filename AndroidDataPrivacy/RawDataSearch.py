@@ -3,19 +3,22 @@
 import AndroidDataPrivacy.Flow as Flow
 import AndroidDataPrivacy.Result as Result
 
-def searchFlow(flow, results):
-	filename = "searchitems.txt"
+filename = 'searchitems.txt'
+ignoredInfos = ['test']
+ignoredTypes = ['System Info: Performance Tracking']
+
+def checkRawData(flow, results):
 	file = open(filename, "r")
 	itemsList = file.readlines()
 	file.close()
-	items = {}
+	items = separateSearchItems(itemsList)
+
+	addNewResults(results, items)
+	searchFlow(flow, results, items)
+
+def searchFlow(flow, results, items):
 	infos = []
 	content = flow.all
-
-	for line in itemsList:
-		line = line.strip()
-		if (len(line) > 5):
-			items[line.split(':::::')[0]] = line.split(':::::')[1]
 
 	for result in results:
 		infos.append(result.info)
@@ -29,24 +32,25 @@ def searchFlow(flow, results):
 				infos.append(key)
 		content = content[1:]
 
-def addNewResults(results):
-	filename = "searchitems.txt"
-	file = open(filename, "r")
-	itemsList = file.readlines()
-	file.close()
-	items = {}
-	for line in itemsList:
-		line = line.strip()
-		if (len(line) > 5):
-			items[line.split(':::::')[0]] = line.split(':::::')[1]
-
+def addNewResults(results, items):
 	file = open(filename, "w")
 	for key, value in items.items():
-		file.write(key + ':::::' + value + '\n')
+		file.write(key + '\n' + '----' + '\n' + value + '\n' + '---------------' + '\n')
 
 	for result in results:
-		if result.info not in items.keys():
+		if result.info not in items.keys() and result.info not in ignoredInfos and result.type not in ignoredTypes:
 			items[result.info] = result.type
-			file.write(result.info + ':::::' + result.type + '\n')
+			file.write(result.info + '\n' + '----' + '\n' + result.type + '\n' + '---------------' + '\n')
 
 	file.close()
+
+def separateSearchItems(itemsList):
+	items = {}
+	temp = ''
+	for line in itemsList:
+		if (line.strip() == '---------------'):
+			items[temp.split('----')[0].strip()] = temp.split('----')[1].strip()
+			temp = ''
+		else:
+			temp = temp + line
+	return items

@@ -15,7 +15,7 @@ import AndroidDataPrivacy.Applications.Reddit as Reddit
 import AndroidDataPrivacy.Applications.Slack as Slack
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 9
+testNum = 1
 #filename = 'capturefixed.txt'
 filename = 'backup.txt'
 file = open(filename, "r")
@@ -24,7 +24,7 @@ capture = file.readlines()
 flows = []
 results = []
 appList = ['AppDefault','AndroidNative','GSuite','Youtube', \
-'Reddit', 'Slack', 'CertInstaller']
+'Reddit', 'Slack', 'CertInstaller', 'RawDataSearch']
 log = syslog_client.Syslog()
 
 def printFlows():
@@ -137,8 +137,7 @@ def checkFlow(flow):
 		AppDefault.checkBehavior(flow, results)
 	AppDefault.syncSource(flow, results)
 	if ('RawDataSearch' in appList):
-		RawDataSearch.addNewResults(results)
-		RawDataSearch.searchFlow(flow, results)
+		RawDataSearch.checkRawData(flow, results)
 	print(flow.all)
 	printLogs(results)
 	#sendLogs(results)
