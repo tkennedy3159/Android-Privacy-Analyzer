@@ -371,6 +371,9 @@ def checkPostURL(flow, results):
 		info = 'Left Call'
 		results.append(Result.Result(flow, type, info))
 
+	elif (flow.url == 'https://android.googleapis.com/auth'):
+		flow.source = AppDefault.findFormEntry(flow.requestContent, 'app')
+
 def checkHeadURL(flow, results):
 	return None
 

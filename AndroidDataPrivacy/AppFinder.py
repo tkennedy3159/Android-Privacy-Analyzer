@@ -55,6 +55,14 @@ def identifyUserAgent(agent, appList):
 			if (agent.find(item) > -1):
 				return 'Slack'
 
+	if 'Discord' in appList:
+		import AndroidDataPrivacy.Applications.Discord as Discord
+		if agent in Discord.userAgents:
+			return 'Discord'
+		for item in Discord.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'Discord'
+
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 		if agent in CertInstaller.userAgents:
@@ -106,6 +114,14 @@ def identifyURL(flow, url, appList):
 			if (url.find(item) > -1):
 				return 'Slack'
 
+	if 'Discord' in appList:
+		import AndroidDataPrivacy.Applications.Discord as Discord
+		if url in Discord.urls:
+			return 'Discord'
+		for item in Discord.partialURLs:
+			if (url.find(item) > -1):
+				return 'Discord'
+
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 		if url in CertInstaller.urls:
@@ -152,6 +168,9 @@ def translate(app):
 
 	elif (app == 'com.google.android.youtube'):
 		app = 'Youtube'
+
+	elif (app == 'com.discord'):
+		app = 'Discord'
 
 	if (app == ''):
 		app = 'AppDefault'

@@ -17,12 +17,18 @@ ignoredTypes = ['System Info: Performance Tracking', \
 'User Action', \
 'User Action: Youtube', \
 'User Action: Youtube Browsing', \
+'User Action: App Installation Time', \
 'Youtube Playlist', \
 'User Action: Add Video to Playlist', \
 'User Action: Create Playlist', \
 'Youtube Video Status', \
 'Youtube Search Suggestion', \
-'User Action: Search Query']
+'User Action: Search Query', \
+'User Action: Discord', \
+'User Action: Discord User Search', \
+'User Action: View Discord User Profile', \
+'Messsage', \
+'Reddit Activity & Info Dump']
 
 def checkRawData(flow, results):
 	file = open(filename, "r")

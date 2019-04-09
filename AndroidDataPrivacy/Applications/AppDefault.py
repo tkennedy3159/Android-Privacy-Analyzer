@@ -161,6 +161,50 @@ def analyzePostRequestDefault(flow, results):
 		info = 'Closed App with Branch Key ' + branchkey + ' and session ID ' + sessionkey
 		results.append(Result.Result(flow, type, info))
 
+	elif (flow.url.find('https://app.adjust.com') == 0):
+		flow.source = 'adjust.com ' + findFormEntry(flow.requestContent, 'package_name')
+		
+		type = 'Ad ID'
+		info = findFormEntry(flow.requestContent, 'gps_adid')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'User Action: App Installation Time'
+		info = findFormEntry(flow.requestContent, 'installed_at')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'adjust.com Token: ' + findFormEntry(flow.requestContent, 'package_name')
+		info = findFormEntry(flow.requestContent, 'app_token')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Brand'
+		info = findFormEntry(flow.requestContent, 'device_manufacturer')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Model'
+		info = findFormEntry(flow.requestContent, 'device_name')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Build'
+		info = findFormEntry(flow.requestContent, 'os_build')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'User Action: App Update Time'
+		info = findFormEntry(flow.requestContent, 'updated_at')
+		results.append(Result.Result(flow, type, info))
+
+		if (flow.requestContent.find('click_time:') > -1):
+			type = 'User Action: Click Time'
+			info = findFormEntry(flow.requestContent, 'click_time')
+			results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Android UUID'
+		info = findFormEntry(flow.requestContent, 'android_uuid')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Session Count'
+		info = findFormEntry(flow.requestContent, 'session_count')
+		results.append(Result.Result(flow, type, info))
+
 def analyzeHeadRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
 		info = flow.address

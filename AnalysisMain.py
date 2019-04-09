@@ -13,6 +13,7 @@ import AndroidDataPrivacy.Applications.GSuite as GSuite
 import AndroidDataPrivacy.Applications.Youtube as Youtube
 import AndroidDataPrivacy.Applications.Reddit as Reddit
 import AndroidDataPrivacy.Applications.Slack as Slack
+import AndroidDataPrivacy.Applications.Discord as Discord
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
 testNum = 1
@@ -25,7 +26,7 @@ capture = file.readlines()
 flows = []
 results = []
 appList = ['AppDefault','AndroidNative','GSuite','Youtube', \
-'Reddit', 'Slack', 'CertInstaller', 'RawDataSearch']
+'Reddit', 'Slack', 'Discord', 'CertInstaller', 'RawDataSearch']
 log = syslog_client.Syslog()
 
 def printFlows():
@@ -87,8 +88,8 @@ def checkForUseless(flow):
 		flow[flow.find('\n'):].find('-> Response') > -1 or \
 		flow[0:flow.find('\n')].find(': CONNECT') > -1 or \
 		flow[0:flow.find('\n')].find('Set new server address:') > -1 or \
-		flow[0:flow.find('\n')].find('<- WebSocket 2 message') > -1 or \
-		flow[0:flow.find('\n')].find('-> WebSocket 1 message') > -1 or \
+		flow[0:flow.find('\n')].find('WebSocket 2 message') > -1 or \
+		flow[0:flow.find('\n')].find('WebSocket 1 message') > -1 or \
 		flow[0:flow.find('\n')].find('Failed to send error response to client:') > -1 or \
 		flow[0:flow.find('\n')].find(': HTTP/2 connection terminated by server: error code:') > -1 or \
 		flow[0:flow.find('\n')].find('Establish TLS') > -1 or \
@@ -161,6 +162,8 @@ def checkFlow(flow):
 		Reddit.checkBehavior(flow, results)
 	if (flow.app == 'Slack' and 'Slack' in appList):
 		Slack.checkBehavior(flow, results)
+	if (flow.app == 'Discord' and 'Discord' in appList):
+		Discord.checkBehavior(flow, results)
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
 		AndroidNative.checkBehavior(flow, results)
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):

@@ -8,7 +8,7 @@ partialURLs = []
 
 userAgents = []
 
-partialUserAgents = ['']
+partialUserAgents = []
 
 def checkBehavior(flow, results):
 	if (flow.requestType == 'GET'):
