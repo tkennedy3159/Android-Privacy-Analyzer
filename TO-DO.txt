@@ -1,10 +1,19 @@
+General
 - Fix c2dm/register3 POST URL in AndroidNative to check for app
+- Check to see if app-measurement sends app_open when in background
+
+GSuite
 - Decypher Google Docs commands
 - Figure out why Google Sheets and Slides appear offline
-- Check to see if app-measurement sends app_open when in background
 - Photos check if POST with lots of encoding comes when viewing photos
 - Drive check to see if openDrive is true on "Google Drive File Lookup" sources
 - Figure out why Google Maps is offline
+
+Reddit
 - Parse out Reddit activity & info dump
+
+Slack
 - Parse out Slack and Experiments
+
+Youtube
 - Figure out Youtube activeview https://www.youtube.com/pcs/activeview

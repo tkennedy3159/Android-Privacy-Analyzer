@@ -14,7 +14,12 @@ ignoredTypes = ['System Info: Performance Tracking', \
 'Slack Channel Info', \
 'User Info: Notification Settings', \
 'System Info: Cookie', \
+'User Action', \
 'User Action: Youtube', \
+'User Action: Youtube Browsing', \
+'Youtube Playlist', \
+'User Action: Add Video to Playlist', \
+'User Action: Create Playlist', \
 'Youtube Video Status', \
 'Youtube Search Suggestion', \
 'User Action: Search Query']

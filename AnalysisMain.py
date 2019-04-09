@@ -15,10 +15,10 @@ import AndroidDataPrivacy.Applications.Reddit as Reddit
 import AndroidDataPrivacy.Applications.Slack as Slack
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 6
-#filename = 'capturefixed.txt'
+testNum = 1
+filename = 'capturefixed.txt'
 #filename = 'backup.txt'
-filename = 'newflows.txt'
+#filename = 'newflows.txt'
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
@@ -72,6 +72,7 @@ def checkForUseless(flow):
 		flow[0:17] == 'Initiating HTTP/2' or \
 		flow[0:19] == 'EOFError: requested' or \
 		flow[0:54] == 'TypeError: don\'t know how to handle UnicodeDecodeError' or \
+		flow[0:flow.find('\n')].find('StreamClosedError') > -1 or \
 		flow[0:flow.find('\n')].find('HEADERS frame suppressed') > -1 or \
 		flow[0:flow.find('\n')].find('HTTP/2 PRIORITY frame suppressed') > -1 or \
 		flow[0:flow.find('\n')].find('ALPN') > -1 or \
@@ -121,7 +122,11 @@ def findNewFlows():
 	'https://pagead2.googlesyndication.com/pcs/activeview', \
 	'https://suggestqueries.google.com/complete/search', \
 	'http://192.168.0.30', \
-	'https://i9.ytimg.com']
+	'https://i9.ytimg.com', \
+	'https://redirector.googlevideo.com', \
+	'https://youtubei.googleapis.com/youtubei/v1/log_event', \
+	'https://ad.doubleclick.net', \
+	'https://s0.2mdn.net/viewad']
 
 	oldURLparts = ['googlevideo.com/initplayback', \
 	'googlevideo.com/videoplayback']

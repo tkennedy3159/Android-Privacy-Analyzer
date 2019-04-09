@@ -47,7 +47,7 @@ def analyzeHeadRequest(flow, results):
 
 def checkRequestHeaders(flow, headers, results):
 	if ('User-Agent' in headers.keys()):
-		if (headers['User-Agent'][:26] == 'com.google.android.youtube'):
+		if (headers['User-Agent'][:26] == 'com.google.android.youtube' and flow.source == ''):
 			flow.source = 'Youtube'
 
 	if ('x-goog-device-auth' in headers.keys()):
@@ -168,6 +168,12 @@ def checkGetURL(flow, results):
 					info = query + info
 					results.append(Result.Result(flow, type, info))
 
+	elif (flow.url.find('https://www.youtube.com/player_204') == 0):
+		if (flow.requestContent.find('event:') > -1 and AppDefault.findFormEntry(flow.requestContent, 'event') == 'iv'):
+			type = 'User Action: Youtube'
+			info = 'Opened Video Info'
+			results.append(Result.Result(flow, type, info))
+
 def checkPostURL(flow, results):
 	if (flow.url.find('https://youtubei.googleapis.com/youtubei') == 0 and flow.url.find('key=') > -1):
 		type = 'User Info: Google API Key'
@@ -188,6 +194,60 @@ def checkPostURL(flow, results):
 		type = 'Youtube Error Message'
 		info = AppDefault.findFormEntry(requestContent, 'exception.message')
 		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://youtubei.googleapis.com/youtubei/v1/browse/edit_playlist') == 0):
+		flow.source = 'Youtube Playlist Edit'
+		type = 'Youtube Video ID'
+		if (flow.requestContent.find('2 {\n      2: ') > -1):
+			info = flow.requestContent[flow.requestContent.find('2 {\n      2: '):]
+			info = info[info.find('2: ')+3:]
+			info = info[:info.find('\n')]
+			results.append(Result.Result(flow, type, info))
+		elif (flow.requestContent.find('2 {\n      6: ') > -1):
+			info = flow.requestContent[flow.requestContent.find('2 {\n      6: '):]
+			info = info[info.find('17: ')+4:]
+			info = info[:info.find('\n')]
+			results.append(Result.Result(flow, type, info))
+
+		if (flow.requestContent.find('        }\n      }\n    }\n    2 {') > -1):
+			type = 'Youtube Playlist'
+			info = flow.requestContent[flow.requestContent.find('        }\n      }\n    }\n    2 {')+40:]
+			info = info[info.find('3: ')+3:]
+			info = info[:info.find('\n')]
+			results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://youtubei.googleapis.com/youtubei/v1/browse') == 0):
+		if (flow.requestContent.find('        }\n      }\n    }\n    2: ') > -1):
+			type = 'User Action: Youtube Browsing'
+			info = flow.requestContent[flow.requestContent.find('        }\n      }\n    }\n    2: ')+31:]
+			info = info[:info.find('\n')]
+			results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://youtubei.googleapis.com/youtubei/v1/share/get_share_panel') == 0):
+		type = 'User Action: Youtube'
+		info = 'Opened share panel'
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://youtubei.googleapis.com/youtubei/v1/playlist/get_add_to_playlist') == 0):
+		if (flow.requestContent.find('        }\n      }\n    }\n    2: ') > -1):
+			type = 'User Action: Add Video to Playlist'
+			info = flow.requestContent[flow.requestContent.find('        }\n      }\n    }\n    2: ')+31:]
+			info = info[:info.find('\n')]
+			results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://youtubei.googleapis.com/youtubei/v1/playlist/create') == 0):
+		if (flow.requestContent.find('        }\n      }\n    }\n    2: ') > -1):
+			type = 'User Action: Create Playlist'
+			info = flow.requestContent[flow.requestContent.find('        }\n      }\n    }\n    2: ')+31:]
+			info = info[:info.find('\n')]
+			results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://youtubei.googleapis.com/youtubei/v1/playlist/delete') == 0):
+		if (flow.requestContent.find('        }\n      }\n    }\n    2: ') > -1):
+			type = 'User Action: Delete Playlist'
+			info = flow.requestContent[flow.requestContent.find('        }\n      }\n    }\n    2: ')+31:]
+			info = info[:info.find('\n')]
+			results.append(Result.Result(flow, type, info))
 
 def checkHeadURL(flow, results):
 	return None
