@@ -17,7 +17,7 @@ def analyzeGetRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
 		info = flow.address
 		type = 'IP Address'
-		#results.append(Result.Result(flow, type, info))
+		results.append(Result.Result(flow, type, info))
 
 def analyzePostRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
@@ -361,8 +361,12 @@ def findJSONItem(content, itemName):
 	return item
 
 def findJSONGroup(content, groupName):
+	bracketindex = len(groupName) + 2
 	group = content[content.find(groupName):]
-	bracketindex = group.find('{')
+	while bracketindex > (len(groupName) + 1):
+		group = group[len(groupName)+1:]
+		group = group[group.find(groupName):]
+		bracketindex = group.find('{')
 	group = group[bracketindex+1:]
 	count = 1
 	index = 1
@@ -375,6 +379,5 @@ def findJSONGroup(content, groupName):
 			elif (group[index:index+1] == '}'):
 				count = count - 1
 			index = index + 1
-	group = content[content.find(groupName):]
 	group = group[:index+bracketindex]
 	return group

@@ -33,7 +33,8 @@ partialURLs = ['www.google.com/tg/fe/request?rqt=58', \
 'https://playatoms-pa.googleapis.com/v1/archiveDownload', \
 'https://www.google.com/complete/search', \
 'https://mobilenetworkscoring-pa.googleapis.com/v1/GetWifiQuality', \
-'https://www.googleapis.com/plus/v2whitelisted/people/me']
+'https://www.googleapis.com/plus/v2whitelisted/people/me', \
+'https://www.gstatic.com/android/keyboard']
 
 userAgents = ['Android-GCM']
 
@@ -203,6 +204,9 @@ def checkGetURL(flow, results):
 
 	elif (flow.url.find('https://www.googleapis.com/plus/v2whitelisted/people/me') == 0):
 		flow.source = 'Google Friends Lookup'
+
+	elif (flow.url.find('https://www.gstatic.com/android/keyboard') == 0):
+		flow.source = 'Android Keyboard'
 
 def checkPostURL(flow, results):
 	#Weather lookup

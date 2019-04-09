@@ -7,3 +7,4 @@
 - Figure out why Google Maps is offline
 - Parse out Reddit activity & info dump
 - Parse out Slack and Experiments
+- Figure out Youtube activeview https://www.youtube.com/pcs/activeview

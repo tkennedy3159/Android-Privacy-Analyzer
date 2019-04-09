@@ -15,11 +15,12 @@ import AndroidDataPrivacy.Applications.Reddit as Reddit
 import AndroidDataPrivacy.Applications.Slack as Slack
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 1
+testNum = 6
 #filename = 'capturefixed.txt'
-filename = 'backup.txt'
+#filename = 'backup.txt'
+filename = 'newflows.txt'
 file = open(filename, "r")
-#newFlowFileName = 'newflows.txt'
+newFlowFileName = 'newflows.txt'
 capture = file.readlines()
 flows = []
 results = []
@@ -92,6 +93,8 @@ def checkForUseless(flow):
 		flow[0:flow.find('\n')].find('Establish TLS') > -1 or \
 		flow[0:].find('Cannot establish TLS with client') > -1 or \
 		flow[0:].find('Error connecting to') > -1 or \
+		flow[0:].find('SourceFile:') > -1 or \
+		flow[0:].find('at java.') > -1 or \
 		flow[0:flow.find('\n')].find('server communication error:') > -1 or \
 		flow[0:flow.find('\n')].find('Connection killed') > -1 or \
 		flow[0:flow.find('\n')].find('NotImplementedError') > -1):
@@ -102,18 +105,40 @@ def checkForUseless(flow):
 def findNewFlows():
 	newFlowFile = open(newFlowFileName, "w")
 	newFlows = []
+	oldURLs = ['https://googleads.g.doubleclick.net/pagead', \
+	'https://www.youtube.com/pagead', \
+	'https://s.youtube.com/api/stats', \
+	'https://www.youtube.com/ptracking', \
+	'https://www.google.com/pagead', \
+	'https://www.youtube.com/csi_204', \
+	'https://youtubei.googleapis.com/youtubei/v1/next?key=', \
+	'https://i.ytimg.com', \
+	'https://yt3.ggpht.com', \
+	'https://securepubads.g.doubleclick.net', \
+	'https://www.youtube.com/pcs/activeview', \
+	'https://www.youtube.com/api/stats', \
+	'https://www.gstatic.com/images', \
+	'https://pagead2.googlesyndication.com/pcs/activeview', \
+	'https://suggestqueries.google.com/complete/search', \
+	'http://192.168.0.30', \
+	'https://i9.ytimg.com']
+
+	oldURLparts = ['googlevideo.com/initplayback', \
+	'googlevideo.com/videoplayback']
+	old = False
 	analyzeAll()
 	for flow in flows:
-		if (flow.source == '' \
-		or flow.source == 'App Measurement' \
-		or flow.url == 'https://play.googleapis.com/log/batch'):
-			if (flow.all.find('[Errno -3] Temporary failure in name resolution') == -1 \
-			and flow.all.find('[Errno -2] Name or service not known') == -1 \
-			and flow.url.find('https://www.google.com/tg/fe/request?rqt=3&bq=1') == -1 \
-			and flow.url.find('https://android.googleapis.com/auth/lookup/account_state?rt=b') == -1 \
-			and flow.url.find('https://www.googleapis.com/androidcheck/v1/attestations/adAttest?key=') == -1):
-				newFlows.append(flow)
-				newFlowFile.write(flow.all)
+		for oldURL in oldURLs:
+			if (flow.url.find(oldURL) == 0):
+				old = True
+		if (old == False):
+			for oldURLpart in oldURLparts:
+				if (flow.url.find(oldURLpart) > -1):
+					old = True
+		if (old == False):
+			newFlows.append(flow)
+			newFlowFile.write(flow.all)
+		old = False
 
 
 def checkFlow(flow):

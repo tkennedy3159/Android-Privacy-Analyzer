@@ -64,6 +64,30 @@ def checkResponseHeaders(flow, headers, results):
 	return None
 
 def checkGetURL(flow, results):
+	if (flow.url.find('youtube.com') > -1):
+		if (flow.requestContent.find('plid:') > -1):
+			type = 'Youtube PLID'
+			info = AppDefault.findFormEntry(flow.requestContent, 'plid')
+			results.append(Result.Result(flow, type, info))
+
+		if (flow.requestContent.find('cos:') > -1):
+			type = 'System Info: OS'
+			info = AppDefault.findFormEntry(flow.requestContent, 'cos')
+			results.append(Result.Result(flow, type, info))
+
+		if (flow.requestContent.find('docid:') > -1):
+			type = 'Youtube Video ID'
+			info = AppDefault.findFormEntry(flow.requestContent, 'docid')
+			results.append(Result.Result(flow, type, info))
+		elif (flow.requestContent.find('video_id:') > -1):
+			type = 'Youtube Video ID'
+			info = AppDefault.findFormEntry(flow.requestContent, 'video_id')
+			results.append(Result.Result(flow, type, info))
+		elif (flow.requestContent.find('content_v:') > -1):
+			type = 'Youtube Video ID'
+			info = AppDefault.findFormEntry(flow.requestContent, 'content_v')
+			results.append(Result.Result(flow, type, info))
+
 	if (flow.url.find('https://www.googleadservices.com/pagead/conversion') == 0):
 		type = 'System Info: Youtube App Version'
 		info = AppDefault.findFormEntry(flow.requestContent, 'appversion')
@@ -73,9 +97,76 @@ def checkGetURL(flow, results):
 		info = AppDefault.findFormEntry(flow.requestContent, 'osversion')
 		results.append(Result.Result(flow, type, info))
 
-		type = 'User Info: Youtube Screen Name'
+		type = 'User Info: Youtube Screen Opened'
 		info = AppDefault.findFormEntry(flow.requestContent, 'data.screen_name')
 		results.append(Result.Result(flow, type, info))
+
+		type = 'User Info: Ad ID'
+		info = AppDefault.findFormEntry(flow.requestContent, 'rdid')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('upnphost/udhisapi.dll?content=uuid:') > -1):
+		type = 'User Info: Youtube UUID'
+		info = flow.requestContent[flow.requestContent.find('uuid:')+5:]
+		info = info[:info.find('\n')]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.youtube.com/csi_204') == 0):
+		type = 'User Action: Youtube'
+		info = AppDefault.findFormEntry(flow.requestContent, 'action')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Brand'
+		info = AppDefault.findFormEntry(flow.requestContent, 'cbrand')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Model'
+		info = AppDefault.findFormEntry(flow.requestContent, 'cmodel')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://s.youtube.com/api/stats') == 0):
+		if (flow.requestContent.find('state:') > -1):
+			type = 'Youtube Video Status'
+			info = AppDefault.findFormEntry(flow.requestContent, 'state')
+			results.append(Result.Result(flow, type, info))
+
+		if (flow.requestContent.find('referrer:') > -1):
+			type = 'Youtube Video Referrer'
+			info = AppDefault.findFormEntry(flow.requestContent, 'referrer')
+			results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.youtube.com/api/stats/ads') == 0):
+		type = 'Youtube Ad Video'
+		info = AppDefault.findFormEntry(flow.requestContent, 'ad_v')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.youtube.com/gen_204') == 0):
+		type = 'Youtube Ad Video'
+		info = AppDefault.findFormEntry(flow.requestContent, 'ad_vid')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://suggestqueries.google.com/complete/search') == 0):
+		type = 'User Action: Search Query'
+		info = AppDefault.findFormEntry(flow.requestContent, 'q')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'Youtube Search Suggestion'
+		query = info
+		if (len(info) > 0):
+			for item in flow.responseContent.split('],['):
+				info = item[item.find('\\\\u003e')+7:]
+				info = info[:info.find('\\\\')]
+				if (len(info) > 0):
+					info = query + info
+					results.append(Result.Result(flow, type, info))
+		else:
+			for item in flow.responseContent.split('}],['):
+				info = item[item.find('youtube-android'):]
+				info = info[info.find('\\\\u003d')+7:]
+				info = info[:info.find('\\\\')]
+				if (len(info) > 0):
+					info = query + info
+					results.append(Result.Result(flow, type, info))
 
 def checkPostURL(flow, results):
 	if (flow.url.find('https://youtubei.googleapis.com/youtubei') == 0 and flow.url.find('key=') > -1):
@@ -83,6 +174,19 @@ def checkPostURL(flow, results):
 		info = flow.url[flow.url.find('key=')+4:]
 		if (info.find('&') > -1):
 			info = info[:info.find('&')]
+		results.append(Result.Result(flow, type, info))
+
+	if (flow.url.find('https://youtubei.googleapis.com/youtubei/v1/search') == 0):
+		type = 'User Action: Youtube Search'
+		info = AppDefault.findJSONGroup(flow.requestContent, '16')
+		info = info[info.find('4: ')+3:]
+		info = info[:info.find('\n')]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.youtube.com/error_204') == 0):
+		source = 'Youtube Error'
+		type = 'Youtube Error Message'
+		info = AppDefault.findFormEntry(requestContent, 'exception.message')
 		results.append(Result.Result(flow, type, info))
 
 def checkHeadURL(flow, results):

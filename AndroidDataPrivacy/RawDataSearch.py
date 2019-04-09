@@ -5,7 +5,19 @@ import AndroidDataPrivacy.Result as Result
 
 filename = 'searchitems.txt'
 ignoredInfos = ['test']
-ignoredTypes = ['System Info: Performance Tracking']
+ignoredTypes = ['System Info: Performance Tracking', \
+'User Info: Opened App Count', \
+'System Info: Android Version', \
+'Location: WiFi Access Points', \
+'Location: Cell Towers' \
+'User Info: Calendar Events', \
+'Slack Channel Info', \
+'User Info: Notification Settings', \
+'System Info: Cookie', \
+'User Action: Youtube', \
+'Youtube Video Status', \
+'Youtube Search Suggestion', \
+'User Action: Search Query']
 
 def checkRawData(flow, results):
 	file = open(filename, "r")
@@ -26,7 +38,7 @@ def searchFlow(flow, results, items):
 	while len(content) > 1:
 		for key, value in items.items():
 			if (content[0:len(key)] == key and key not in infos):
-				type = 'RAWDATASEARCH: ' + value
+				type = value + ' (RAWDATASEARCH)'
 				info = key
 				results.append(Result.Result(flow, type, info))
 				infos.append(key)
@@ -38,7 +50,7 @@ def addNewResults(results, items):
 		file.write(key + '\n' + '----' + '\n' + value + '\n' + '---------------' + '\n')
 
 	for result in results:
-		if result.info not in items.keys() and result.info not in ignoredInfos and result.type not in ignoredTypes:
+		if len(result.info) > 3 and result.info not in items.keys() and result.info not in ignoredInfos and result.type not in ignoredTypes:
 			items[result.info] = result.type
 			file.write(result.info + '\n' + '----' + '\n' + result.type + '\n' + '---------------' + '\n')
 
