@@ -17,6 +17,3 @@ Slack
 
 Youtube
 - Figure out Youtube activeview https://www.youtube.com/pcs/activeview
-
-Discord
-- Slide into those DMs
