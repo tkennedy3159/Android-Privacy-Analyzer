@@ -281,7 +281,7 @@ def analyzePostRequestDefault(flow, results):
 				
 				if (flow.responseContent.find('"adid":') > -1):
 					type = 'User Info: Spotify Ad ID'
-					info = responseContent[responseContent.find('"adid": "')+9:]
+					info = flow.responseContent[flow.responseContent.find('"adid": "')+9:]
 					info = info[:info.find('"')]
 					results.append(Result.Result(flow, type, info))
 			
