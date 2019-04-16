@@ -18,8 +18,8 @@ import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
 testNum = 1
 #filename = 'capturefixed.txt'
-filename = 'backup.txt'
-#filename = 'newflows.txt'
+#filename = 'backup.txt'
+filename = 'newflows.txt'
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
@@ -205,6 +205,6 @@ def analyzeAll():
 
 separateFlows()
 #printFlows()
-#analyzeAll()
+analyzeAll()
 #testFlow(testNum)
-findNewFlows()
+#findNewFlows()
