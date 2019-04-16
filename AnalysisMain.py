@@ -17,7 +17,7 @@ import AndroidDataPrivacy.Applications.Discord as Discord
 import AndroidDataPrivacy.Applications.Spotify as Spotify
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNum = 1
+testNumList = [1]
 #filename = 'capturefixed.txt'
 filename = 'backup.txt'
 #filename = 'newflows.txt'
@@ -198,10 +198,11 @@ def printLogs(results):
 		#print(lines[4])
 		print()
 
-def testFlow(num):
-	#print(flows[num].all)
-	#print(AppDefault.cleanEncoding(flows[num].responseContent))
-	checkFlow(flows[num])
+def testFlows(numList):
+	for num in numList:
+		#print(flows[num].all)
+		#print(AppDefault.cleanEncoding(flows[num].responseContent))
+		checkFlow(flows[num])
 
 def analyzeAll():
 	count = 0
@@ -212,6 +213,6 @@ def analyzeAll():
 
 separateFlows()
 #printFlows()
-analyzeAll()
-#testFlow(testNum)
+#analyzeAll()
+testFlows(testNumList)
 #findNewFlows()
