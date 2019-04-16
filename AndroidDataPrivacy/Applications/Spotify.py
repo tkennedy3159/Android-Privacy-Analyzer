@@ -73,9 +73,22 @@ def checkResponseHeaders(flow, headers, results):
 def checkGetURL(flow, results):
 	if (flow.url.find('https://spclient.wg.spotify.com/v1/pses/featureflags') == 0):
 		flow.source = 'Spotify Features Sync'
+	
+	elif (flow.url.find('https://spclient.wg.spotify.com/abba-service/v1/resolve') == 0):
+		flow.source = 'Spotify Features Sync'
+	
+	elif (flow.url.find('https://spclient.wg.spotify.com/ads/v2/config') == 0):
+		type = 'Spotify Session ID'
+		info = flow.requestHeaders['vnd.spotify.ads-payload']
+		info = info[info.find('"session_id":')+14:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
 
 def checkPostURL(flow, results):
-	return None
+	if (flow.url.find('https://spclient.wg.spotify.com/remote-config-resolver') == 0):
+		type = 'System Info: Spotify Installation ID'
+		info = AppDefault.findFormEntry(flow.requestContent, 'installation_id')
+		results.append(Result.Result(flow, type, info))
 
 def checkHeadURL(flow, results):
 	return None

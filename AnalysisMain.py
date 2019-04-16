@@ -131,7 +131,9 @@ def findNewFlows():
 	'https://s0.2mdn.net/viewad']
 
 	oldURLparts = ['googlevideo.com/initplayback', \
-	'googlevideo.com/videoplayback']
+	'googlevideo.com/videoplayback', \
+	'spclient.wg.spotify.com/ads/v2/config', \
+	'https://spclient.wg.spotify.com/abba-service/v1/resolve']
 
 	old = False
 	analyzeAll()
