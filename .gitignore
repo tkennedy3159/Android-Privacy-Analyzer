@@ -10,3 +10,4 @@ push.bat
 push.sh
 pull.sh
 searchitems.txt
+clearBackupData.sh
