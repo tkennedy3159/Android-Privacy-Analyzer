@@ -131,6 +131,7 @@ def findNewFlows():
 
 	oldURLparts = ['googlevideo.com/initplayback', \
 	'googlevideo.com/videoplayback']
+
 	old = False
 	analyzeAll()
 	for flow in flows:
@@ -204,6 +205,6 @@ def analyzeAll():
 
 separateFlows()
 #printFlows()
-analyzeAll()
+#analyzeAll()
 #testFlow(testNum)
-#findNewFlows()
+findNewFlows()
