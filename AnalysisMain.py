@@ -132,7 +132,8 @@ def findNewFlows():
 	'https://spclient.wg.spotify.com/ads/v2/config', \
 	'https://spclient.wg.spotify.com/abba-service/v1/resolve', \
 	'https://pl.scdn.co/images/pl/default', \
-	'https://i.scdn.co/image']
+	'https://i.scdn.co/image', \
+	'https://spclient.wg.spotify.com/metadata/4']
 
 	oldURLparts = ['googlevideo.com/initplayback', \
 	'googlevideo.com/videoplayback']
@@ -215,5 +216,5 @@ def analyzeAll():
 separateFlows()
 #printFlows()
 #analyzeAll()
-testFlows(testNumList)
-#findNewFlows()
+#testFlows(testNumList)
+findNewFlows()
