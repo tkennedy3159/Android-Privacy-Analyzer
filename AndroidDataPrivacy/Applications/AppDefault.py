@@ -168,9 +168,10 @@ def analyzePostRequestDefault(flow, results):
 		info = findFormEntry(flow.requestContent, 'gps_adid')
 		results.append(Result.Result(flow, type, info))
 
-		type = 'User Action: App Installation Time'
-		info = findFormEntry(flow.requestContent, 'installed_at')
-		results.append(Result.Result(flow, type, info))
+		if (flow.requestContent.find('installed_at:') > -1):
+			type = 'User Action: App Installation Time'
+			info = findFormEntry(flow.requestContent, 'installed_at')
+			results.append(Result.Result(flow, type, info))
 
 		type = 'adjust.com Token: ' + findFormEntry(flow.requestContent, 'package_name')
 		info = findFormEntry(flow.requestContent, 'app_token')
@@ -188,9 +189,10 @@ def analyzePostRequestDefault(flow, results):
 		info = findFormEntry(flow.requestContent, 'os_build')
 		results.append(Result.Result(flow, type, info))
 
-		type = 'User Action: App Update Time'
-		info = findFormEntry(flow.requestContent, 'updated_at')
-		results.append(Result.Result(flow, type, info))
+		if (flow.requestContent.find('updated_at:') > -1):
+			type = 'User Action: App Update Time'
+			info = findFormEntry(flow.requestContent, 'updated_at')
+			results.append(Result.Result(flow, type, info))
 
 		if (flow.requestContent.find('click_time:') > -1):
 			type = 'User Action: Click Time'
@@ -205,6 +207,11 @@ def analyzePostRequestDefault(flow, results):
 		info = findFormEntry(flow.requestContent, 'session_count')
 		results.append(Result.Result(flow, type, info))
 
+		if (flow.requestContent.find('event_token:') > -1):
+			type = 'adjust.com Event Token'
+			info = findFormEntry(flow.requestContent, 'event_token')
+			results.append(Result.Result(flow, type, info))
+
 		if (flow.requestContent.find('callback_params') > -1):
 			if (findFormEntry(flow.requestContent, 'package_name') == 'com.spotify.music'):
 				callback = findFormEntry(flow.requestContent, 'callback_params')
@@ -212,6 +219,37 @@ def analyzePostRequestDefault(flow, results):
 				info = callback[callback.find('"spotify_id":')+14:]
 				info = info[:info.find('"')]
 				results.append(Result.Result(flow, type, info))
+
+				if (callback.find('"session_id"') > -1):
+					type = 'Spotify Session ID'
+					info = callback[callback.find('"session_id":')+14:]
+					info = info[:info.find('"')]
+					results.append(Result.Result(flow, type, info))
+				
+				if (callback.find('screen:') > -1):
+					type = 'User Action: Viewed Screen'
+					info = callback[callback.find('screen:')+7:]
+					if (info.find(',') == -1):
+						info = info[:info.find('"')]
+					else:
+						if (info.find(',') < info.find('"')):
+							info = info[:info.find(',')]
+						else:
+							info = info[:info.find('"')]
+					results.append(Result.Result(flow, type, info))
+				
+				if (callback.find('clicked:') > -1):
+					type = 'User Action: Clicked'
+					info = callback[callback.find('clicked:')+7:]
+					if (info.find(',') == -1):
+						info = info[:info.find('"')]
+					else:
+						if (info.find(',') < info.find('"')):
+							info = info[:info.find(',')]
+						else:
+							info = info[:info.find('"')]
+					results.append(Result.Result(flow, type, info))
+			
 
 def analyzeHeadRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
