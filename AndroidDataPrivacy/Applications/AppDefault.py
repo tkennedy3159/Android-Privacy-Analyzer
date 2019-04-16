@@ -205,6 +205,14 @@ def analyzePostRequestDefault(flow, results):
 		info = findFormEntry(flow.requestContent, 'session_count')
 		results.append(Result.Result(flow, type, info))
 
+		if (flow.requestContent.find('callback_params') > -1):
+			if (findFormEntry(flow.requestContent, 'package_name') == 'com.spotify.music'):
+				callback = findFormEntry(flow.requestContent, 'callback_params')
+				type = 'Spotify ID'
+				info = callback[callback.find('"spotify_id":')+14:]
+				info = info[:info.find('"')]
+				results.append(Result.Result(flow, type, info))
+
 def analyzeHeadRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
 		info = flow.address

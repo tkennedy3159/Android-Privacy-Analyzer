@@ -49,7 +49,7 @@ Spotify
 - Pick something else
 
 - Search -> Top Genre
-- Search for something specific
+- Search for something specific 'Bad Company'
 - Save to Library
 - Delete from Library
 
