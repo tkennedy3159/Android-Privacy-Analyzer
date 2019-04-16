@@ -6,5 +6,7 @@ capture.txt
 capturefixed.txt
 backup.txt
 newflows.txt
-push
+push.bat
+push.sh
+pull.sh
 searchitems.txt
