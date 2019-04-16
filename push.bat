@@ -1,3 +1,3 @@
 git add .
 git commit -m "Saving..."
-git push
+git push -u origin master
