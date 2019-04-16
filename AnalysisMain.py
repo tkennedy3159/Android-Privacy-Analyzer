@@ -17,8 +17,8 @@ import AndroidDataPrivacy.Applications.Discord as Discord
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
 testNum = 1
-#filename = 'capturefixed.txt'
-filename = 'backup.txt'
+filename = 'capturefixed.txt'
+#filename = 'backup.txt'
 #filename = 'newflows.txt'
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
