@@ -128,12 +128,14 @@ def findNewFlows():
 	'https://redirector.googlevideo.com', \
 	'https://youtubei.googleapis.com/youtubei/v1/log_event', \
 	'https://ad.doubleclick.net', \
-	'https://s0.2mdn.net/viewad']
+	'https://s0.2mdn.net/viewad', \
+	'https://spclient.wg.spotify.com/ads/v2/config', \
+	'https://spclient.wg.spotify.com/abba-service/v1/resolve', \
+	'https://pl.scdn.co/images/pl/default', \
+	'https://i.scdn.co/image']
 
 	oldURLparts = ['googlevideo.com/initplayback', \
-	'googlevideo.com/videoplayback', \
-	'spclient.wg.spotify.com/ads/v2/config', \
-	'https://spclient.wg.spotify.com/abba-service/v1/resolve']
+	'googlevideo.com/videoplayback']
 
 	old = False
 	analyzeAll()
