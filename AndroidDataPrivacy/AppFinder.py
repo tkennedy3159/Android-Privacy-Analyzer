@@ -63,6 +63,14 @@ def identifyUserAgent(agent, appList):
 			if (agent.find(item) > -1):
 				return 'Discord'
 
+	if 'Spotify' in appList:
+		import AndroidDataPrivacy.Applications.Spotify as Spotify
+		if agent in Spotify.userAgents:
+			return 'Spotify'
+		for item in Spotify.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'Spotify'
+
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 		if agent in CertInstaller.userAgents:
@@ -121,6 +129,14 @@ def identifyURL(flow, url, appList):
 		for item in Discord.partialURLs:
 			if (url.find(item) > -1):
 				return 'Discord'
+
+	if 'Spotify' in appList:
+		import AndroidDataPrivacy.Applications.Spotify as Spotify
+		if url in Spotify.urls:
+			return 'Spotify'
+		for item in Spotify.partialURLs:
+			if (url.find(item) > -1):
+				return 'Spotify'
 
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller

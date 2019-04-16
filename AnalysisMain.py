@@ -26,7 +26,7 @@ capture = file.readlines()
 flows = []
 results = []
 appList = ['AppDefault','AndroidNative','GSuite','Youtube', \
-'Reddit', 'Slack', 'Discord', 'CertInstaller', 'RawDataSearch']
+'Reddit', 'Slack', 'Discord', 'Spotify', 'CertInstaller', 'RawDataSearch']
 log = syslog_client.Syslog()
 
 def printFlows():
@@ -165,6 +165,8 @@ def checkFlow(flow):
 		Slack.checkBehavior(flow, results)
 	if (flow.app == 'Discord' and 'Discord' in appList):
 		Discord.checkBehavior(flow, results)
+	if (flow.app == 'Spotify' and 'Spotify' in appList):
+		Spotify.checkBehavior(flow, results)
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
 		AndroidNative.checkBehavior(flow, results)
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):
