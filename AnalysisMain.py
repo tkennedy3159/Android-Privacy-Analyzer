@@ -19,8 +19,8 @@ import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
 testNumList = list(range(1,20))
 #filename = 'capturefixed.txt'
-#filename = 'backup.txt'
-filename = 'newflows.txt'
+filename = 'backup.txt'
+#filename = 'newflows.txt'
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
@@ -133,7 +133,9 @@ def findNewFlows():
 	'https://spclient.wg.spotify.com/abba-service/v1/resolve', \
 	'https://pl.scdn.co/images/pl/default', \
 	'https://i.scdn.co/image', \
-	'https://spclient.wg.spotify.com/metadata/4']
+	'https://spclient.wg.spotify.com/metadata/4', \
+	'https://inbox.google.com/sync', \
+	'https://www.google.com/complete/search']
 
 	oldURLparts = ['googlevideo.com/initplayback', \
 	'googlevideo.com/videoplayback', \
@@ -216,6 +218,6 @@ def analyzeAll():
 
 separateFlows()
 #printFlows()
-analyzeAll()
+#analyzeAll()
 #testFlows(testNumList)
-#findNewFlows()
+findNewFlows()
