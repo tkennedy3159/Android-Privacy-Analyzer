@@ -17,7 +17,7 @@ import AndroidDataPrivacy.Applications.Discord as Discord
 import AndroidDataPrivacy.Applications.Spotify as Spotify
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNumList = [1]
+testNumList = [1, 2, 3]
 #filename = 'capturefixed.txt'
 filename = 'backup.txt'
 #filename = 'newflows.txt'
@@ -200,6 +200,7 @@ def printLogs(results):
 
 def testFlows(numList):
 	for num in numList:
+		print(num)
 		#print(flows[num].all)
 		#print(AppDefault.cleanEncoding(flows[num].responseContent))
 		checkFlow(flows[num])
