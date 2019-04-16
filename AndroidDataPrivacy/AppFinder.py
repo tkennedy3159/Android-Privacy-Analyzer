@@ -172,6 +172,9 @@ def translate(app):
 	elif (app == 'com.discord'):
 		app = 'Discord'
 
+	elif (app == 'com.spotify.music'):
+		app = Spotify
+
 	if (app == ''):
 		app = 'AppDefault'
 	return app
