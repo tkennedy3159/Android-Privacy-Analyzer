@@ -136,7 +136,8 @@ def findNewFlows():
 	'https://spclient.wg.spotify.com/metadata/4']
 
 	oldURLparts = ['googlevideo.com/initplayback', \
-	'googlevideo.com/videoplayback']
+	'googlevideo.com/videoplayback', \
+	'com/generate_204']
 
 	old = False
 	analyzeAll()
