@@ -215,5 +215,5 @@ def analyzeAll():
 separateFlows()
 #printFlows()
 #analyzeAll()
-testFlows(testNumList)
-#findNewFlows()
+#testFlows(testNumList)
+findNewFlows()

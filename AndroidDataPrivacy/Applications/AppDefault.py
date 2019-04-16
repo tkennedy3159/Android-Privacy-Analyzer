@@ -217,6 +217,12 @@ def analyzePostRequestDefault(flow, results):
 			info = findFormEntry(flow.requestContent, 'event_token')
 			results.append(Result.Result(flow, type, info))
 
+		if (flow.responseContent.find('"adid":') > -1):
+			type = 'User Info: adjust.com Ad ID'
+			info = flow.responseContent[flow.responseContent.find('"adid": "')+9:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow, type, info))
+
 		if (flow.requestContent.find('callback_params') > -1):
 			if (findFormEntry(flow.requestContent, 'package_name') == 'com.spotify.music'):
 				callback = findFormEntry(flow.requestContent, 'callback_params')
@@ -279,11 +285,7 @@ def analyzePostRequestDefault(flow, results):
 							info = info[:info.find('"')]
 					results.append(Result.Result(flow, type, info))
 				
-				if (flow.responseContent.find('"adid":') > -1):
-					type = 'User Info: Spotify Ad ID'
-					info = flow.responseContent[flow.responseContent.find('"adid": "')+9:]
-					info = info[:info.find('"')]
-					results.append(Result.Result(flow, type, info))
+
 			
 
 def analyzeHeadRequestDefault(flow, results):
