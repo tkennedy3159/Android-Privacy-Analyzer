@@ -161,9 +161,6 @@ def analyzePostRequestDefault(flow, results):
 		info = 'Closed App with Branch Key ' + branchkey + ' and session ID ' + sessionkey
 		results.append(Result.Result(flow, type, info))
 
-	elif (flow.url == 'https://app.adjust.com/sdk_click'):
-		if (findFormEntry(flow.requestContent, 'package_name') == 'com.spotify.music'):
-
 	elif (flow.url.find('https://app.adjust.com') == 0):
 		flow.source = 'adjust.com ' + findFormEntry(flow.requestContent, 'package_name')
 		
