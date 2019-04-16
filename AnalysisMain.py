@@ -17,7 +17,7 @@ import AndroidDataPrivacy.Applications.Discord as Discord
 import AndroidDataPrivacy.Applications.Spotify as Spotify
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNumList = [1, 2, 3]
+testNumList = [1-3]
 #filename = 'capturefixed.txt'
 filename = 'backup.txt'
 #filename = 'newflows.txt'
