@@ -172,6 +172,11 @@ def analyzePostRequestDefault(flow, results):
 			type = 'User Action: App Installation Time'
 			info = findFormEntry(flow.requestContent, 'installed_at')
 			results.append(Result.Result(flow, type, info))
+		
+		if (flow.requestContent.find('created_at:') > -1):
+			type = 'Event Time'
+			info = findFormEntry(flow.requestContent, 'created_at')
+			results.append(Result.Result(flow, type, info))
 
 		type = 'adjust.com Token: ' + findFormEntry(flow.requestContent, 'package_name')
 		info = findFormEntry(flow.requestContent, 'app_token')
@@ -240,7 +245,31 @@ def analyzePostRequestDefault(flow, results):
 				
 				if (callback.find('clicked:') > -1):
 					type = 'User Action: Clicked'
-					info = callback[callback.find('clicked:')+7:]
+					info = callback[callback.find('clicked:')+8:]
+					if (info.find(',') == -1):
+						info = info[:info.find('"')]
+					else:
+						if (info.find(',') < info.find('"')):
+							info = info[:info.find(',')]
+						else:
+							info = info[:info.find('"')]
+					results.append(Result.Result(flow, type, info))
+				
+				if (callback.find('input_field:') > -1):
+					type = 'User Action: Input Field'
+					info = callback[callback.find('input_field:')+12:]
+					if (info.find(',') == -1):
+						info = info[:info.find('"')]
+					else:
+						if (info.find(',') < info.find('"')):
+							info = info[:info.find(',')]
+						else:
+							info = info[:info.find('"')]
+					results.append(Result.Result(flow, type, info))
+				
+				if (callback.find('event:') > -1):
+					type = 'Spotify Event'
+					info = callback[callback.find('event:')+6:]
 					if (info.find(',') == -1):
 						info = info[:info.find('"')]
 					else:

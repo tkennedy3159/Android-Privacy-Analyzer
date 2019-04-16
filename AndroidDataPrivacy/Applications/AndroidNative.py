@@ -51,7 +51,8 @@ appIds = {'1:1086610230652:android:131e4c3db28fca84':'com.google.android.googleq
 '1:531457836147:android:0fb36a1600ce546b':'com.google.android.apps.photos', \
 '1:933360113277:android:2918df7f0aab10ef':'com.reddit.frontpage', \
 '1:508767403424:android:7c2619785291111d':'com.slack', \
-'1:162066849712:android:db38e83be74de1b6':'com.discord'}
+'1:162066849712:android:db38e83be74de1b6':'com.discord', \
+'1:494597445014:android:779d79f75183bf65':'com.spotify.music'}
 
 def checkBehavior(flow, results):
 	if (flow.requestType == 'GET'):
