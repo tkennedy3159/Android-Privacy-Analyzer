@@ -17,3 +17,21 @@ Slack
 
 Youtube
 - Figure out Youtube activeview https://www.youtube.com/pcs/activeview
+
+Venmo
+- Login
+- Open Notifications
+- Friends, Me, Public
+- Search People
+- Venmo Card
+- Payment Methods
+- Purchases
+- My Profile -> Friends
+
+- Pay Juliette
+- Like it
+- Comment
+
+- Request Payment
+- Get Payment
+- Juliette likes/comments
