@@ -84,6 +84,64 @@ def checkGetURL(flow, results):
 		info = info[:info.find('"')]
 		results.append(Result.Result(flow, type, info))
 
+	elif (flow.url.find('https://spclient.wg.spotify.com/storage-resolve/files/audio/interactive/') == 0):
+		type = 'User Action: Song Opened'
+		info = flow.url[flow.url.find('audio/interactive/')+18:]
+		info = info[:info.find('?')]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://spclient.wg.spotify.com/storage-resolve/files/audio/interactive_prefetch') == 0):
+		type = 'User Action: Song Opened'
+		info = flow.url[flow.url.find('interactive_prefetch/')+21:]
+		info = info[:info.find('?')]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://audio-sp-dca.pscdn.co/audio') == 0):
+		type = 'User Action: Song Opened'
+		info = flow.url[flow.url.find('audio/')+6:]
+		info = info[:info.find('?')]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://audio4-ak-spotify-com.akamaized.net/audio') == 0):
+		type = 'User Action: Song Opened'
+		info = flow.url[flow.url.find('audio/')+6:]
+		info = info[:info.find('?')]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://spclient.wg.spotify.com/searchview/android/v4/assisted-curation') == 0):
+		type = 'User Info: Spotify Username'
+		info = AppDefault.findFormEntry(flow.requestContent, 'username')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'User Action: Spotify Search'
+		info = flow.url[flow.url.find('assisted-curation/')+18:]
+		info = info[:info.find('?')]
+		info = AppDefault.fixUrlEncoding(info)
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://spclient.wg.spotify.com/searchview/android/v4/search') == 0):
+		type = 'User Info: Spotify Username'
+		info = AppDefault.findFormEntry(flow.requestContent, 'username')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'User Action: Spotify Search'
+		info = flow.url[flow.url.find('search/')+7:]
+		info = info[:info.find('?')]
+		info = AppDefault.fixUrlEncoding(info)
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://spclient.wg.spotify.com/quicksilver/v2/cards') == 0):
+		if (flow.requestContent.find('trigger:') > -1):
+			type = 'User Action: Click'
+			info = AppDefault.findFormEntry(flow.requestContent, 'trigger')
+			results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('megaphone.fm') > -1):
+		type = 'User Action: Podcast Opened'
+		info = flow.url[flow.url.find('megaphone.fm/')+13:]
+		info = info[:info.find('.mp3')]
+		results.append(Result.Result(flow, type, info))
+
 def checkPostURL(flow, results):
 	if (flow.url.find('https://spclient.wg.spotify.com/remote-config-resolver') == 0):
 		type = 'System Info: Spotify Installation ID'

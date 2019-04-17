@@ -396,7 +396,10 @@ def fixUrlEncoding(input):
 		input = input[3:]
 		if (temp == '%3A'):
 			temp = ':'
+		elif (temp == '%20'):
+			temp = ' '
 		output = output + temp
+	output = output + input
 	return output
 
 def findFormEntry(content, entry):

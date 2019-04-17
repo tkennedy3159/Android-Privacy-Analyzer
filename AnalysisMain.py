@@ -18,9 +18,9 @@ import AndroidDataPrivacy.Applications.Spotify as Spotify
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
 testNumList = list(range(1,20))
-#filename = 'capturefixed.txt'
+filename = 'capturefixed.txt'
 #filename = 'backup.txt'
-filename = 'newflows.txt'
+#filename = 'newflows.txt'
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
@@ -135,7 +135,15 @@ def findNewFlows():
 	'https://i.scdn.co/image', \
 	'https://spclient.wg.spotify.com/metadata/4', \
 	'https://inbox.google.com/sync', \
-	'https://www.google.com/complete/search']
+	'https://www.google.com/complete/search', \
+	'https://audio-sp-dca.pscdn.co/audio', \
+	'https://scannables.scdn.co/uri/800/spotify', \
+	'https://events.redditmedia.com', \
+	'https://audio4-ak-spotify-com.akamaized.net/audio', \
+	'https://spclient.wg.spotify.com/searchview/android/v4/assisted-curation', \
+	'https://spclient.wg.spotify.com/radio-apollo', \
+	'https://spclient.wg.spotify.com/canvaz-cache', \
+	'https://app.adjust.com']
 
 	oldURLparts = ['googlevideo.com/initplayback', \
 	'googlevideo.com/videoplayback', \
@@ -218,6 +226,6 @@ def analyzeAll():
 
 separateFlows()
 #printFlows()
-#analyzeAll()
-testFlows(testNumList)
+analyzeAll()
+#testFlows(testNumList)
 #findNewFlows()
