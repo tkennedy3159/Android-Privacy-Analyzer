@@ -21,9 +21,9 @@ import AndroidDataPrivacy.Applications.LinkedIn as LinkedIn
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
 testNumList = list(range(31,94)) #94
-#filename = 'capturefixed.txt'
+filename = 'capturefixed.txt'
 #filename = 'backup.txt'
-filename = 'newflows.txt'
+#filename = 'newflows.txt'
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
@@ -212,9 +212,9 @@ def checkFlow(flow):
 	AppDefault.syncSource(flow, results)
 	if ('RawDataSearch' in appList):
 		RawDataSearch.checkRawData(flow, results)
-	print(flow.all)
-	printLogs(results)
-	#sendLogs(results)
+	#print(flow.all)
+	#printLogs(results)
+	sendLogs(results)
 
 def sendLogs(results):
 	for result in results:
@@ -247,6 +247,6 @@ def analyzeAll():
 
 separateFlows()
 #printFlows()
-#analyzeAll()
-testFlows(testNumList)
+analyzeAll()
+#testFlows(testNumList)
 #findNewFlows()
