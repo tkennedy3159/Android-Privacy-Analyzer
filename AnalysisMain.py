@@ -17,19 +17,20 @@ import AndroidDataPrivacy.Applications.Discord as Discord
 import AndroidDataPrivacy.Applications.Spotify as Spotify
 import AndroidDataPrivacy.Applications.Venmo as Venmo
 import AndroidDataPrivacy.Applications.Facebook as Facebook
+import AndroidDataPrivacy.Applications.LinkedIn as LinkedIn
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNumList = list(range(1,10)) #24
-filename = 'capturefixed.txt'
+testNumList = list(range(11,21)) #94
+#filename = 'capturefixed.txt'
 #filename = 'backup.txt'
-#filename = 'newflows.txt'
+filename = 'newflows.txt'
 file = open(filename, "r")
 newFlowFileName = 'newflows.txt'
 capture = file.readlines()
 flows = []
 results = []
 appList = ['AppDefault','AndroidNative','GSuite','Youtube', 'Reddit', 'Slack', \
-'Discord', 'Spotify', 'Venmo', 'Facebook', 'CertInstaller', 'RawDataSearch']
+'Discord', 'Spotify', 'Venmo', 'Facebook', 'LinkedIn', 'CertInstaller', 'RawDataSearch']
 log = syslog_client.Syslog()
 
 def printFlows():
@@ -156,7 +157,8 @@ def findNewFlows():
 	'https://api.venmo.com/v1/account', \
 	'https://api.venmo.com/v1/venmo-card/settings', \
 	'https://api.venmo.com/v1/payment-methods', \
-	'https://api.venmo.com/v1/checkpoints']
+	'https://api.venmo.com/v1/checkpoints', \
+	'https://static.licdn.com']
 
 	oldURLparts = ['googlevideo.com/initplayback', \
 	'googlevideo.com/videoplayback', \
@@ -201,6 +203,8 @@ def checkFlow(flow):
 		Venmo.checkBehavior(flow, results)
 	if (flow.app == 'Facebook' and 'Facebook' in appList):
 		Facebook.checkBehavior(flow, results)
+	if (flow.app == 'LinkedIn' and 'LinkedIn' in appList):
+		LinkedIn.checkBehavior(flow, results)
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
 		AndroidNative.checkBehavior(flow, results)
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):
@@ -243,6 +247,6 @@ def analyzeAll():
 
 separateFlows()
 #printFlows()
-analyzeAll()
-#testFlows(testNumList)
+#analyzeAll()
+testFlows(testNumList)
 #findNewFlows()

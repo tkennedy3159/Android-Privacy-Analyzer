@@ -33,7 +33,9 @@ ignoredTypes = ['System Info: Performance Tracking', \
 'User Info: Youtube Screen Opened', \
 'Event Time', \
 'Spotify Event', \
-'User Info: 2FA Device']
+'User Info: 2FA Device', \
+'LinkedIn Client Event', \
+'LinkedIn Client Event Stats']
 
 def checkRawData(flow, results):
 	file = open(filename, "r")

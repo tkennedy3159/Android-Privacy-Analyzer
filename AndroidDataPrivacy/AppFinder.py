@@ -5,6 +5,13 @@ def findApp(flow, appList):
 	app = ''
 	if ('app' in flow.requestHeaders.keys()):
 		app = flow.requestHeaders['app']
+	if 'LinkedIn' in appList:
+		import AndroidDataPrivacy.Applications.LinkedIn as LinkedIn
+		if flow.url in LinkedIn.urls:
+			return 'LinkedIn'
+		for item in LinkedIn.partialURLs:
+			if (flow.url.find(item) > -1):
+				return 'LinkedIn'
 	if (app == '' and 'User-Agent' in flow.requestHeaders.keys()):
 		app = identifyUserAgent(flow.requestHeaders['User-Agent'], appList)
 	if (app == ''):
@@ -86,6 +93,14 @@ def identifyUserAgent(agent, appList):
 		for item in Facebook.partialUserAgents:
 			if (agent.find(item) > -1):
 				return 'Facebook'
+
+	if 'LinkedIn' in appList:
+		import AndroidDataPrivacy.Applications.LinkedIn as LinkedIn
+		if agent in LinkedIn.userAgents:
+			return 'LinkedIn'
+		for item in LinkedIn.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'LinkedIn'
 
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
@@ -169,6 +184,14 @@ def identifyURL(flow, url, appList):
 		for item in Facebook.partialURLs:
 			if (url.find(item) > -1):
 				return 'Facebook'
+
+	if 'LinkedIn' in appList:
+		import AndroidDataPrivacy.Applications.LinkedIn as LinkedIn
+		if url in LinkedIn.urls:
+			return 'LinkedIn'
+		for item in LinkedIn.partialURLs:
+			if (url.find(item) > -1):
+				return 'LinkedIn'
 
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller

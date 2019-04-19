@@ -19,6 +19,19 @@ def analyzeGetRequestDefault(flow, results):
 		type = 'IP Address'
 		results.append(Result.Result(flow, type, info))
 
+	if (flow.url.find('https://s2s.singular.net/api') == 0):
+		flow.source = 'Singular.net'
+
+		if (flow.requestContent.find('a:') > -1):
+			if (findFormEntry(flow.requestContent, 'a') == 'linkedin'):
+				flow.source = flow.source + ' LinkedIn'
+
+		if (flow.requestContent.find('bd:') > -1):
+			type = 'System Info: Build'
+			info = findFormEntry(flow.requestContent, 'bd')
+			results.append(Result.Result(flow, type, info))
+
+
 def analyzePostRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
 		info = flow.address
@@ -363,7 +376,7 @@ def checkRequestHeadersDefault(flow, headers, results):
 		results.append(Result.Result(flow, type, info))
 	if ('x-ad-id' in headers.keys()):
 		info = headers['x-ad-id']
-		type = 'User Info: Ad Tracking ID'
+		type = 'User Info: Ad ID'
 		results.append(Result.Result(flow, type, info))
 	if ('Authorization' in headers.keys()):
 		info = headers['Authorization']
@@ -451,7 +464,7 @@ def findJSONSection(content, section):
 	temp = part
 	part = part[:part.find('\n')+1]
 	count = 1
-	while count > 0:
+	while count > 0 and (temp[temp.find('\n')+1:].strip() != '(cut off)'):
 		temp = temp[temp.find('\n')+1:]
 		line = temp[:temp.find('\n')+1]
 		part = part + line
