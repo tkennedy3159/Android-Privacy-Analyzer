@@ -15,9 +15,11 @@ import AndroidDataPrivacy.Applications.Reddit as Reddit
 import AndroidDataPrivacy.Applications.Slack as Slack
 import AndroidDataPrivacy.Applications.Discord as Discord
 import AndroidDataPrivacy.Applications.Spotify as Spotify
+import AndroidDataPrivacy.Applications.Venmo as Venmo
+import AndroidDataPrivacy.Applications.Facebook as Facebook
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNumList = list(range(1,20))
+testNumList = list(range(1,10)) #24
 filename = 'capturefixed.txt'
 #filename = 'backup.txt'
 #filename = 'newflows.txt'
@@ -26,8 +28,8 @@ newFlowFileName = 'newflows.txt'
 capture = file.readlines()
 flows = []
 results = []
-appList = ['AppDefault','AndroidNative','GSuite','Youtube', \
-'Reddit', 'Slack', 'Discord', 'Spotify', 'CertInstaller', 'RawDataSearch']
+appList = ['AppDefault','AndroidNative','GSuite','Youtube', 'Reddit', 'Slack', \
+'Discord', 'Spotify', 'Venmo', 'Facebook', 'CertInstaller', 'RawDataSearch']
 log = syslog_client.Syslog()
 
 def printFlows():
@@ -143,7 +145,18 @@ def findNewFlows():
 	'https://spclient.wg.spotify.com/searchview/android/v4/assisted-curation', \
 	'https://spclient.wg.spotify.com/radio-apollo', \
 	'https://spclient.wg.spotify.com/canvaz-cache', \
-	'https://app.adjust.com']
+	'https://e.crashlytics.com', \
+	'https://venmopics.appspot.com', \
+	'https://venmo-merchant-images.s3.amazonaws.com', \
+	'https://api.venmo.com/v1/account/settings/social', \
+	'https://api.venmo.com/v1/alerts', \
+	'https://platform-lookaside.fbsbx.com', \
+	'https://api.venmo.com/v1/stories/target-or-actor', \
+	'https://api.venmo.com/v1/users/merchant-payments-activation-views', \
+	'https://api.venmo.com/v1/account', \
+	'https://api.venmo.com/v1/venmo-card/settings', \
+	'https://api.venmo.com/v1/payment-methods', \
+	'https://api.venmo.com/v1/checkpoints']
 
 	oldURLparts = ['googlevideo.com/initplayback', \
 	'googlevideo.com/videoplayback', \
@@ -184,6 +197,10 @@ def checkFlow(flow):
 		Discord.checkBehavior(flow, results)
 	if (flow.app == 'Spotify' and 'Spotify' in appList):
 		Spotify.checkBehavior(flow, results)
+	if (flow.app == 'Venmo' and 'Venmo' in appList):
+		Venmo.checkBehavior(flow, results)
+	if (flow.app == 'Facebook' and 'Facebook' in appList):
+		Facebook.checkBehavior(flow, results)
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
 		AndroidNative.checkBehavior(flow, results)
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):

@@ -34,7 +34,8 @@ partialURLs = ['www.google.com/tg/fe/request?rqt=58', \
 'https://www.google.com/complete/search', \
 'https://mobilenetworkscoring-pa.googleapis.com/v1/GetWifiQuality', \
 'https://www.googleapis.com/plus/v2whitelisted/people/me', \
-'https://www.gstatic.com/android/keyboard']
+'https://www.gstatic.com/android/keyboard', \
+'https://firebaseremoteconfig.googleapis.com']
 
 userAgents = ['Android-GCM']
 
@@ -43,7 +44,8 @@ partialUserAgents = ['Android-GData', \
 'AndroidDownloadManager', \
 'Chrome', \
 'GoogleMobile', \
-'Crashlytics']
+'Crashlytics', \
+'com.android.vending']
 
 appIds = {'1:1086610230652:android:131e4c3db28fca84':'com.google.android.googlequicksearchbox', \
 '1:493454522602:android:4877c2b5f408a8b2':'com.google.android.apps.maps', \
@@ -52,7 +54,8 @@ appIds = {'1:1086610230652:android:131e4c3db28fca84':'com.google.android.googleq
 '1:933360113277:android:2918df7f0aab10ef':'com.reddit.frontpage', \
 '1:508767403424:android:7c2619785291111d':'com.slack', \
 '1:162066849712:android:db38e83be74de1b6':'com.discord', \
-'1:494597445014:android:779d79f75183bf65':'com.spotify.music'}
+'1:494597445014:android:779d79f75183bf65':'com.spotify.music', \
+'1:966004744864:android:23a3da72f34a80d2':'com.venmo'}
 
 def checkBehavior(flow, results):
 	if (flow.requestType == 'GET'):
@@ -213,7 +216,7 @@ def checkGetURL(flow, results):
 def checkPostURL(flow, results):
 	#Weather lookup
 	if (flow.url.find('www.google.com/tg/fe/request?rqt=58') > -1):
-		flow.source = 'Weather Lookup'
+		flow.source = 'Weather/News Update'
 		#type = 'Location'
 		#info = ''
 		#results.append(Result.Result(flow, type, info))
@@ -446,6 +449,19 @@ def checkPostURL(flow, results):
 		type = 'System Info: WiFi Strength'
 		info = 'Key: ' + flow.url[flow.url.find('key=')+4:]
 		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://firebaseremoteconfig.googleapis.com') == 0):
+		flow.source = 'Firebase'
+		if (flow.requestContent.find('"packageName":') > -1):
+			appName = flow.requestContent[flow.requestContent.find('"packageName":')+16:]
+			appName = appName[:appName.find('"')]
+			flow.source = flow.source + ' ' + appName
+
+			type = 'Firebase ' + appName + ' Instance ID'
+			info = flow.requestContent[flow.requestContent.find('"appInstanceId":')+18:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow, type, info))
+
 
 def getURLs():
 	return urls

@@ -71,6 +71,22 @@ def identifyUserAgent(agent, appList):
 			if (agent.find(item) > -1):
 				return 'Spotify'
 
+	if 'Venmo' in appList:
+		import AndroidDataPrivacy.Applications.Venmo as Venmo
+		if agent in Venmo.userAgents:
+			return 'Venmo'
+		for item in Venmo.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'Venmo'
+
+	if 'Facebook' in appList:
+		import AndroidDataPrivacy.Applications.Facebook as Facebook
+		if agent in Facebook.userAgents:
+			return 'Facebook'
+		for item in Facebook.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'Facebook'
+
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 		if agent in CertInstaller.userAgents:
@@ -138,6 +154,22 @@ def identifyURL(flow, url, appList):
 			if (url.find(item) > -1):
 				return 'Spotify'
 
+	if 'Venmo' in appList:
+		import AndroidDataPrivacy.Applications.Venmo as Venmo
+		if url in Venmo.urls:
+			return 'Venmo'
+		for item in Venmo.partialURLs:
+			if (url.find(item) > -1):
+				return 'Venmo'
+
+	if 'Facebook' in appList:
+		import AndroidDataPrivacy.Applications.Facebook as Facebook
+		if url in Facebook.urls:
+			return 'Facebook'
+		for item in Facebook.partialURLs:
+			if (url.find(item) > -1):
+				return 'Facebook'
+
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 		if url in CertInstaller.urls:
@@ -189,7 +221,10 @@ def translate(app):
 		app = 'Discord'
 
 	elif (app == 'com.spotify.music'):
-		app = Spotify
+		app = 'Spotify'
+
+	elif (app == 'com.venmo'):
+		app = 'Venmo'
 
 	if (app == ''):
 		app = 'AppDefault'

@@ -291,6 +291,43 @@ def analyzePostRequestDefault(flow, results):
 				info = findFormEntry(flow.requestContent, 'deeplink')
 				results.append(Result.Result(flow, type, info))
 
+	elif (flow.url.find('https://vela.iad-01.braze.com') == 0):
+		flow.source = 'Braze'
+
+		type = 'Braze API Key'
+		info = flow.requestContent[flow.requestContent.find('"api_key":')+12:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Braze ID'
+		info = flow.requestContent[flow.requestContent.find('"device_id":')+14:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+		if (flow.requestContent.find('"push_token":') > -1):
+			type = 'System Info: Braze Push Token'
+			info = flow.requestContent[flow.requestContent.find('"push_token":')+15:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow, type, info))
+
+		if (flow.requestContent.find('"model":') > -1):
+			type = 'System Info: Model'
+			info = flow.requestContent[flow.requestContent.find('"model":')+10:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow, type, info))
+
+		if (flow.requestContent.find('"resolution":') > -1):
+			type = 'System Info: Resolution'
+			info = flow.requestContent[flow.requestContent.find('"resolution":')+15:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow, type, info))
+
+		if (flow.requestContent.find('"session_id":') > -1):
+			type = 'Braze Session ID'
+			info = flow.requestContent[flow.requestContent.find('"session_id":')+15:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow, type, info))
+
 
 def analyzeHeadRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
