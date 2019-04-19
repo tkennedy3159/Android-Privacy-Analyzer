@@ -20,7 +20,7 @@ import AndroidDataPrivacy.Applications.Facebook as Facebook
 import AndroidDataPrivacy.Applications.LinkedIn as LinkedIn
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNumList = list(range(11,21)) #94
+testNumList = list(range(31,94)) #94
 #filename = 'capturefixed.txt'
 #filename = 'backup.txt'
 filename = 'newflows.txt'
