@@ -102,6 +102,17 @@ def checkGetURL(flow, results):
 	if (flow.url.find('https://www.linkedin.com') == 0 or flow.url.find('https://platform.linkedin.com') == 0):
 		flow.source = 'LinkedIn'
 
+	if (flow.url.find('https://www.linkedin.com/voyager/api/feed/updates') == 0):
+		flow.source = 'LinkedIn Feed Update'
+		type = 'System Info: Battery Level'
+		info = AppDefault.findFormEntry(flow.requestContent, 'battery')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'System Info: Connection Type'
+		info = AppDefault.findFormEntry(flow.requestContent, 'connectionType')
+		results.append(Result.Result(flow, type, info))
+
+
 def checkPostURL(flow, results):
 	if (flow.url.find('https://www.linkedin.com') == 0):
 		flow.source = 'LinkedIn'
@@ -181,6 +192,14 @@ def checkPostURL(flow, results):
 				info = info.strip()
 				info = info[1:len(info)-1]
 			results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/growth/contacts?action=uploadContacts') == 0):
+		flow.source = 'LinkedIn Contacts Upload'
+
+		type = 'User Info: Contact'
+		for info in flow.requestContent.split('            },\n            {'):
+			if (info.find('"fullName":') > -1):
+				results.append(Result.Result(flow, type, info))
 
 
 def checkHeadURL(flow, results):

@@ -20,7 +20,7 @@ import AndroidDataPrivacy.Applications.Facebook as Facebook
 import AndroidDataPrivacy.Applications.LinkedIn as LinkedIn
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNumList = list(range(31,94)) #94
+testNumList = list(range(1,57)) #57
 filename = 'capturefixed.txt'
 #filename = 'backup.txt'
 #filename = 'newflows.txt'
@@ -158,6 +158,9 @@ def findNewFlows():
 	'https://api.venmo.com/v1/venmo-card/settings', \
 	'https://api.venmo.com/v1/payment-methods', \
 	'https://api.venmo.com/v1/checkpoints', \
+	'https://media.licdn.com/dms/image', \
+	'https://www.linkedin.com/realtime/realtimeFrontendTimestamp', \
+	'https://www.linkedin.com/li/track', \
 	'https://static.licdn.com']
 
 	oldURLparts = ['googlevideo.com/initplayback', \
@@ -183,7 +186,7 @@ def findNewFlows():
 def checkFlow(flow):
 	results = []
 	flow.app = AppFinder.findApp(flow, appList)
-	#print('App: ' + flow.app)
+	print('App: ' + flow.app)
 	
 	if (flow.app == 'CertInstaller' and 'CertInstaller' in appList):
 		CertInstaller.checkBehavior(flow, results)
@@ -212,9 +215,9 @@ def checkFlow(flow):
 	AppDefault.syncSource(flow, results)
 	if ('RawDataSearch' in appList):
 		RawDataSearch.checkRawData(flow, results)
-	#print(flow.all)
-	#printLogs(results)
-	sendLogs(results)
+	print(flow.all)
+	printLogs(results)
+	#sendLogs(results)
 
 def sendLogs(results):
 	for result in results:
@@ -241,7 +244,7 @@ def testFlows(numList):
 def analyzeAll():
 	count = 0
 	for flow in flows:
-		#print(count)
+		print(count)
 		checkFlow(flow)
 		count = count + 1
 

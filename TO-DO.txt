@@ -19,3 +19,34 @@ Youtube
 - Figure out Youtube activeview https://www.youtube.com/pcs/activeview
 
 LinkedIn
+- View profile (top left)
+  - Update profile
+  - View Dashboard stuff
+  - My interests -> delete one
+  - Add new info to profile (plus button)
+- Home screen -> tab on left
+  - Explore everything
+  - Discover more -> follow something new
+- Messages (top right)
+  - View message
+  - Search messages
+
+- Tabs on bottom
+  - Home
+  - People
+    - Look at a profile
+  - Posting
+    - Post something
+    - Delete it
+  - Notifications
+    - Follow one
+  - Jobs
+    - Search, look for job
+
+- Search Juliette
+- Connect
+- She Accepts
+- Delete connection
+- She requests
+- I accept
+- Private message
