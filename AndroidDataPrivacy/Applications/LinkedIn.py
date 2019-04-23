@@ -9,7 +9,8 @@ partialURLs = ['https://www.linkedin.com', \
 
 userAgents = []
 
-partialUserAgents = ['com.linkedin.android']
+partialUserAgents = ['com.linkedin.android', \
+'LinkedIn']
 
 def checkBehavior(flow, results):
 	if (flow.requestType == 'GET'):
@@ -99,7 +100,7 @@ def checkResponseHeaders(flow, headers, results):
 	return None
 
 def checkGetURL(flow, results):
-	if (flow.url.find('https://www.linkedin.com') == 0 or flow.url.find('https://platform.linkedin.com') == 0):
+	if (flow.url.find('https://www.linkedin.com') == 0 or flow.url.find('https://platform.linkedin.com') == 0 or flow.url.find('https://dms.licdn.com') == 0):
 		flow.source = 'LinkedIn'
 
 	if (flow.url.find('https://www.linkedin.com/voyager/api/feed/updates') == 0):
@@ -112,10 +113,105 @@ def checkGetURL(flow, results):
 		info = AppDefault.findFormEntry(flow.requestContent, 'connectionType')
 		results.append(Result.Result(flow, type, info))
 
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/identity/profiles') == 0 and flow.url.find('profileView') > -1):
+		flow.source = 'LinkedIn View Profile'
+		type = 'User Action: Viewed Profile ID'
+		info = flow.url[flow.url.find('profiles/')+9:]
+		info = info[:info.find('/')]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/typeahead/hits') == 0):
+		flow.source = 'LinkedIn Search'
+		type = 'User Action: LinkedIn Search'
+		info = AppDefault.findFormEntry(flow.requestContent, 'query')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/messaging/typeahead/hits') == 0):
+		flow.source = 'LinkedIn Messages Search'
+		type = 'User Action: LinkedIn Messages Search'
+		info = AppDefault.findFormEntry(flow.requestContent, 'keyword')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/search') == 0):
+		flow.source = 'LinkedIn Search'
+		type = 'User Action: Job Search Filter'
+		info = AppDefault.findFormEntry(flow.requestContent, 'filters')
+		results.append(Result.Result(flow, type, info))
+
+		type = 'User Action: Job Search'
+		info = AppDefault.findFormEntry(flow.requestContent, 'keywords')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/psettings/policy/notices?types=EDIT_FEED_ACTIVITY') == 0):
+		type = 'User Action: LinkedIn'
+		info = AppDefault.findFormEntry(flow.requestContent, 'types')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/feed/contentTopicData') == 0):
+		type = 'User Action: Search Hashtag'
+		info = flow.url[flow.url.find('contentTopicData/urn:li:hashtag:')+32:]
+		info = info[:info.find('?')]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/groups/groups') == 0):
+		type = 'User Action: View Group'
+		info = flow.url[flow.url.find('groups/groups/')+14:]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/messaging/mailboxUnreadCounts') == 0):
+		type = 'User Action: LinkedIn'
+		info = 'Opened Messages'
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/csp/simt') == 0):
+		type = 'LinkedIn Ad Tracker ID'
+		info = AppDefault.findFormEntry(flow.requestContent, 'adTrk')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/messaging/conversations') == 0):
+		if (flow.url.find('conversations?') > -1):
+			type = 'User Action: LinkedIn'
+			info = 'Viewed Conversations'
+		else:
+			type = 'User Action: Viewed LinkedIn Conversation'
+			info = flow.url[flow.url.find('conversations/')+14:]
+			if (info.find('/') > -1 and info.find('/') < info.find('?')):
+				info = info[:info.find('/')]
+			elif (info.find('?') > -1):
+				info = info[:info.find('?')]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/contentcreation/updateTargetings') == 0):
+		type = 'User Action: Typed Post'
+		info = AppDefault.findFormEntry(flow.requestContent, 'commentary')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/identity/notificationSegments') == 0):
+		type = 'User Action: LinkedIn'
+		info = 'Viewed Notification'
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/jobs') == 0):
+		if (flow.url.find('https://www.linkedin.com/voyager/api/jobs/jobPostings') == 0):
+			type = 'User Action: Viewed Job'
+			info = flow.url[flow.url.find('jobPostings/')+12:]
+			info = info[:info.find('?')]
+		else:
+			type = 'User Action: LinkedIn'
+			info = 'Viewed Jobs'
+		results.append(Result.Result(flow, type, info))		
+
 
 def checkPostURL(flow, results):
 	if (flow.url.find('https://www.linkedin.com') == 0):
 		flow.source = 'LinkedIn'
+
+		if (flow.requestContent.find('"trackingToken":') > -1):
+			type = 'User Info: LinkedIn Tracking Token'
+			info = flow.requestContent[flow.requestContent.find('"trackingToken":')+18:]
+			info = info[:info.find('"')]
+			results.append(Result.Result(flow, type, info))
+
 
 	if (flow.url.find('https://www.linkedin.com/li/track') == 0):
 		flow.source = 'LinkedIn Tracker'
@@ -201,6 +297,51 @@ def checkPostURL(flow, results):
 			if (info.find('"fullName":') > -1):
 				results.append(Result.Result(flow, type, info))
 
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/mux') == 0):
+		type = 'User Action: Update Profile'
+		info = flow.requestContent[flow.requestContent.find('"requests":'):]
+		info = info[:info.find('"dependentRequests":')]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/feed/follows?action=unfollow') == 0):
+		type = 'User Action: LinkedIn Unfollow'
+		info = flow.requestContent[flow.requestContent.find('"urn":')+8:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/identity/profiles') == 0 and flow.url.find('normSkills') > -1):
+		type = 'User Action: Add Skill'
+		info = AppDefault.findJSONListNonSpaced(flow.requestContent, 'elements')
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/messaging/conversations') == 0):
+		if (flow.url.find('conversations?') > -1):
+			type = 'User Action: LinkedIn'
+			info = 'Viewed Conversations'
+		else:
+			type = 'User Action: Viewed LinkedIn Conversation'
+			info = flow.url[flow.url.find('conversations/')+14:]
+			if (info.find('/') > -1 and info.find('/') < info.find('?')):
+				info = info[:info.find('/')]
+			elif (info.find('?') > -1):
+				info = info[:info.find('?')]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/contentcreation') == 0):
+		type = 'User Action: LinkedIn Post'
+		info = flow.requestContent[flow.requestContent.find('"text":')+9:]
+		info = info[:info.find('"')]
+		results.append(Result.Result(flow, type, info))
+
+	elif (flow.url.find('https://www.linkedin.com/voyager/api/relationships/invitations') == 0):
+		type = 'User Action: Invitation Response'
+		inviterid = flow.url[flow.url.find('invitations/')+12:]
+		inviterid = inviterid[:inviterid.find('?')]
+		action = flow.url[flow.url.find('?action=')+8:]
+		action = action[:action.find('&')]
+		info = inviterid + ': ' + action
+		results.append(Result.Result(flow, type, info))
+
 
 def checkHeadURL(flow, results):
 	return None
@@ -209,4 +350,11 @@ def checkPutURL(flow, results):
 	return None
 
 def checkDeleteURL(flow, results):
-	return None
+	if (flow.url.find('https://www.linkedin.com/voyager/api/messaging/conversations') == 0):
+		type = 'User Action: Delete LinkedIn Conversation'
+		info = flow.url[flow.url.find('conversations/')+14:]
+		if (info.find('/') > -1 and info.find('/') < info.find('?')):
+			info = info[:info.find('/')]
+		elif (info.find('?') > -1):
+			info = info[:info.find('?')]
+		results.append(Result.Result(flow, type, info))

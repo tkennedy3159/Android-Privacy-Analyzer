@@ -20,7 +20,7 @@ import AndroidDataPrivacy.Applications.Facebook as Facebook
 import AndroidDataPrivacy.Applications.LinkedIn as LinkedIn
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNumList = list(range(1,57)) #57
+testNumList = list(range(1,100)) #105
 filename = 'capturefixed.txt'
 #filename = 'backup.txt'
 #filename = 'newflows.txt'
@@ -47,15 +47,22 @@ def printFlow(num):
 def separateFlows():
 	flow = ''
 	count = 0
+	block = False
 	for line in capture:
 		if (count > 0):
 			flow = flow + line
 			count = count - 1
-		elif (line[0:1] == ' ' or line[1:2] == '' or line[:21] == 'cd=com.google.android'):
+		elif (line[0:1] == ' ' or line[1:2] == '' or line[:21] == 'cd=com.google.android' or block == True):
 			flow = flow + line
+			if (block == True):
+				if (line[0:1] == ' ' or line[1:2] == ''):
+					block = False
 		elif (line[0:15] == 'generic profile'):
 			flow = flow + line
 			count = 2
+		elif (line[0:3] == 'icc'):
+			block = True
+			count = 1
 		else:
 			if (checkForUseless(flow)):
 				flow = line
@@ -143,9 +150,7 @@ def findNewFlows():
 	'https://scannables.scdn.co/uri/800/spotify', \
 	'https://events.redditmedia.com', \
 	'https://audio4-ak-spotify-com.akamaized.net/audio', \
-	'https://spclient.wg.spotify.com/searchview/android/v4/assisted-curation', \
-	'https://spclient.wg.spotify.com/radio-apollo', \
-	'https://spclient.wg.spotify.com/canvaz-cache', \
+	'https://spclient.wg.spotify.com', \
 	'https://e.crashlytics.com', \
 	'https://venmopics.appspot.com', \
 	'https://venmo-merchant-images.s3.amazonaws.com', \
@@ -161,11 +166,53 @@ def findNewFlows():
 	'https://media.licdn.com/dms/image', \
 	'https://www.linkedin.com/realtime/realtimeFrontendTimestamp', \
 	'https://www.linkedin.com/li/track', \
-	'https://static.licdn.com']
+	'https://static.licdn.com', \
+	'https://www.linkedin.com/voyager/api/jobs/jobSeekerPreferences', \
+	'https://www.linkedin.com/voyager/api/voyagerIdentityMarketplaceRoles', \
+	'https://www.linkedin.com/voyager/api/voyagerIdentityProfileActionsV2?ids=', \
+	'https://www.linkedin.com/voyager/api/legoWidgetImpressionEvents', \
+	'https://www.linkedin.com/voyager/api/voyagerIdentityProfiles', \
+	'https://www.linkedin.com/voyager/api/messaging/presenceStatuses', \
+	'https://www.linkedin.com/voyager/api/typeahead/hits', \
+	'https://www.linkedin.com/voyager/api/voyagerIdentityDashPrivacySettings', \
+	'https://www.linkedin.com/voyager/api/premium/featureAccess', \
+	'https://www.linkedin.com/voyager/api/feed/updates', \
+	'https://www.linkedin.com/voyager/api/voyagerIdentitySearchAppearances', \
+	'https://www.linkedin.com/voyager/api/identity/ge', \
+	'https://www.linkedin.com/voyager/api/voyagerGrowthPageContent', \
+	'https://www.linkedin.com/voyager/api/feed/packageRecommendations', \
+	'https://media.licdn.com/media-proxy', \
+	'https://dms.licdn.com/playback', \
+	'https://dms.licdn.com/video-thumbs', \
+	'https://www.linkedin.com/voyager/api/feed/richRecommendedEntities', \
+	'https://www.linkedin.com/voyager/api/messaging/badge?action=markAllItemsAsSeen', \
+	'https://www.linkedin.com/csp/simt', \
+	'https://www.linkedin.com/voyager/api/growth/emailConfirmationTask', \
+	'https://www.linkedin.com/voyager/api/messaging/badge?action=markAllItemsAsSeen', \
+	'https://www.linkedin.com/voyager/api/messaging/conversations', \
+	'https://www.linkedin.com/voyager/api/messaging/typeahead/hits', \
+	'https://www.linkedin.com/voyager/api/messaging/peripheral/messagingSearchHistory', \
+	'https://www.linkedin.com/cross-promo-fe/api/promo', \
+	'https://www.linkedin.com/voyager/api/feed/badge', \
+	'https://www.linkedin.com/voyager/api/search/history']
 
 	oldURLparts = ['googlevideo.com/initplayback', \
 	'googlevideo.com/videoplayback', \
-	'com/generate_204']
+	'com/generate_204', \
+	'/recommendations?', \
+	'/recommendationRequests?', \
+	'/marketplacePreferences?', \
+	'/memberConnections?', \
+	'/profilePromotions?', \
+	'/following?', \
+	'/profileContactInfo?', \
+	'/positionGroups?', \
+	'/posts?', \
+	'/volunteerCauses?', \
+	'/skills?', \
+	'/suggestedSkills', \
+	'/suggestedTopSkills', \
+	'/networkinfo?']
 
 	old = False
 	analyzeAll()

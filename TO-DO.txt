@@ -19,34 +19,39 @@ Youtube
 - Figure out Youtube activeview https://www.youtube.com/pcs/activeview
 
 LinkedIn
-- View profile (top left)
-  - Update profile
-  - View Dashboard stuff
-  - My interests -> delete one
-  - Add new info to profile (plus button)
-- Home screen -> tab on left
-  - Explore everything
-  - Discover more -> follow something new
-- Messages (top right)
-  - View message
-  - Search messages
+- Delete Skill
 
-- Tabs on bottom
-  - Home
-  - People
-    - Look at a profile
-  - Posting
-    - Post something
-    - Delete it
-  - Notifications
-    - Follow one
-  - Jobs
-    - Search, look for job
+Canvas
+- See All courses
+- Open Course
+- Home
+- Announcements
+  - Open announcement
+- Modules
+  - Expand/collapse
+  - Open assignment
+    - Scroll through tabs
+  - Open Week 1 overview
+- People
+  - Open Devin
+- Grades
+  - Show what-if score
+  - Based on graded assignments
+  - Open assignment
 
-- Search Juliette
-- Connect
-- She Accepts
-- Delete connection
-- She requests
-- I accept
-- Private message
+- Calendar tab
+  - Select courses
+  - Create new event
+  - Scroll month
+  - Pick Day
+  - Open assignment
+- To Do tab
+  - Filter
+  - Open assignment
+- Notifications Tab
+  - Open one
+- Inbox
+  - Filter
+  - Open message
+  - Create new message
+- Files
