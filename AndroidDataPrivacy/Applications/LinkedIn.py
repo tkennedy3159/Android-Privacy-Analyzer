@@ -207,7 +207,7 @@ def checkPostURL(flow, results):
 		flow.source = 'LinkedIn'
 
 		if (flow.requestContent.find('"trackingToken":') > -1):
-			type = 'User Info: LinkedIn Tracking Token'
+			type = 'LinkedIn Tracking Token'
 			info = flow.requestContent[flow.requestContent.find('"trackingToken":')+18:]
 			info = info[:info.find('"')]
 			results.append(Result.Result(flow, type, info))

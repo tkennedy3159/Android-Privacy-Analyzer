@@ -42,6 +42,7 @@ Canvas
 - Calendar tab
   - Select courses
   - Create new event
+  - Delete event
   - Scroll month
   - Pick Day
   - Open assignment
@@ -55,3 +56,6 @@ Canvas
   - Open message
   - Create new message
 - Files
+  - Open folder
+  - Open file
+  - Search files

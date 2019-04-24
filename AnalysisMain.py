@@ -18,9 +18,10 @@ import AndroidDataPrivacy.Applications.Spotify as Spotify
 import AndroidDataPrivacy.Applications.Venmo as Venmo
 import AndroidDataPrivacy.Applications.Facebook as Facebook
 import AndroidDataPrivacy.Applications.LinkedIn as LinkedIn
+import AndroidDataPrivacy.Applications.Canvas as Canvas
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNumList = list(range(1,100)) #105
+testNumList = list(range(1,81)) #81
 filename = 'capturefixed.txt'
 #filename = 'backup.txt'
 #filename = 'newflows.txt'
@@ -30,7 +31,7 @@ capture = file.readlines()
 flows = []
 results = []
 appList = ['AppDefault','AndroidNative','GSuite','Youtube', 'Reddit', 'Slack', \
-'Discord', 'Spotify', 'Venmo', 'Facebook', 'LinkedIn', 'CertInstaller', 'RawDataSearch']
+'Discord', 'Spotify', 'Venmo', 'Facebook', 'LinkedIn', 'Canvas', 'CertInstaller', 'RawDataSearch']
 log = syslog_client.Syslog()
 
 def printFlows():
@@ -255,6 +256,8 @@ def checkFlow(flow):
 		Facebook.checkBehavior(flow, results)
 	if (flow.app == 'LinkedIn' and 'LinkedIn' in appList):
 		LinkedIn.checkBehavior(flow, results)
+	if (flow.app == 'Canvas' and 'Canvas' in appList):
+		Canvas.checkBehavior(flow, results)
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
 		AndroidNative.checkBehavior(flow, results)
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):

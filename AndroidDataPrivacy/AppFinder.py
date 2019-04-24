@@ -3,6 +3,10 @@ import AndroidDataPrivacy.Result as Result
 
 def findApp(flow, appList):
 	app = ''
+	if (app == '' and 'referer' in flow.requestHeaders):
+		app = identifyReferer(flow.requestHeaders['referer'], appList)
+	elif (app == '' and 'Referer' in flow.requestHeaders):
+		app = identifyReferer(flow.requestHeaders['Referer'], appList)
 	if ('app' in flow.requestHeaders.keys()):
 		app = flow.requestHeaders['app']
 	if 'LinkedIn' in appList:
@@ -16,8 +20,6 @@ def findApp(flow, appList):
 		app = identifyUserAgent(flow.requestHeaders['User-Agent'], appList)
 	if (app == ''):
 		app = identifyURL(flow, flow.url, appList)
-	if (app == '' and 'referer' in flow.requestHeaders):
-		app = identifyReferer(flow.requestHeaders['referer'], appList)
 	app = translate(app)
 	return app
 
@@ -101,6 +103,14 @@ def identifyUserAgent(agent, appList):
 		for item in LinkedIn.partialUserAgents:
 			if (agent.find(item) > -1):
 				return 'LinkedIn'
+
+	if 'Canvas' in appList:
+		import AndroidDataPrivacy.Applications.Canvas as Canvas
+		if agent in Canvas.userAgents:
+			return 'Canvas'
+		for item in Canvas.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'Canvas'
 
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
@@ -193,6 +203,14 @@ def identifyURL(flow, url, appList):
 			if (url.find(item) > -1):
 				return 'LinkedIn'
 
+	if 'Canvas' in appList:
+		import AndroidDataPrivacy.Applications.Canvas as Canvas
+		if url in Canvas.urls:
+			return 'Canvas'
+		for item in Canvas.partialURLs:
+			if (url.find(item) > -1):
+				return 'Canvas'
+
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 		if url in CertInstaller.urls:
@@ -215,6 +233,8 @@ def identifyURL(flow, url, appList):
 def identifyReferer(referer, appList):
 	if (referer == 'android-app://com.google.android.gm'):
 		return 'com.google.android.gm'
+	elif (referer == 'https://champlain.instructure.com/'):
+		return 'Canvas'
 	return ''
 
 def translate(app):
@@ -248,6 +268,9 @@ def translate(app):
 
 	elif (app == 'com.venmo'):
 		app = 'Venmo'
+
+	elif (app == 'com.instructure.candroid'):
+		app = 'Canvas'
 
 	if (app == ''):
 		app = 'AppDefault'
