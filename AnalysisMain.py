@@ -19,9 +19,10 @@ import AndroidDataPrivacy.Applications.Venmo as Venmo
 import AndroidDataPrivacy.Applications.Facebook as Facebook
 import AndroidDataPrivacy.Applications.LinkedIn as LinkedIn
 import AndroidDataPrivacy.Applications.Canvas as Canvas
+import AndroidDataPrivacy.Applications.RocketChat as RocketChat
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNumList = list(range(1,81)) #81
+testNumList = list(range(1,204)) #204
 filename = 'capturefixed.txt'
 #filename = 'backup.txt'
 #filename = 'newflows.txt'
@@ -31,7 +32,7 @@ capture = file.readlines()
 flows = []
 results = []
 appList = ['AppDefault','AndroidNative','GSuite','Youtube', 'Reddit', 'Slack', \
-'Discord', 'Spotify', 'Venmo', 'Facebook', 'LinkedIn', 'Canvas', 'CertInstaller', 'RawDataSearch']
+'Discord', 'Spotify', 'Venmo', 'Facebook', 'LinkedIn', 'Canvas', 'RocketChat', 'CertInstaller', 'RawDataSearch']
 log = syslog_client.Syslog()
 
 def printFlows():
@@ -195,7 +196,11 @@ def findNewFlows():
 	'https://www.linkedin.com/voyager/api/messaging/peripheral/messagingSearchHistory', \
 	'https://www.linkedin.com/cross-promo-fe/api/promo', \
 	'https://www.linkedin.com/voyager/api/feed/badge', \
-	'https://www.linkedin.com/voyager/api/search/history']
+	'https://www.linkedin.com/voyager/api/search/history', \
+	'https://js.stripe.com', \
+	'https://stats.g.doubleclick.net', \
+	'https://www.google-analytics.com', \
+	'https://www.facebook.com']
 
 	oldURLparts = ['googlevideo.com/initplayback', \
 	'googlevideo.com/videoplayback', \
@@ -213,7 +218,9 @@ def findNewFlows():
 	'/skills?', \
 	'/suggestedSkills', \
 	'/suggestedTopSkills', \
-	'/networkinfo?']
+	'/networkinfo?', \
+	'.js', \
+	'.css']
 
 	old = False
 	analyzeAll()
@@ -258,6 +265,8 @@ def checkFlow(flow):
 		LinkedIn.checkBehavior(flow, results)
 	if (flow.app == 'Canvas' and 'Canvas' in appList):
 		Canvas.checkBehavior(flow, results)
+	if (flow.app == 'RocketChat' and 'RocketChat' in appList):
+		RocketChat.checkBehavior(flow, results)
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
 		AndroidNative.checkBehavior(flow, results)
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):

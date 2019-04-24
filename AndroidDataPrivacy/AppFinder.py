@@ -9,6 +9,7 @@ def findApp(flow, appList):
 		app = identifyReferer(flow.requestHeaders['Referer'], appList)
 	if ('app' in flow.requestHeaders.keys()):
 		app = flow.requestHeaders['app']
+
 	if 'LinkedIn' in appList:
 		import AndroidDataPrivacy.Applications.LinkedIn as LinkedIn
 		if flow.url in LinkedIn.urls:
@@ -16,6 +17,15 @@ def findApp(flow, appList):
 		for item in LinkedIn.partialURLs:
 			if (flow.url.find(item) > -1):
 				return 'LinkedIn'
+
+	if 'RocketChat' in appList:
+		import AndroidDataPrivacy.Applications.RocketChat as RocketChat
+		if flow.url in RocketChat.urls:
+			return 'RocketChat'
+		for item in RocketChat.partialURLs:
+			if (flow.url.find(item) > -1):
+				return 'RocketChat'
+
 	if (app == '' and 'User-Agent' in flow.requestHeaders.keys()):
 		app = identifyUserAgent(flow.requestHeaders['User-Agent'], appList)
 	if (app == ''):
@@ -112,6 +122,14 @@ def identifyUserAgent(agent, appList):
 			if (agent.find(item) > -1):
 				return 'Canvas'
 
+	if 'RocketChat' in appList:
+		import AndroidDataPrivacy.Applications.RocketChat as RocketChat
+		if agent in RocketChat.userAgents:
+			return 'RocketChat'
+		for item in RocketChat.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'RocketChat'
+
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 		if agent in CertInstaller.userAgents:
@@ -203,13 +221,13 @@ def identifyURL(flow, url, appList):
 			if (url.find(item) > -1):
 				return 'LinkedIn'
 
-	if 'Canvas' in appList:
-		import AndroidDataPrivacy.Applications.Canvas as Canvas
-		if url in Canvas.urls:
-			return 'Canvas'
-		for item in Canvas.partialURLs:
+	if 'RocketChat' in appList:
+		import AndroidDataPrivacy.Applications.RocketChat as RocketChat
+		if url in RocketChat.urls:
+			return 'RocketChat'
+		for item in RocketChat.partialURLs:
 			if (url.find(item) > -1):
-				return 'Canvas'
+				return 'RocketChat'
 
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
@@ -235,6 +253,8 @@ def identifyReferer(referer, appList):
 		return 'com.google.android.gm'
 	elif (referer == 'https://champlain.instructure.com/'):
 		return 'Canvas'
+	elif (referer == 'https://cloud.rocket.chat/trial'):
+		return 'RocketChat'
 	return ''
 
 def translate(app):
@@ -271,6 +291,9 @@ def translate(app):
 
 	elif (app == 'com.instructure.candroid'):
 		app = 'Canvas'
+
+	elif (app == 'chat.rocket.android'):
+		app = 'RocketChat'
 
 	if (app == ''):
 		app = 'AppDefault'

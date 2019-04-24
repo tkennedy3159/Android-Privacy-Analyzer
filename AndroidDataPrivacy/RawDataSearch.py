@@ -42,7 +42,8 @@ ignoredTypes = ['System Info: Performance Tracking', \
 'User Info: Calendar Events', \
 'LinkedIn Tracking Token', \
 'System Info: LinkedIn App State', \
-'System Info: Battery Level']
+'System Info: Battery Level', \
+'Referer']
 
 def checkRawData(flow, results):
 	file = open(filename, "r")
