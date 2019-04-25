@@ -20,9 +20,10 @@ import AndroidDataPrivacy.Applications.Facebook as Facebook
 import AndroidDataPrivacy.Applications.LinkedIn as LinkedIn
 import AndroidDataPrivacy.Applications.Canvas as Canvas
 import AndroidDataPrivacy.Applications.RocketChat as RocketChat
+import AndroidDataPrivacy.Applications.Hulu as Hulu
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNumList = list(range(1,204)) #204
+testNumList = list(range(16,31)) #103
 filename = 'capturefixed.txt'
 #filename = 'backup.txt'
 #filename = 'newflows.txt'
@@ -32,7 +33,7 @@ capture = file.readlines()
 flows = []
 results = []
 appList = ['AppDefault','AndroidNative','GSuite','Youtube', 'Reddit', 'Slack', \
-'Discord', 'Spotify', 'Venmo', 'Facebook', 'LinkedIn', 'Canvas', 'RocketChat', 'CertInstaller', 'RawDataSearch']
+'Discord', 'Spotify', 'Venmo', 'Facebook', 'LinkedIn', 'Canvas', 'RocketChat', 'Hulu', 'CertInstaller', 'RawDataSearch']
 log = syslog_client.Syslog()
 
 def printFlows():
@@ -198,9 +199,42 @@ def findNewFlows():
 	'https://www.linkedin.com/voyager/api/feed/badge', \
 	'https://www.linkedin.com/voyager/api/search/history', \
 	'https://js.stripe.com', \
-	'https://stats.g.doubleclick.net', \
-	'https://www.google-analytics.com', \
-	'https://www.facebook.com']
+	'https://play.googleapis.com/log/batch', \
+	'https://mobilenetworkscoring-pa.googleapis.com/v1/GetWifiQuality', \
+	'https://play.googleapis.com/log/batch', \
+	'https://android.googleapis.com/auth', \
+	'http://b.scorecardresearch.com', \
+	'https://graph.facebook.com', \
+	'https://vortex.hulu.com/api/v3/event', \
+	'https://t.appsflyer.com/api', \
+	'https://img.hulu.com', \
+	'https://img1.hulu.com', \
+	'https://img2.hulu.com', \
+	'https://img3.hulu.com', \
+	'https://img4.hulu.com', \
+	'https://img5.hulu.com', \
+	'https://img6.hulu.com', \
+	'https://img7.hulu.com', \
+	'https://img8.hulu.com', \
+	'https://discover.hulu.com/content/v4/search', \
+	'https://discover.hulu.com/content/v4/me/state', \
+	'https://play.googleapis.com/play/log', \
+	'https://stats.appsflyer.com/stats', \
+	'https://play.hulu.com/v4/playlist', \
+	'https://license.hulu.com', \
+	'https://ads-e-darwin.hulustream.com', \
+	'https://manifest.hulustream.com', \
+	'https://ib.hulu.com/thumb', \
+	'https://hulu.hb.omtrdc.net', \
+	'https://t2.hulu.com', \
+	'https://mb.moatads.com', \
+	'https://http-e-darwin.hulustream.com', \
+	'https://geo.moatads.com', \
+	'https://px.moatads.com', \
+	'https://z.moatads.com', \
+	'https://ag.innovid.com', \
+	'https://s.innovid.com', \
+	'https://cws-hulu.conviva.com/0/wsg']
 
 	oldURLparts = ['googlevideo.com/initplayback', \
 	'googlevideo.com/videoplayback', \
@@ -218,9 +252,7 @@ def findNewFlows():
 	'/skills?', \
 	'/suggestedSkills', \
 	'/suggestedTopSkills', \
-	'/networkinfo?', \
-	'.js', \
-	'.css']
+	'/networkinfo?']
 
 	old = False
 	analyzeAll()
@@ -267,6 +299,8 @@ def checkFlow(flow):
 		Canvas.checkBehavior(flow, results)
 	if (flow.app == 'RocketChat' and 'RocketChat' in appList):
 		RocketChat.checkBehavior(flow, results)
+	if (flow.app == 'Hulu' and 'Hulu' in appList):
+		Hulu.checkBehavior(flow, results)
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
 		AndroidNative.checkBehavior(flow, results)
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):

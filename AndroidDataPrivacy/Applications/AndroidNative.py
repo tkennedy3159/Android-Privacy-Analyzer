@@ -56,7 +56,8 @@ appIds = {'1:1086610230652:android:131e4c3db28fca84':'com.google.android.googleq
 '1:162066849712:android:db38e83be74de1b6':'com.discord', \
 '1:494597445014:android:779d79f75183bf65':'com.spotify.music', \
 '1:966004744864:android:23a3da72f34a80d2':'com.venmo', \
-'1:191083992402:android:b773719be4662429':'com.instructure.candroid'}
+'1:191083992402:android:b773719be4662429':'com.instructure.candroid', \
+'1:227709821840:android:581824269584ae5c':'com.hulu.plus'}
 
 def checkBehavior(flow, results):
 	if (flow.requestType == 'GET'):

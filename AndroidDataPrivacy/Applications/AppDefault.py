@@ -31,6 +31,27 @@ def analyzeGetRequestDefault(flow, results):
 			info = findFormEntry(flow.requestContent, 'bd')
 			results.append(Result.Result(flow, type, info))
 
+	elif (flow.url.find('https://secure-dcr.imrworldwide.com/cgi-bin/cfg') == 0):
+		flow.source = findFormEntry(flow.requestContent, 'bid')
+		if (flow.source == 'com.hulu.plus'):
+			flow.source = 'Hulu'
+
+			type = 'System Info: App GUID'
+			info = findFormEntry(flow.requestContent, 'apid')
+			results.append(Result.Result(flow, type, info))
+
+			type = 'System Info: Hulu Device ID'
+			info = findFormEntry(flow.requestContent, 'devid')
+			results.append(Result.Result(flow, type, info))
+
+			type = 'System Info: Brand'
+			info = findFormEntry(flow.requestContent, 'manuf')
+			results.append(Result.Result(flow, type, info))
+
+			type = 'System Info: Model'
+			info = findFormEntry(flow.requestContent, 'devmodel')
+			results.append(Result.Result(flow, type, info))
+
 
 def analyzePostRequestDefault(flow, results):
 	if (checkFlowResults('IP Address', results) == False):
@@ -111,13 +132,14 @@ def analyzePostRequestDefault(flow, results):
 		info = info[:info.find('"')]
 		results.append(Result.Result(flow, type, info))
 
-		type = 'System Info: Screen Size'
-		width = content[content.find('"x_px":')+9:]
-		width = width[:width.find('"')]
-		height = content[content.find('"y_px":')+9:]
-		height = height[:height.find('"')]
-		info = width + ' x ' + height
-		results.append(Result.Result(flow, type, info))
+		if (flow.requestContent.find('x_px') > -1):
+			type = 'System Info: Screen Size'
+			width = content[content.find('"x_px":')+9:]
+			width = width[:width.find('"')]
+			height = content[content.find('"y_px":')+9:]
+			height = height[:height.find('"')]
+			info = width + ' x ' + height
+			results.append(Result.Result(flow, type, info))
 
 		if (flow.requestContent.find('sensors') > -1):
 			type = 'System Info: Sensor Data'

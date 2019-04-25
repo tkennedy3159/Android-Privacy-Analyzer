@@ -43,7 +43,9 @@ ignoredTypes = ['System Info: Performance Tracking', \
 'LinkedIn Tracking Token', \
 'System Info: LinkedIn App State', \
 'System Info: Battery Level', \
-'Referer']
+'Referer', \
+'System Info: Device Key', \
+'Hulu Event']
 
 def checkRawData(flow, results):
 	file = open(filename, "r")
@@ -76,7 +78,7 @@ def addNewResults(results, items):
 		file.write(key + '\n' + '----' + '\n' + value + '\n' + '---------------' + '\n')
 
 	for result in results:
-		if len(result.info) > 3 and result.info not in items.keys() and result.info not in ignoredInfos and result.type.find('User Action') == -1 and result.type not in ignoredTypes:
+		if len(result.info.strip()) > 3 and result.info not in items.keys() and result.info not in ignoredInfos and result.type.find('User Action') == -1 and result.type not in ignoredTypes:
 			items[result.info] = result.type
 			file.write(result.info + '\n' + '----' + '\n' + result.type + '\n' + '---------------' + '\n')
 

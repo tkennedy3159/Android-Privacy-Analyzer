@@ -21,41 +21,13 @@ Youtube
 LinkedIn
 - Delete Skill
 
-Canvas
-- See All courses
-- Open Course
-- Home
-- Announcements
-  - Open announcement
-- Modules
-  - Expand/collapse
-  - Open assignment
-    - Scroll through tabs
-  - Open Week 1 overview
-- People
-  - Open Devin
-- Grades
-  - Show what-if score
-  - Based on graded assignments
-  - Open assignment
-
-- Calendar tab
-  - Select courses
-  - Create new event
-  - Delete event
-  - Scroll month
-  - Pick Day
-  - Open assignment
-- To Do tab
-  - Filter
-  - Open assignment
-- Notifications Tab
-  - Open one
-- Inbox
-  - Filter
-  - Open message
-  - Create new message
-- Files
-  - Open folder
-  - Open file
-  - Search files
+Hulu
+- Watch video
+  - Play
+  - Pause
+  - Fast-forward
+  - Rewind
+  - Closed captioning
+- Account
+  - View Account
+  - Logout

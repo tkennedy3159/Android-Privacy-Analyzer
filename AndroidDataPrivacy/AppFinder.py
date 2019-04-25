@@ -130,6 +130,14 @@ def identifyUserAgent(agent, appList):
 			if (agent.find(item) > -1):
 				return 'RocketChat'
 
+	if 'Hulu' in appList:
+		import AndroidDataPrivacy.Applications.Hulu as Hulu
+		if agent in Hulu.userAgents:
+			return 'Hulu'
+		for item in Hulu.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'Hulu'
+
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 		if agent in CertInstaller.userAgents:
@@ -221,6 +229,14 @@ def identifyURL(flow, url, appList):
 			if (url.find(item) > -1):
 				return 'LinkedIn'
 
+	if 'Canvas' in appList:
+		import AndroidDataPrivacy.Applications.Canvas as Canvas
+		if url in Canvas.urls:
+			return 'Canvas'
+		for item in Canvas.partialURLs:
+			if (url.find(item) > -1):
+				return 'Canvas'
+
 	if 'RocketChat' in appList:
 		import AndroidDataPrivacy.Applications.RocketChat as RocketChat
 		if url in RocketChat.urls:
@@ -228,6 +244,14 @@ def identifyURL(flow, url, appList):
 		for item in RocketChat.partialURLs:
 			if (url.find(item) > -1):
 				return 'RocketChat'
+
+	if 'Hulu' in appList:
+		import AndroidDataPrivacy.Applications.Hulu as Hulu
+		if url in Hulu.urls:
+			return 'Hulu'
+		for item in Hulu.partialURLs:
+			if (url.find(item) > -1):
+				return 'Hulu'
 
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
@@ -294,6 +318,9 @@ def translate(app):
 
 	elif (app == 'chat.rocket.android'):
 		app = 'RocketChat'
+
+	elif (app == 'com.hulu.plus'):
+		app = 'Hulu'
 
 	if (app == ''):
 		app = 'AppDefault'
