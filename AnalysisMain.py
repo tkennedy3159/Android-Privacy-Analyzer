@@ -290,7 +290,7 @@ def findNewFlows():
 def checkFlow(flow):
 	results = []
 	flow.app = AppFinder.findApp(flow, appList)
-	print('App: ' + flow.app)
+	#print('App: ' + flow.app)
 	
 	if (flow.app == 'CertInstaller' and 'CertInstaller' in appList):
 		CertInstaller.checkBehavior(flow, results)
@@ -329,9 +329,9 @@ def checkFlow(flow):
 	AppDefault.syncSource(flow, results)
 	if ('RawDataSearch' in appList):
 		RawDataSearch.checkRawData(flow, results)
-	print(flow.all)
-	printLogs(results)
-	#sendLogs(results)
+	#print(flow.all)
+	#printLogs(results)
+	sendLogs(results)
 
 def sendLogs(results):
 	for result in results:
@@ -358,7 +358,7 @@ def testFlows(numList):
 def analyzeAll():
 	count = 0
 	for flow in flows:
-		print(count)
+		#print(count)
 		checkFlow(flow)
 		count = count + 1
 
