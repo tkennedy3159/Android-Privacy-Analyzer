@@ -138,6 +138,22 @@ def identifyUserAgent(agent, appList):
 			if (agent.find(item) > -1):
 				return 'Hulu'
 
+	if 'Netflix' in appList:
+		import AndroidDataPrivacy.Applications.Netflix as Netflix
+		if agent in Netflix.userAgents:
+			return 'Netflix'
+		for item in Netflix.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'Netflix'
+
+	if 'KeeperSecurity' in appList:
+		import AndroidDataPrivacy.Applications.KeeperSecurity as KeeperSecurity
+		if agent in KeeperSecurity.userAgents:
+			return 'KeeperSecurity'
+		for item in KeeperSecurity.partialUserAgents:
+			if (agent.find(item) > -1):
+				return 'KeeperSecurity'
+
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 		if agent in CertInstaller.userAgents:
@@ -253,6 +269,22 @@ def identifyURL(flow, url, appList):
 			if (url.find(item) > -1):
 				return 'Hulu'
 
+	if 'Netflix' in appList:
+		import AndroidDataPrivacy.Applications.Netflix as Netflix
+		if url in Netflix.urls:
+			return 'Netflix'
+		for item in Netflix.partialURLs:
+			if (url.find(item) > -1):
+				return 'Netflix'
+
+	if 'KeeperSecurity' in appList:
+		import AndroidDataPrivacy.Applications.KeeperSecurity as KeeperSecurity
+		if url in KeeperSecurity.urls:
+			return 'KeeperSecurity'
+		for item in KeeperSecurity.partialURLs:
+			if (url.find(item) > -1):
+				return 'KeeperSecurity'
+
 	if 'CertInstaller' in appList:
 		import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 		if url in CertInstaller.urls:
@@ -321,6 +353,9 @@ def translate(app):
 
 	elif (app == 'com.hulu.plus'):
 		app = 'Hulu'
+
+	elif (app == 'com.netflix.mediaclient'):
+		app = 'Netflix'
 
 	if (app == ''):
 		app = 'AppDefault'

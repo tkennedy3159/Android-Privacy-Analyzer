@@ -5,7 +5,8 @@ import AndroidDataPrivacy.Result as Result
 
 filename = 'searchitems.txt'
 ignoredInfos = ['test', \
-'WiFi connection active']
+'WiFi connection active', \
+'install']
 
 ignoredTypes = ['System Info: Performance Tracking', \
 'User Info: Opened App Count', \
@@ -45,7 +46,8 @@ ignoredTypes = ['System Info: Performance Tracking', \
 'System Info: Battery Level', \
 'Referer', \
 'System Info: Device Key', \
-'Hulu Event']
+'Hulu Event', \
+'Netflix Path']
 
 def checkRawData(flow, results):
 	file = open(filename, "r")

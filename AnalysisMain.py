@@ -21,9 +21,11 @@ import AndroidDataPrivacy.Applications.LinkedIn as LinkedIn
 import AndroidDataPrivacy.Applications.Canvas as Canvas
 import AndroidDataPrivacy.Applications.RocketChat as RocketChat
 import AndroidDataPrivacy.Applications.Hulu as Hulu
+import AndroidDataPrivacy.Applications.Netflix as Netflix
+import AndroidDataPrivacy.Applications.KeeperSecurity as KeeperSecurity
 import AndroidDataPrivacy.Applications.CertInstaller as CertInstaller
 
-testNumList = list(range(16,31)) #103
+testNumList = list(range(41,53))
 filename = 'capturefixed.txt'
 #filename = 'backup.txt'
 #filename = 'newflows.txt'
@@ -32,8 +34,9 @@ newFlowFileName = 'newflows.txt'
 capture = file.readlines()
 flows = []
 results = []
-appList = ['AppDefault','AndroidNative','GSuite','Youtube', 'Reddit', 'Slack', \
-'Discord', 'Spotify', 'Venmo', 'Facebook', 'LinkedIn', 'Canvas', 'RocketChat', 'Hulu', 'CertInstaller', 'RawDataSearch']
+appList = ['AppDefault','AndroidNative','GSuite','Youtube', 'Reddit', 'Slack', 'Discord', 'Spotify', \
+'Venmo', 'Facebook', 'LinkedIn', 'Canvas', 'RocketChat', 'Hulu', 'Netflix', 'KeeperSecurity', \
+'CertInstaller', 'RawDataSearch']
 log = syslog_client.Syslog()
 
 def printFlows():
@@ -234,7 +237,14 @@ def findNewFlows():
 	'https://z.moatads.com', \
 	'https://ag.innovid.com', \
 	'https://s.innovid.com', \
-	'https://cws-hulu.conviva.com/0/wsg']
+	'https://cws-hulu.conviva.com/0/wsg', \
+	'https://settings.crashlytics.com/spi/v2/platforms/android/apps', \
+	'https://android-appboot.netflix.com/appboot', \
+	'https://android.prod.cloud.netflix.com/msl', \
+	'https://android.prod.cloud.netflix.com/ichnaea', \
+	'https://cast.google.com/cast/nearby/search', \
+	'https://android.clients.google.com/c2dm/register3', \
+	'https://keepersecurity.com/api/rest/vault/execute_v2_command']
 
 	oldURLparts = ['googlevideo.com/initplayback', \
 	'googlevideo.com/videoplayback', \
@@ -252,11 +262,17 @@ def findNewFlows():
 	'/skills?', \
 	'/suggestedSkills', \
 	'/suggestedTopSkills', \
-	'/networkinfo?']
+	'/networkinfo?', \
+	'.png', \
+	'.webp', \
+	'.jpg', \
+	'-ix.1.oca.nflxvideo.net']
 
 	old = False
-	analyzeAll()
+	count = 0
+	#analyzeAll()
 	for flow in flows:
+		print(count)
 		for oldURL in oldURLs:
 			if (flow.url.find(oldURL) == 0):
 				old = True
@@ -268,6 +284,7 @@ def findNewFlows():
 			newFlows.append(flow)
 			newFlowFile.write(flow.all)
 		old = False
+		count = count + 1
 
 
 def checkFlow(flow):
@@ -301,6 +318,10 @@ def checkFlow(flow):
 		RocketChat.checkBehavior(flow, results)
 	if (flow.app == 'Hulu' and 'Hulu' in appList):
 		Hulu.checkBehavior(flow, results)
+	if (flow.app == 'Netflix' and 'Netflix' in appList):
+		Netflix.checkBehavior(flow, results)
+	if (flow.app == 'KeeperSecurity' and 'KeeperSecurity' in appList):
+		KeeperSecurity.checkBehavior(flow, results)
 	if (flow.app == 'AndroidNative' and 'AndroidNative' in appList):
 		AndroidNative.checkBehavior(flow, results)
 	if (flow.app == 'AppDefault' and 'AppDefault' in appList):
